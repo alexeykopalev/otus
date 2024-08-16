@@ -1,0 +1,6 @@
+- name: install nginx and nginx-change
+  hosts: backend_hosts
+  become: yes
+  roles:
+  - nginx-change
+

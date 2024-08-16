@@ -1,0 +1,42 @@
+---
+# tasks file for nginx-change
+- name: Put SELinux in permissive mode, logging actions that would be blocked.
+  ansible.posix.selinux:
+    policy: targeted
+    state: permissive
+
+- name: Installing Nginx Repository
+  ansible.builtin.yum_repository:
+    name: nginx-stable
+    description: nginx stable repo
+    file: nginx
+    baseurl: http://nginx.org/packages/centos/$releasever/$basearch/
+    gpgkey: https://nginx.org/keys/nginx_signing.key
+    gpgcheck: yes
+    enabled: yes
+    module_hotfixes: true
+
+- name: install Nginx
+  ansible.builtin.dnf:
+    name: 
+      - nginx
+    state: latest
+
+- name: Get CPU
+  ansible.builtin.shell: lscpu | grep 'Model name' | awk '{$1=$2=""; print $0}'
+  register: cpu_result
+
+- name: Set variable CPU
+  ansible.builtin.set_fact:
+    var_cpu: "{{ cpu_result.stdout }}" 
+
+- name: Setup Nginx index.html
+  ansible.builtin.template:
+    src: "templates/index.html.j2"
+    dest: "/usr/share/nginx/html/index.html"
+
+- name: Start Nginx
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes

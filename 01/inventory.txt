@@ -1,0 +1,5 @@
+[all]
+backend-01 ansible_host=10.6.6.20 ansible_user=akopalev
+
+[backend_hosts]
+backend-01
