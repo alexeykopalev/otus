@@ -18,7 +18,7 @@ Ansible в Proxmox создаются следующие ресурсы:
  - "install ha-cluster" - устанавливает pacemaker, pcs, fence agent, lvm2-cluster, gfs2. Настраивает кластер, создает необходимые ресурсы, создает кластерную ФС.
 
 
-[playbook.tf](./ansible/playbook.yml)
+[playbook.yml](./playbook.yml)
 
 ## Скриншоты из Proxmox, созданных виртуальных машин, выводы при выполнении ansible-playbook playbook.yml
 
