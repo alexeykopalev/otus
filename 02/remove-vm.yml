@@ -1,0 +1,10 @@
+# code: language=ansible
+- name: Remove vms
+  hosts: proxmox
+  vars_files:
+    - ./roles/remove-vm/vms.yml
+    - ./roles/remove-vm/vars/main.yml
+  gather_facts: false
+  become: yes
+  roles:
+  - remove-vm

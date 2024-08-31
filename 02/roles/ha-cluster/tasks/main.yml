@@ -1,0 +1,268 @@
+- name: Install the Packages
+  ansible.builtin.dnf:
+    name:
+      - pacemaker
+      - pcs
+      - dlm
+      - lvm2
+      - lvm2-lockd
+      - gfs2-utils
+    state: present
+    enablerepo: highavailability,appstream,resilientstorage
+
+- name: change cloud.cfg
+  ansible.builtin.replace:
+    path: "/etc/cloud/cloud.cfg"
+    regexp: '^  - update_etc_hosts*'
+    replace: "#  - update_etc_hosts"
+
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: change /etc/hosts
+  ansible.builtin.copy:
+    src: files/hosts
+    dest: /etc/hosts
+
+- name: Add pcs1 to /etc/hosts
+  ansible.builtin.lineinfile:
+    path: "/etc/hosts"
+    state: present
+    line: "10.6.6.21 pcs1"
+
+- name: Add pcs1 to /etc/hosts
+  ansible.builtin.lineinfile:
+    path: "/etc/hosts"
+    state: present
+    line: "10.6.6.21 pcs1"
+
+- name: Add pcs-02 to /etc/hosts
+  ansible.builtin.lineinfile:
+    path: "/etc/hosts"
+    state: present
+    line: "10.6.6.22 pcs2"
+
+- name: Add pcs-03 to /etc/hosts
+  ansible.builtin.lineinfile:
+    path: "/etc/hosts"
+    state: present
+    line: "10.6.6.23 pcs3"
+
+- name: Start the pcs service
+  ansible.builtin.service:
+    name: "pcsd"
+    state: started
+    enabled: true
+
+- name: Set the password for the use hacluster
+  ansible.builtin.user:
+    name: "{{ username }}"
+    password: "{{ password | password_hash('sha512')}}"
+    update_password: always
+
+- name: Authenticate the host
+  ansible.builtin.command: "pcs host auth {{ node1 }} {{ node2 }} {{ node3 }} -u {{ username }} -p {{ password }}"
+
+- name: Gather cluster status
+  ansible.builtin.command: "pcs cluster status"
+  register: cluster_status
+  ignore_errors: true
+    
+- name: Setup the HA-Cluster
+  ansible.builtin.command: "pcs cluster setup {{ cluster_name }} {{ node1 }} {{ node2 }} {{ node3 }}"
+#  register: setup_status
+  run_once: true
+  when: cluster_status.rc | int != 0
+
+- name: Start the HA-Cluster
+  command: "pcs cluster start --all"
+#  register: start_status
+  run_once: true
+  when: cluster_status.rc | int != 0
+
+- name: Enable the HA-Cluster
+  ansible.builtin.command: "pcs cluster enable --all"
+#  register: enable_status
+  run_once: true
+  when: cluster_status.rc | int != 0
+
+- name: Download fence-egent-common
+  ansible.builtin.get_url:
+    url: https://dl.fedoraproject.org/pub/fedora/linux/updates/39/Everything/x86_64/Packages/f/fence-agents-common-4.13.1-1.fc39.noarch.rpm
+    dest: /root/fence-agents-common-4.13.1-1.fc39.noarch.rpm
+
+- name: Download fence-egent-pve
+  ansible.builtin.get_url:
+    url: https://dl.fedoraproject.org/pub/fedora/linux/updates/39/Everything/aarch64/Packages/f/fence-agents-pve-4.13.1-1.fc39.noarch.rpm
+    dest: /root/fence-agents-pve-4.13.1-1.fc39.noarch.rpm
+
+- name: Install fence-egent-pve from a local file
+  ansible.builtin.dnf:
+    name: 
+      - /root/fence-agents-common-4.13.1-1.fc39.noarch.rpm
+      - /root/fence-agents-pve-4.13.1-1.fc39.noarch.rpm
+    state: present
+    disable_gpg_check: True
+
+### ----------- stonith configure ---------------------
+
+- name: Gather stonith status
+  ansible.builtin.command: "pcs stonith status fence_vm_pcs1"
+  register: stonith_status
+  run_once: true
+  ignore_errors: true
+
+- name: "pcs cluster cib fencing.xml"
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - "pcs cluster cib fencing.xml"
+    - 'pcs -f fencing.xml stonith create fence_vm_pcs1 fence_pve pcmk_host_list="pcs1" pcmk_host_check="static-list" ip="10.6.6.10" pve_node="pve-fortest" username="root@pam" password="{{ password }}" ssl_insecure=yes plug="101" power_wait="10" vmtype="qemu"'
+    - 'pcs -f fencing.xml stonith create fence_vm_pcs2 fence_pve pcmk_host_list="pcs2" pcmk_host_check="static-list" ip="10.6.6.10" pve_node="pve-fortest" username="root@pam" password="{{ password }}" ssl_insecure=yes plug="102" power_wait="10" vmtype="qemu"'
+    - 'pcs -f fencing.xml stonith create fence_vm_pcs3 fence_pve pcmk_host_list="pcs3" pcmk_host_check="static-list" ip="10.6.6.10" pve_node="pve-fortest" username="root@pam" password="{{ password }}" ssl_insecure=yes plug="103" power_wait="10" vmtype="qemu"'
+    - "pcs -f fencing.xml constraint location fence_vm_pcs1 avoids pcs1=INFINITY"
+    - "pcs -f fencing.xml constraint location fence_vm_pcs2 avoids pcs2=INFINITY"
+    - "pcs -f fencing.xml constraint location fence_vm_pcs3 avoids pcs3=INFINITY"
+    - "pcs cluster cib-push scope=configuration fencing.xml"
+  run_once: true
+  when: stonith_status.rc | int != 0
+
+### ------------add resource---------------#####
+
+- name: "Setting stonith-enabled=false"
+  ansible.builtin.command: "pcs property set stonith-enabled=false"
+  run_once: true
+
+- name: "Setting 'No Quorum' Policy"
+  ansible.builtin.command: "pcs property set no-quorum-policy=freeze"
+  run_once: true
+
+- name: Gather dlm resource status
+  ansible.builtin.command: "pcs resource config dlm-clone"
+  register: resource_dlm_clone_status
+  ignore_errors: true
+
+- name: "Creating 'dlm' Resource"
+  ansible.builtin.command: pcs resource create dlm systemd:dlm op monitor interval=30s on-fail=ignore clone interleave=true ordered=true
+  run_once: true
+  when: resource_dlm_clone_status.rc | int != 0
+
+- name: Gather lvmlockd resource status
+  ansible.builtin.command: "pcs resource config lvmlockd-clone"
+  register: resource_lvmlockd_clone_status
+  ignore_errors: true
+
+- name: "Creating lvmlockd Resource"
+  ansible.builtin.command: pcs resource create lvmlockd ocf:heartbeat:lvmlockd op monitor interval=10s on-fail=ignore clone interleave=true ordered=true
+  run_once: true
+  when: resource_lvmlockd_clone_status.rc | int != 0
+
+- name: "Creating First Constraint"
+  ansible.builtin.command: pcs constraint order start dlm-clone then lvmlockd-clone
+  run_once: true
+  when: resource_lvmlockd_clone_status.rc | int != 0 or resource_dlm_clone_status.rc | int != 0
+
+- name: "Pause"
+  ansible.builtin.pause:
+    seconds: 10
+  run_once: true
+
+- name: "Gather pvs /dev/sdb"
+  ansible.builtin.shell: pvs | grep /dev/sdb
+  run_once: true
+  register: pvs_status
+  ignore_errors: true
+
+- name: "Creating Physical Volume"
+  ansible.builtin.command: pvcreate /dev/sdb #mapper/otusdisk
+  run_once: true
+  when: pvs_status.rc | int != 0
+
+- name: "Gather vgs /dev/sdb"
+  ansible.builtin.shell: vgs | grep cluster_vg
+  run_once: true
+  register: vgs_status
+  ignore_errors: true
+
+- name: "Creating Volume Group"
+  ansible.builtin.command: vgcreate --shared cluster_vg /dev/sdb #mapper/otusdisk
+  run_once: true
+  when: vgs_status.rc | int != 0
+
+# vgchange --lockstart web_cluster_vg
+- name: start lock manager for shared
+  ansible.builtin.command: "vgchange --lockstart cluster_vg"
+  when: 
+    - inventory_hostname == play_hosts[1] 
+    - vgs_status.rc | int != 0
+
+- name: "Pause"
+  ansible.builtin.pause:
+    seconds: 10
+  run_once: true
+
+- name: "Gather lvs | grep cluster_lv"
+  ansible.builtin.shell: lvs | grep cluster_lv
+  run_once: true
+  register: lvs_status
+  ignore_errors: true
+
+- name: "Creating Logical Volume"
+  ansible.builtin.command: lvcreate --activate sy -L10G -n cluster_lv cluster_vg
+  run_once: true
+  when: lvs_status.rc | int != 0
+
+- name: "Formatting Logical Volume With GFS2"
+  ansible.builtin.command: mkfs.gfs2 -O -j3 -p lock_dlm -t otuscluster:gfs2 /dev/cluster_vg/cluster_lv
+  run_once: true
+  when: lvs_status.rc | int != 0
+
+- name: Gather cluster_vg-clone resource status
+  ansible.builtin.command: "pcs resource config cluster_vg-clone"
+  register: resource_cluster_vg_clone_status
+  ignore_errors: true
+
+- name: create LVM-activate resource
+  ansible.builtin.command: pcs resource create cluster_vg ocf:heartbeat:LVM-activate lvname=cluster_lv vgname=cluster_vg activation_mode=shared vg_access_mode=lvmlockd op monitor interval=30s on-fail=ignore clone interleave=true ordered=true
+  run_once: true
+  when: resource_cluster_vg_clone_status.rc | int != 0
+
+- name: set start order as [locking] → [shared_vg]
+  ansible.builtin.command: pcs constraint order start lvmlockd-clone then cluster_vg-clone
+  run_once: true
+  when: resource_cluster_vg_clone_status.rc | int != 0
+
+- name: set that [shared_vg] and [locking] start on a same node
+  ansible.builtin.command: pcs constraint colocation add cluster_vg-clone with lvmlockd-clone
+  run_once: true
+  when: resource_cluster_vg_clone_status.rc | int != 0
+
+- name: Gather clusterfs-clone resource status
+  ansible.builtin.command: "pcs resource config clusterfs-clone"
+  register: resource_clusterfs_clone_status
+  ignore_errors: true
+
+- name: "Creating Cluster File System"
+  ansible.builtin.command: pcs resource create clusterfs Filesystem \
+   device="/dev/cluster_vg/cluster_lv" directory="/var/www" \
+   fstype="gfs2" "options=noatime" op monitor interval=10s \
+   on-fail=ignore clone interleave=true
+  run_once: true
+  when: resource_clusterfs_clone_status.rc | int != 0
+
+- name: set start order as [shared_vg] → [shared_fs]
+  ansible.builtin.command: pcs constraint order start cluster_vg-clone then clusterfs-clone
+  run_once: true
+  when: resource_clusterfs_clone_status.rc | int != 0
+
+- name: set that [shared_fs] and [shared_vg] start on a same node
+  ansible.builtin.command: pcs constraint colocation add clusterfs-clone with cluster_vg-clone
+  run_once: true
+  when: resource_clusterfs_clone_status.rc | int != 0
+
+- name: "Setting stonith-enabled=true"
+  ansible.builtin.command: "pcs property set stonith-enabled=true"
+  run_once: true
+
+
+

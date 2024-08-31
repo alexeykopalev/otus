@@ -1,0 +1,44 @@
+api_host: pve-fortest
+api_user: otus@pve-fortest
+api_token_id: ansible
+api_token_secret: "{{ api_token_secret }}"
+node: pve-fortest
+clone_vm: AlmaLinux-9-GenericCloud-amd64
+key_name: akopalev-dip.pub
+vms:
+  iscsi_srv:
+    name: iscsi-srv
+    ipaddress: 10.6.6.20/24
+    vmid: 100
+    cores: 2
+    sockets: 1
+    memory: 2048
+    disk: 10
+    storage: "ssd_1tb"
+  pcs1:
+    name: pcs1
+    ipaddress: 10.6.6.21/24
+    vmid: 101
+    cores: 2
+    sockets: 1
+    memory: 2048
+    disk: 10
+    storage: "ssd_1tb"
+  pcs2:
+    name: pcs2
+    ipaddress: 10.6.6.22/24
+    vmid: 102
+    cores: 2
+    sockets: 1
+    memory: 2048
+    disk: 10
+    storage: "ssd_1tb"
+  pcs3:
+    name: pcs3
+    ipaddress: 10.6.6.23/24
+    vmid: 103
+    cores: 2
+    sockets: 1
+    memory: 2048
+    disk: 10
+    storage: "ssd_1tb"

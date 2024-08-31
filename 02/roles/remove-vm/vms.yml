@@ -1,0 +1,22 @@
+api_host: pve-fortest
+api_user: otus@pve-fortest
+api_token_id: ansible
+api_token_secret: "{{ api_token_secret }}"
+node: pve-fortest
+vms:
+  iscsi_srv:
+    name: iscsi-srv
+    ipaddress: 10.6.6.20/24
+    vmid: 100
+  pcs1:
+    name: pcs1
+    ipaddress: 10.6.6.21/24
+    vmid: 101
+  pcs2:
+    name: pcs2
+    ipaddress: 10.6.6.22/24
+    vmid: 102
+  pcs3:
+    name: pcs3
+    ipaddress: 10.6.6.23/24
+    vmid: 103

@@ -1,0 +1,346 @@
+alexey@ask-fedora39-vb:~/otus/otus-hl-hw/02$ ansible-playbook playbook.yml 
+
+PLAY [Create vms] **************************************************************************************************************************************************************
+
+TASK [create-vm : Clone VMs] ***************************************************************************************************************************************************
+changed: [10.6.6.10] => (item={'key': 'iscsi_srv', 'value': {'name': 'iscsi-srv', 'ipaddress': '10.6.6.20/24', 'vmid': 100, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [10.6.6.10] => (item={'key': 'pcs1', 'value': {'name': 'pcs1', 'ipaddress': '10.6.6.21/24', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [10.6.6.10] => (item={'key': 'pcs2', 'value': {'name': 'pcs2', 'ipaddress': '10.6.6.22/24', 'vmid': 102, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [10.6.6.10] => (item={'key': 'pcs3', 'value': {'name': 'pcs3', 'ipaddress': '10.6.6.23/24', 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Set IP addresses] ********************************************************************************************************************************************
+changed: [10.6.6.10] => (item={'key': 'iscsi_srv', 'value': {'name': 'iscsi-srv', 'ipaddress': '10.6.6.20/24', 'vmid': 100, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [10.6.6.10] => (item={'key': 'pcs1', 'value': {'name': 'pcs1', 'ipaddress': '10.6.6.21/24', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [10.6.6.10] => (item={'key': 'pcs2', 'value': {'name': 'pcs2', 'ipaddress': '10.6.6.22/24', 'vmid': 102, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [10.6.6.10] => (item={'key': 'pcs3', 'value': {'name': 'pcs3', 'ipaddress': '10.6.6.23/24', 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Copy SSH key] ************************************************************************************************************************************************
+changed: [10.6.6.10] => (item={'key': 'iscsi_srv', 'value': {'name': 'iscsi-srv', 'ipaddress': '10.6.6.20/24', 'vmid': 100, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [10.6.6.10] => (item={'key': 'pcs1', 'value': {'name': 'pcs1', 'ipaddress': '10.6.6.21/24', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [10.6.6.10] => (item={'key': 'pcs2', 'value': {'name': 'pcs2', 'ipaddress': '10.6.6.22/24', 'vmid': 102, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [10.6.6.10] => (item={'key': 'pcs3', 'value': {'name': 'pcs3', 'ipaddress': '10.6.6.23/24', 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Update VMs] **************************************************************************************************************************************************
+changed: [10.6.6.10] => (item={'key': 'iscsi_srv', 'value': {'name': 'iscsi-srv', 'ipaddress': '10.6.6.20/24', 'vmid': 100, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [10.6.6.10] => (item={'key': 'pcs1', 'value': {'name': 'pcs1', 'ipaddress': '10.6.6.21/24', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [10.6.6.10] => (item={'key': 'pcs2', 'value': {'name': 'pcs2', 'ipaddress': '10.6.6.22/24', 'vmid': 102, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [10.6.6.10] => (item={'key': 'pcs3', 'value': {'name': 'pcs3', 'ipaddress': '10.6.6.23/24', 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : add disk to iscsi-srv] ***************************************************************************************************************************************
+changed: [10.6.6.10]
+
+TASK [create-vm : Start VMs] ***************************************************************************************************************************************************
+changed: [10.6.6.10] => (item={'key': 'iscsi_srv', 'value': {'name': 'iscsi-srv', 'ipaddress': '10.6.6.20/24', 'vmid': 100, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [10.6.6.10] => (item={'key': 'pcs1', 'value': {'name': 'pcs1', 'ipaddress': '10.6.6.21/24', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [10.6.6.10] => (item={'key': 'pcs2', 'value': {'name': 'pcs2', 'ipaddress': '10.6.6.22/24', 'vmid': 102, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [10.6.6.10] => (item={'key': 'pcs3', 'value': {'name': 'pcs3', 'ipaddress': '10.6.6.23/24', 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Wait a little] ***********************************************************************************************************************************************
+Pausing for 30 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [10.6.6.10]
+
+PLAY [Install Chrony] **********************************************************************************************************************************************************
+
+TASK [chrony : Installing Chrony] **********************************************************************************************************************************************
+ok: [pcs2]
+ok: [pcs1]
+ok: [iscsi_srv]
+ok: [pcs3]
+
+TASK [chrony : Start Chronyd Service] ******************************************************************************************************************************************
+ok: [iscsi_srv]
+ok: [pcs1]
+ok: [pcs3]
+ok: [pcs2]
+
+TASK [chrony : Set timezone to Europe/Moscow] **********************************************************************************************************************************
+changed: [pcs3]
+changed: [pcs2]
+changed: [pcs1]
+changed: [iscsi_srv]
+
+RUNNING HANDLER [chrony : Restart Chronyd] *************************************************************************************************************************************
+changed: [iscsi_srv]
+changed: [pcs3]
+changed: [pcs2]
+changed: [pcs1]
+
+PLAY [install targetcli, create lun] *******************************************************************************************************************************************
+
+TASK [targetcli : Install targetcli] *******************************************************************************************************************************************
+changed: [iscsi_srv]
+
+TASK [targetcli : Gather targetcli status] *************************************************************************************************************************************
+fatal: [iscsi_srv]: FAILED! => {"changed": true, "cmd": ["targetcli", "/backstores/block/disk01", "info"], "delta": "0:00:00.206854", "end": "2024-08-31 09:14:55.051886", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:14:54.845032", "stderr": "No such path /backstores/block/disk01", "stderr_lines": ["No such path /backstores/block/disk01"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [targetcli : Run targetcli configure] *************************************************************************************************************************************
+changed: [iscsi_srv] => (item=targetcli /backstores/block create disk01 /dev/sdb)
+changed: [iscsi_srv] => (item=targetcli /iscsi create iqn.2023-11.ru.otus:storage.target00)
+changed: [iscsi_srv] => (item=targetcli /iscsi/iqn.2023-11.ru.otus:storage.target00/tpg1/luns create /backstores/block/disk01 lun=1)
+changed: [iscsi_srv] => (item=targetcli /iscsi/iqn.2023-11.ru.otus:storage.target00/tpg1/acls create iqn.1994-05.com.redhat:cf70d4c706e)
+changed: [iscsi_srv] => (item=targetcli /iscsi/iqn.2023-11.ru.otus:storage.target00/tpg1/acls create iqn.1994-05.com.redhat:f5cfb68ca8f)
+changed: [iscsi_srv] => (item=targetcli /iscsi/iqn.2023-11.ru.otus:storage.target00/tpg1/acls create iqn.1994-05.com.redhat:e77b7b4d46a9)
+
+PLAY [install iscsi-client] ****************************************************************************************************************************************************
+
+TASK [Gathering Facts] *********************************************************************************************************************************************************
+ok: [pcs1]
+ok: [pcs2]
+ok: [pcs3]
+
+TASK [iscsi-client : Install open-iscsi] ***************************************************************************************************************************************
+changed: [pcs1]
+changed: [pcs3]
+changed: [pcs2]
+
+TASK [iscsi-client : change InitiatorName pcs1] ********************************************************************************************************************************
+skipping: [pcs2]
+skipping: [pcs3]
+changed: [pcs1]
+
+TASK [iscsi-client : change InitiatorName pcs2] ********************************************************************************************************************************
+skipping: [pcs1]
+skipping: [pcs3]
+changed: [pcs2]
+
+TASK [iscsi-client : change InitiatorName pcs3] ********************************************************************************************************************************
+skipping: [pcs1]
+skipping: [pcs2]
+changed: [pcs3]
+
+TASK [iscsi-client : iscsi_login] **********************************************************************************************************************************************
+changed: [pcs1] => (item=iscsiadm -m discovery -t st -p 10.6.6.20)
+changed: [pcs2] => (item=iscsiadm -m discovery -t st -p 10.6.6.20)
+changed: [pcs3] => (item=iscsiadm -m discovery -t st -p 10.6.6.20)
+changed: [pcs1] => (item=iscsiadm -m node -l -T iqn.2023-11.ru.otus:storage.target00)
+changed: [pcs2] => (item=iscsiadm -m node -l -T iqn.2023-11.ru.otus:storage.target00)
+changed: [pcs3] => (item=iscsiadm -m node -l -T iqn.2023-11.ru.otus:storage.target00)
+
+RUNNING HANDLER [iscsi-client : start_iscsi] ***********************************************************************************************************************************
+changed: [pcs1]
+changed: [pcs2]
+changed: [pcs3]
+
+RUNNING HANDLER [iscsi-client : restart_iscsid] ********************************************************************************************************************************
+changed: [pcs1]
+changed: [pcs2]
+changed: [pcs3]
+
+PLAY [install ha-cluster] ******************************************************************************************************************************************************
+
+TASK [ha-cluster : Install the Packages] ***************************************************************************************************************************************
+changed: [pcs2]
+changed: [pcs1]
+changed: [pcs3]
+
+TASK [ha-cluster : change cloud.cfg] *******************************************************************************************************************************************
+changed: [pcs1]
+changed: [pcs2]
+changed: [pcs3]
+
+TASK [ha-cluster : Set hostname] ***********************************************************************************************************************************************
+changed: [pcs2]
+changed: [pcs3]
+changed: [pcs1]
+
+TASK [ha-cluster : change /etc/hosts] ******************************************************************************************************************************************
+changed: [pcs1]
+changed: [pcs2]
+changed: [pcs3]
+
+TASK [ha-cluster : Add pcs1 to /etc/hosts] *************************************************************************************************************************************
+changed: [pcs2]
+changed: [pcs3]
+changed: [pcs1]
+
+TASK [ha-cluster : Add pcs1 to /etc/hosts] *************************************************************************************************************************************
+ok: [pcs1]
+ok: [pcs2]
+ok: [pcs3]
+
+TASK [ha-cluster : Add pcs-02 to /etc/hosts] ***********************************************************************************************************************************
+changed: [pcs1]
+changed: [pcs2]
+changed: [pcs3]
+
+TASK [ha-cluster : Add pcs-03 to /etc/hosts] ***********************************************************************************************************************************
+changed: [pcs1]
+changed: [pcs2]
+changed: [pcs3]
+
+TASK [ha-cluster : Start the pcs service] **************************************************************************************************************************************
+changed: [pcs1]
+changed: [pcs3]
+changed: [pcs2]
+
+TASK [ha-cluster : Set the password for the use hacluster] *********************************************************************************************************************
+changed: [pcs1]
+changed: [pcs2]
+changed: [pcs3]
+
+TASK [ha-cluster : Authenticate the host] **************************************************************************************************************************************
+changed: [pcs1]
+changed: [pcs2]
+changed: [pcs3]
+
+TASK [ha-cluster : Gather cluster status] **************************************************************************************************************************************
+fatal: [pcs1]: FAILED! => {"changed": true, "cmd": ["pcs", "cluster", "status"], "delta": "0:00:00.586757", "end": "2024-08-31 09:16:16.497014", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:16:15.910257", "stderr": "Error: cluster is not currently running on this node", "stderr_lines": ["Error: cluster is not currently running on this node"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [pcs2]: FAILED! => {"changed": true, "cmd": ["pcs", "cluster", "status"], "delta": "0:00:00.613337", "end": "2024-08-31 09:16:16.549549", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:16:15.936212", "stderr": "Error: cluster is not currently running on this node", "stderr_lines": ["Error: cluster is not currently running on this node"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [pcs3]: FAILED! => {"changed": true, "cmd": ["pcs", "cluster", "status"], "delta": "0:00:00.604153", "end": "2024-08-31 09:16:16.551698", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:16:15.947545", "stderr": "Error: cluster is not currently running on this node", "stderr_lines": ["Error: cluster is not currently running on this node"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Setup the HA-Cluster] ***************************************************************************************************************************************
+changed: [pcs1]
+
+TASK [ha-cluster : Start the HA-Cluster] ***************************************************************************************************************************************
+changed: [pcs1]
+
+TASK [ha-cluster : Enable the HA-Cluster] **************************************************************************************************************************************
+changed: [pcs1]
+
+TASK [ha-cluster : Download fence-egent-common] ********************************************************************************************************************************
+changed: [pcs3]
+changed: [pcs2]
+changed: [pcs1]
+
+TASK [ha-cluster : Download fence-egent-pve] ***********************************************************************************************************************************
+changed: [pcs1]
+changed: [pcs2]
+changed: [pcs3]
+
+TASK [ha-cluster : Install fence-egent-pve from a local file] ******************************************************************************************************************
+changed: [pcs1]
+changed: [pcs3]
+changed: [pcs2]
+
+TASK [ha-cluster : Gather stonith status] **************************************************************************************************************************************
+fatal: [pcs1]: FAILED! => {"changed": true, "cmd": ["pcs", "stonith", "status", "fence_vm_pcs1"], "delta": "0:00:00.585776", "end": "2024-08-31 09:16:34.114562", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:16:33.528786", "stderr": "Error: resource or tag id 'fence_vm_pcs1' not found", "stderr_lines": ["Error: resource or tag id 'fence_vm_pcs1' not found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : pcs cluster cib fencing.xml] ********************************************************************************************************************************
+changed: [pcs1] => (item=pcs cluster cib fencing.xml)
+changed: [pcs1] => (item=pcs -f fencing.xml stonith create fence_vm_pcs1 fence_pve pcmk_host_list="pcs1" pcmk_host_check="static-list" ip="10.6.6.10" pve_node="pve-fortest" username="root@pam" password="GTa4Cl" ssl_insecure=yes plug="101" power_wait="10" vmtype="qemu")
+changed: [pcs1] => (item=pcs -f fencing.xml stonith create fence_vm_pcs2 fence_pve pcmk_host_list="pcs2" pcmk_host_check="static-list" ip="10.6.6.10" pve_node="pve-fortest" username="root@pam" password="GTa4Cl" ssl_insecure=yes plug="102" power_wait="10" vmtype="qemu")
+changed: [pcs1] => (item=pcs -f fencing.xml stonith create fence_vm_pcs3 fence_pve pcmk_host_list="pcs3" pcmk_host_check="static-list" ip="10.6.6.10" pve_node="pve-fortest" username="root@pam" password="GTa4Cl" ssl_insecure=yes plug="103" power_wait="10" vmtype="qemu")
+changed: [pcs1] => (item=pcs -f fencing.xml constraint location fence_vm_pcs1 avoids pcs1=INFINITY)
+changed: [pcs1] => (item=pcs -f fencing.xml constraint location fence_vm_pcs2 avoids pcs2=INFINITY)
+changed: [pcs1] => (item=pcs -f fencing.xml constraint location fence_vm_pcs3 avoids pcs3=INFINITY)
+changed: [pcs1] => (item=pcs cluster cib-push scope=configuration fencing.xml)
+
+TASK [ha-cluster : Setting stonith-enabled=false] ******************************************************************************************************************************
+changed: [pcs1]
+
+TASK [ha-cluster : Setting 'No Quorum' Policy] *********************************************************************************************************************************
+changed: [pcs1]
+
+TASK [ha-cluster : Gather dlm resource status] *********************************************************************************************************************************
+fatal: [pcs1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "dlm-clone"], "delta": "0:00:00.622500", "end": "2024-08-31 09:16:46.119448", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:16:45.496948", "stderr": "Warning: Unable to find resource 'dlm-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'dlm-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [pcs2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "dlm-clone"], "delta": "0:00:00.645900", "end": "2024-08-31 09:16:46.184641", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:16:45.538741", "stderr": "Warning: Unable to find resource 'dlm-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'dlm-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [pcs3]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "dlm-clone"], "delta": "0:00:00.718157", "end": "2024-08-31 09:16:46.258446", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:16:45.540289", "stderr": "Warning: Unable to find resource 'dlm-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'dlm-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating 'dlm' Resource] ************************************************************************************************************************************
+changed: [pcs1]
+
+TASK [ha-cluster : Gather lvmlockd resource status] ****************************************************************************************************************************
+fatal: [pcs2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "lvmlockd-clone"], "delta": "0:00:00.615063", "end": "2024-08-31 09:16:48.878032", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:16:48.262969", "stderr": "Warning: Unable to find resource 'lvmlockd-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'lvmlockd-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [pcs1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "lvmlockd-clone"], "delta": "0:00:00.664222", "end": "2024-08-31 09:16:49.100130", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:16:48.435908", "stderr": "Warning: Unable to find resource 'lvmlockd-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'lvmlockd-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [pcs3]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "lvmlockd-clone"], "delta": "0:00:00.824822", "end": "2024-08-31 09:16:49.122734", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:16:48.297912", "stderr": "Warning: Unable to find resource 'lvmlockd-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'lvmlockd-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating lvmlockd Resource] *********************************************************************************************************************************
+changed: [pcs1]
+
+TASK [ha-cluster : Creating First Constraint] **********************************************************************************************************************************
+changed: [pcs1]
+
+TASK [ha-cluster : Pause] ******************************************************************************************************************************************************
+Pausing for 10 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [pcs1]
+
+TASK [ha-cluster : Gather pvs /dev/sdb] ****************************************************************************************************************************************
+fatal: [pcs1]: FAILED! => {"changed": true, "cmd": "pvs | grep /dev/sdb", "delta": "0:00:01.045910", "end": "2024-08-31 09:17:02.863905", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:17:01.817995", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Physical Volume] ***********************************************************************************************************************************
+changed: [pcs1]
+
+TASK [ha-cluster : Gather vgs /dev/sdb] ****************************************************************************************************************************************
+fatal: [pcs1]: FAILED! => {"changed": true, "cmd": "vgs | grep cluster_vg", "delta": "0:00:00.031510", "end": "2024-08-31 09:17:03.886054", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:17:03.854544", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Volume Group] **************************************************************************************************************************************
+changed: [pcs1]
+
+TASK [ha-cluster : start lock manager for shared] ******************************************************************************************************************************
+skipping: [pcs1]
+skipping: [pcs3]
+changed: [pcs2]
+
+TASK [ha-cluster : Pause] ******************************************************************************************************************************************************
+Pausing for 10 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [pcs1]
+
+TASK [ha-cluster : Gather lvs | grep cluster_lv] *******************************************************************************************************************************
+fatal: [pcs1]: FAILED! => {"changed": true, "cmd": "lvs | grep cluster_lv", "delta": "0:00:00.030048", "end": "2024-08-31 09:17:20.398107", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:17:20.368059", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Logical Volume] ************************************************************************************************************************************
+changed: [pcs1]
+
+TASK [ha-cluster : Formatting Logical Volume With GFS2] ************************************************************************************************************************
+changed: [pcs1]
+
+TASK [ha-cluster : Gather cluster_vg-clone resource status] ********************************************************************************************************************
+fatal: [pcs1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "cluster_vg-clone"], "delta": "0:00:00.591836", "end": "2024-08-31 09:17:23.107859", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:17:22.516023", "stderr": "Warning: Unable to find resource 'cluster_vg-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'cluster_vg-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [pcs2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "cluster_vg-clone"], "delta": "0:00:00.614067", "end": "2024-08-31 09:17:23.181379", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:17:22.567312", "stderr": "Warning: Unable to find resource 'cluster_vg-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'cluster_vg-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [pcs3]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "cluster_vg-clone"], "delta": "0:00:00.618416", "end": "2024-08-31 09:17:23.191321", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:17:22.572905", "stderr": "Warning: Unable to find resource 'cluster_vg-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'cluster_vg-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : create LVM-activate resource] *******************************************************************************************************************************
+changed: [pcs1]
+
+TASK [ha-cluster : set start order as [locking] → [shared_vg]] *****************************************************************************************************************
+changed: [pcs1]
+
+TASK [ha-cluster : set that [shared_vg] and [locking] start on a same node] ****************************************************************************************************
+changed: [pcs1]
+
+TASK [ha-cluster : Gather clusterfs-clone resource status] *********************************************************************************************************************
+fatal: [pcs1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "clusterfs-clone"], "delta": "0:00:00.583734", "end": "2024-08-31 09:17:27.604400", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:17:27.020666", "stderr": "Warning: Unable to find resource 'clusterfs-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'clusterfs-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [pcs2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "clusterfs-clone"], "delta": "0:00:00.602534", "end": "2024-08-31 09:17:27.655869", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:17:27.053335", "stderr": "Warning: Unable to find resource 'clusterfs-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'clusterfs-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [pcs3]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "clusterfs-clone"], "delta": "0:00:00.614969", "end": "2024-08-31 09:17:27.674424", "msg": "non-zero return code", "rc": 1, "start": "2024-08-31 09:17:27.059455", "stderr": "Warning: Unable to find resource 'clusterfs-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'clusterfs-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Cluster File System] *******************************************************************************************************************************
+changed: [pcs1]
+
+TASK [ha-cluster : set start order as [shared_vg] → [shared_fs]] ***************************************************************************************************************
+changed: [pcs1]
+
+TASK [ha-cluster : set that [shared_fs] and [shared_vg] start on a same node] **************************************************************************************************
+changed: [pcs1]
+
+TASK [ha-cluster : Setting stonith-enabled=true] *******************************************************************************************************************************
+changed: [pcs1]
+
+PLAY RECAP *********************************************************************************************************************************************************************
+10.6.6.10                  : ok=7    changed=6    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+iscsi_srv                  : ok=7    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1   
+pcs1                       : ok=55   changed=49   unreachable=0    failed=0    skipped=3    rescued=0    ignored=9   
+pcs2                       : ok=30   changed=26   unreachable=0    failed=0    skipped=2    rescued=0    ignored=5   
+pcs3                       : ok=29   changed=25   unreachable=0    failed=0    skipped=3    rescued=0    ignored=5   

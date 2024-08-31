@@ -1,0 +1,11 @@
+[proxmox]
+10.6.6.10 ansible_host=10.6.6.10 ansible_user=root 
+
+[iscsi_srvs]
+iscsi_srv ansible_host=10.6.6.20 ansible_user=akopalev
+
+
+[pcs_hosts]
+pcs1 ansible_host=10.6.6.21 ansible_user=akopalev
+pcs2 ansible_host=10.6.6.22 ansible_user=akopalev
+pcs3 ansible_host=10.6.6.23 ansible_user=akopalev

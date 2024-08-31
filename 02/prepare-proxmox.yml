@@ -1,0 +1,8 @@
+# code: language=ansible
+
+- name: Prepare proxmox host
+  hosts: proxmox
+  gather_facts: false
+  become: yes
+  roles:
+  - prepare-proxmox

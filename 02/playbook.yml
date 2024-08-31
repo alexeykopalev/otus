@@ -1,0 +1,50 @@
+# code: language=ansible
+
+- name: Create vms
+  hosts: proxmox
+  vars_files:
+    - ./roles/create-vm/vms.yml
+    - ./roles/create-vm/vars/main.yml
+  gather_facts: false
+  become: yes
+  roles:
+  - create-vm
+
+- name: Install Chrony
+  hosts: 
+    - iscsi_srvs
+    - pcs_hosts
+  gather_facts: false
+  become: true
+  vars :
+    ansible_ssh_private_key_file: /home/alexey/.ssh/akopalev-dip
+  roles:
+    - chrony
+
+- name: install targetcli, create lun
+  hosts: iscsi_srvs
+  gather_facts: false
+  become: yes
+  vars :
+    ansible_ssh_private_key_file: /home/alexey/.ssh/akopalev-dip
+  roles:
+  - targetcli
+
+- name: install iscsi-client
+  hosts: pcs_hosts
+  #gather_facts: false
+  become: yes
+  vars :
+    ansible_ssh_private_key_file: /home/alexey/.ssh/akopalev-dip
+  roles:
+  - iscsi-client
+
+- name: install ha-cluster
+  hosts: pcs_hosts
+  gather_facts: false
+  become: yes
+  vars :
+    ansible_ssh_private_key_file: /home/alexey/.ssh/akopalev-dip
+  roles:
+  - ha-cluster
+
