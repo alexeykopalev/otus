@@ -1,0 +1,59 @@
+api_host: pve-fortest
+api_user: otus@pve-fortest
+api_token_id: ansible
+api_token_secret: "{{ api_token_secret }}"
+node: pve-fortest
+clone_vm: AlmaLinux-9-GenericCloud-amd64
+key_name: akopalev-dip.pub
+
+bast_host:
+  name: bast-host.roter.lan
+  ipaddress: 10.6.6.11/24
+  vmid: 100
+  cores: 2
+  sockets: 1
+  memory: 2048
+  disk: 10
+  storage: "ssd_1tb"
+
+vms:
+  nginx_srv:
+    name: nginx-srv #.otushl.local
+    ipaddress: 10.6.7.3
+    mask: 24
+    vmid: 101
+    cores: 2
+    sockets: 1
+    memory: 2048
+    disk: 10
+    storage: "ssd_1tb"
+  db_srv:
+    name: db-srv
+    ipaddress: 10.6.7.4
+    mask: 24
+    vmid: 102
+    cores: 2
+    sockets: 1
+    memory: 2048
+    disk: 10
+    storage: "ssd_1tb"
+  backend1:
+    name: backend1
+    ipaddress: 10.6.7.5
+    mask: 24
+    vmid: 103
+    cores: 2
+    sockets: 1
+    memory: 2048
+    disk: 10
+    storage: "ssd_1tb"
+  backend2:
+    name: backend2
+    ipaddress: 10.6.7.6
+    mask: 24
+    vmid: 104
+    cores: 2
+    sockets: 1
+    memory: 2048
+    disk: 10
+    storage: "ssd_1tb"

@@ -1,0 +1,46 @@
+# code: language=ansible
+
+- name: Create vms
+  hosts: proxmox
+  vars_files:
+    - ./roles/create-vm/vms.yml
+    - ./roles/create-vm/vars/main.yml
+  gather_facts: false
+  become: yes
+  roles:
+  - create-vm
+
+- name: Install Chrony
+  hosts: 
+    - bast_host
+    - nginx_hosts
+    - db_hosts
+    - backend_hosts
+  gather_facts: false
+  become: true
+  vars :
+    ansible_ssh_private_key_file: /home/alexey/.ssh/akopalev-dip
+  roles:
+    - chrony
+
+- name: install-mysql
+  hosts: db_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - db
+
+- name: install-wordpress
+  hosts: backend_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - wordpress
+
+- name: install-loadbalancer
+  hosts: nginx_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - loadbalancer
+

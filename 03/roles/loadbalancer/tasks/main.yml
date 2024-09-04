@@ -1,0 +1,38 @@
+- name: Installing Nginx Repository
+  ansible.builtin.yum_repository:
+    name: nginx-stable
+    description: nginx stable repo
+    file: nginx
+    baseurl: http://nginx.org/packages/centos/$releasever/$basearch/
+    gpgkey: https://nginx.org/keys/nginx_signing.key
+    gpgcheck: yes
+    enabled: yes
+    module_hotfixes: true
+
+- name: install Nginx
+  ansible.builtin.dnf:
+    name: 
+      - nginx
+    state: latest
+
+- name: Check exist proxy_params 
+  ansible.builtin.stat:
+    path: /etc/nginx/proxy_params
+  register: result_proxy_params
+
+- name: Copy proxy_params
+  ansible.builtin.copy:
+    src: files/proxy_params
+    dest: /etc/nginx/proxy_params
+  when: not result_proxy_params.stat.exists
+
+- name: Copy nginx conf
+  ansible.builtin.copy:
+    src: upstreams
+    dest: /etc/nginx/conf.d/upstreams.conf
+
+- name: Start Nginx Service
+  ansible.builtin.systemd:
+    name: nginx
+    state: restarted
+    enabled: yes

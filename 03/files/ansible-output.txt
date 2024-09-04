@@ -1,0 +1,209 @@
+alexey@ask-fedora39-vb:~/otus/otus-hl-hw/03$ ansible-playbook playbook.yml 
+
+PLAY [Create vms] **************************************************************************************************************************************************************
+
+TASK [create-vm : Clone bastion VM] ********************************************************************************************************************************************
+changed: [pve-fortest]
+
+TASK [create-vm : Set IP addresses bastion VM] *********************************************************************************************************************************
+changed: [pve-fortest]
+
+TASK [create-vm : Copy SSH key bastion VM] *************************************************************************************************************************************
+changed: [pve-fortest]
+
+TASK [create-vm : Update bastion VM] *******************************************************************************************************************************************
+changed: [pve-fortest]
+
+TASK [create-vm : Start bastion VM] ********************************************************************************************************************************************
+changed: [pve-fortest]
+
+TASK [create-vm : Clone VMs] ***************************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'nginx_srv', 'value': {'name': 'nginx-srv', 'ipaddress': '10.6.7.3', 'mask': 24, 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'db_srv', 'value': {'name': 'db-srv', 'ipaddress': '10.6.7.4', 'mask': 24, 'vmid': 102, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'ipaddress': '10.6.7.5', 'mask': 24, 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend2', 'value': {'name': 'backend2', 'ipaddress': '10.6.7.6', 'mask': 24, 'vmid': 104, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Copy userconfig.yaml] ****************************************************************************************************************************************
+ok: [pve-fortest] => (item={'key': 'nginx_srv', 'value': {'name': 'nginx-srv', 'ipaddress': '10.6.7.3', 'mask': 24, 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+ok: [pve-fortest] => (item={'key': 'db_srv', 'value': {'name': 'db-srv', 'ipaddress': '10.6.7.4', 'mask': 24, 'vmid': 102, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+ok: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'ipaddress': '10.6.7.5', 'mask': 24, 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+ok: [pve-fortest] => (item={'key': 'backend2', 'value': {'name': 'backend2', 'ipaddress': '10.6.7.6', 'mask': 24, 'vmid': 104, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : set hostname and hosts] **************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'nginx_srv', 'value': {'name': 'nginx-srv', 'ipaddress': '10.6.7.3', 'mask': 24, 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'db_srv', 'value': {'name': 'db-srv', 'ipaddress': '10.6.7.4', 'mask': 24, 'vmid': 102, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'ipaddress': '10.6.7.5', 'mask': 24, 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend2', 'value': {'name': 'backend2', 'ipaddress': '10.6.7.6', 'mask': 24, 'vmid': 104, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Set IP addresses] ********************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'nginx_srv', 'value': {'name': 'nginx-srv', 'ipaddress': '10.6.7.3', 'mask': 24, 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'db_srv', 'value': {'name': 'db-srv', 'ipaddress': '10.6.7.4', 'mask': 24, 'vmid': 102, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'ipaddress': '10.6.7.5', 'mask': 24, 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend2', 'value': {'name': 'backend2', 'ipaddress': '10.6.7.6', 'mask': 24, 'vmid': 104, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Update VMs] **************************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'nginx_srv', 'value': {'name': 'nginx-srv', 'ipaddress': '10.6.7.3', 'mask': 24, 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'db_srv', 'value': {'name': 'db-srv', 'ipaddress': '10.6.7.4', 'mask': 24, 'vmid': 102, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'ipaddress': '10.6.7.5', 'mask': 24, 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend2', 'value': {'name': 'backend2', 'ipaddress': '10.6.7.6', 'mask': 24, 'vmid': 104, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Start VMs] ***************************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'nginx_srv', 'value': {'name': 'nginx-srv', 'ipaddress': '10.6.7.3', 'mask': 24, 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'db_srv', 'value': {'name': 'db-srv', 'ipaddress': '10.6.7.4', 'mask': 24, 'vmid': 102, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'ipaddress': '10.6.7.5', 'mask': 24, 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend2', 'value': {'name': 'backend2', 'ipaddress': '10.6.7.6', 'mask': 24, 'vmid': 104, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Wait a little] ***********************************************************************************************************************************************
+Pausing for 30 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [pve-fortest]
+
+PLAY [Install Chrony] **********************************************************************************************************************************************************
+
+TASK [chrony : Installing Chrony] **********************************************************************************************************************************************
+ok: [bast-host]
+ok: [nginx-srv]
+ok: [db-srv]
+ok: [backend1]
+ok: [backend2]
+
+TASK [chrony : Start Chronyd Service] ******************************************************************************************************************************************
+ok: [backend1]
+ok: [db-srv]
+ok: [backend2]
+ok: [nginx-srv]
+ok: [bast-host]
+
+TASK [chrony : Set timezone to Europe/Moscow] **********************************************************************************************************************************
+changed: [backend1]
+changed: [nginx-srv]
+changed: [backend2]
+changed: [db-srv]
+changed: [bast-host]
+
+RUNNING HANDLER [chrony : Restart Chronyd] *************************************************************************************************************************************
+changed: [bast-host]
+changed: [backend1]
+changed: [backend2]
+changed: [nginx-srv]
+changed: [db-srv]
+
+PLAY [install-mysql] ***********************************************************************************************************************************************************
+
+TASK [db : Install mysql-server package] ***************************************************************************************************************************************
+changed: [db-srv]
+
+TASK [db : Save root password in .my.cnf] **************************************************************************************************************************************
+changed: [db-srv]
+
+TASK [db : start and enable mysql service] *************************************************************************************************************************************
+changed: [db-srv]
+
+TASK [db : Sets the root password] *********************************************************************************************************************************************
+[WARNING]: Option column_case_sensitive is not provided. The default is now false, so the column's name will be uppercased. The default will be changed to true in
+community.mysql 4.0.0.
+changed: [db-srv]
+
+TASK [db : Save root password in .my.cnf] **************************************************************************************************************************************
+changed: [db-srv]
+
+TASK [db : creating wp_db] *****************************************************************************************************************************************************
+changed: [db-srv]
+
+TASK [db : creating mysql user (medium_post)] **********************************************************************************************************************************
+changed: [db-srv]
+
+TASK [db : Restart mysql] ******************************************************************************************************************************************************
+changed: [db-srv]
+
+PLAY [install-wordpress] *******************************************************************************************************************************************************
+
+TASK [wordpress : Installing Nginx Repository] *********************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [wordpress : install Nginx] ***********************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [wordpress : Import Remi KEY] *********************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [wordpress : Installing Remi Repository] **********************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [wordpress : Enable PHP Remi Repository] **********************************************************************************************************************************
+changed: [backend2] => (item=dnf module reset php -y)
+changed: [backend1] => (item=dnf module reset php -y)
+changed: [backend2] => (item=dnf module enable php:remi-8.3 -y)
+changed: [backend1] => (item=dnf module enable php:remi-8.3 -y)
+
+TASK [wordpress : Install php-fpm and PHP extensions] **************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [wordpress : change user in /etc/php-fpm.d/www.conf] **********************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [wordpress : change group in /etc/php-fpm.d/www.conf] *********************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [wordpress : Copy wordpress conf] *****************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [wordpress : Download wordpress] ******************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [wordpress : Extract wordpress] *******************************************************************************************************************************************
+changed: [backend1] => (item=tar -xzf /root/latest.tar.gz)
+changed: [backend2] => (item=tar -xzf /root/latest.tar.gz)
+changed: [backend2] => (item=mv /home/akopalev/wordpress /var/www/)
+changed: [backend2] => (item=chown -R nginx:nginx /var/www/wordpress)
+changed: [backend1] => (item=mv /home/akopalev/wordpress /var/www/)
+changed: [backend1] => (item=chown -R nginx:nginx /var/www/wordpress)
+
+TASK [wordpress : Template a file to /var/www/wordpress/wp-config.php] *********************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [wordpress : Start Nginx Service] *****************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [wordpress : Start php-fpm Service] ***************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+PLAY [install-loadbalancer] ****************************************************************************************************************************************************
+
+TASK [loadbalancer : Installing Nginx Repository] ******************************************************************************************************************************
+changed: [nginx-srv]
+
+TASK [loadbalancer : install Nginx] ********************************************************************************************************************************************
+changed: [nginx-srv]
+
+TASK [loadbalancer : Check exist proxy_params] *********************************************************************************************************************************
+ok: [nginx-srv]
+
+TASK [loadbalancer : Copy proxy_params] ****************************************************************************************************************************************
+changed: [nginx-srv]
+
+TASK [loadbalancer : Copy nginx conf] ******************************************************************************************************************************************
+changed: [nginx-srv]
+
+TASK [loadbalancer : Start Nginx Service] **************************************************************************************************************************************
+changed: [nginx-srv]
+
+PLAY RECAP *********************************************************************************************************************************************************************
+backend1                   : ok=18   changed=16   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+backend2                   : ok=18   changed=16   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+bast-host                  : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+db-srv                     : ok=12   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+nginx-srv                  : ok=10   changed=7    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+pve-fortest                : ok=12   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
