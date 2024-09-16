@@ -1,0 +1,454 @@
+alexey@ask-fedora39-vb:~/otus/otus-hl-hw/04$ ansible-playbook playbook.yml 
+
+PLAY [Create vms] **************************************************************************************************************************************************************************
+
+TASK [create-vm : Clone VMs] ***************************************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'bast_host', 'value': {'name': 'bast-host', 'domainname': 'roter.lan', 'ipaddress': '10.6.6.11', 'mask': 24, 'gateway': '10.6.6.1', 'bridge': 'vmbr0', 'vmid': 100, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'nginx_srv1', 'value': {'name': 'haproxy-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.3', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'nginx_srv2', 'value': {'name': 'haproxy-srv2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.4', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 102, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'db_srv1', 'value': {'name': 'db-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.5', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.6', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 104, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend2', 'value': {'name': 'backend2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.7', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 105, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'iscsi-srv1', 'value': {'name': 'iscsi-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.8', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 106, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Copy userconfig.yaml] ****************************************************************************************************************************************************
+ok: [pve-fortest] => (item={'key': 'bast_host', 'value': {'name': 'bast-host', 'domainname': 'roter.lan', 'ipaddress': '10.6.6.11', 'mask': 24, 'gateway': '10.6.6.1', 'bridge': 'vmbr0', 'vmid': 100, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+ok: [pve-fortest] => (item={'key': 'nginx_srv1', 'value': {'name': 'haproxy-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.3', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+ok: [pve-fortest] => (item={'key': 'nginx_srv2', 'value': {'name': 'haproxy-srv2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.4', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 102, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+ok: [pve-fortest] => (item={'key': 'db_srv1', 'value': {'name': 'db-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.5', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+ok: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.6', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 104, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+ok: [pve-fortest] => (item={'key': 'backend2', 'value': {'name': 'backend2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.7', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 105, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+ok: [pve-fortest] => (item={'key': 'iscsi-srv1', 'value': {'name': 'iscsi-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.8', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 106, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : set hostname and hosts] **************************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'bast_host', 'value': {'name': 'bast-host', 'domainname': 'roter.lan', 'ipaddress': '10.6.6.11', 'mask': 24, 'gateway': '10.6.6.1', 'bridge': 'vmbr0', 'vmid': 100, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'nginx_srv1', 'value': {'name': 'haproxy-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.3', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'nginx_srv2', 'value': {'name': 'haproxy-srv2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.4', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 102, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'db_srv1', 'value': {'name': 'db-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.5', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.6', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 104, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend2', 'value': {'name': 'backend2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.7', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 105, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'iscsi-srv1', 'value': {'name': 'iscsi-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.8', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 106, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Set IP addresses] ********************************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'bast_host', 'value': {'name': 'bast-host', 'domainname': 'roter.lan', 'ipaddress': '10.6.6.11', 'mask': 24, 'gateway': '10.6.6.1', 'bridge': 'vmbr0', 'vmid': 100, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'nginx_srv1', 'value': {'name': 'haproxy-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.3', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'nginx_srv2', 'value': {'name': 'haproxy-srv2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.4', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 102, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'db_srv1', 'value': {'name': 'db-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.5', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.6', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 104, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend2', 'value': {'name': 'backend2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.7', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 105, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'iscsi-srv1', 'value': {'name': 'iscsi-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.8', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 106, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : add disk to iscsi-srv1] **************************************************************************************************************************************************
+changed: [pve-fortest]
+
+TASK [create-vm : Update VMs] **************************************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'bast_host', 'value': {'name': 'bast-host', 'domainname': 'roter.lan', 'ipaddress': '10.6.6.11', 'mask': 24, 'gateway': '10.6.6.1', 'bridge': 'vmbr0', 'vmid': 100, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'nginx_srv1', 'value': {'name': 'haproxy-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.3', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'nginx_srv2', 'value': {'name': 'haproxy-srv2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.4', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 102, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'db_srv1', 'value': {'name': 'db-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.5', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.6', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 104, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend2', 'value': {'name': 'backend2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.7', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 105, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'iscsi-srv1', 'value': {'name': 'iscsi-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.8', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 106, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Restart VMs] *************************************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'bast_host', 'value': {'name': 'bast-host', 'domainname': 'roter.lan', 'ipaddress': '10.6.6.11', 'mask': 24, 'gateway': '10.6.6.1', 'bridge': 'vmbr0', 'vmid': 100, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'nginx_srv1', 'value': {'name': 'haproxy-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.3', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'nginx_srv2', 'value': {'name': 'haproxy-srv2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.4', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 102, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'db_srv1', 'value': {'name': 'db-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.5', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.6', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 104, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend2', 'value': {'name': 'backend2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.7', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 105, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'iscsi-srv1', 'value': {'name': 'iscsi-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.8', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 106, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Wait a little] ***********************************************************************************************************************************************************
+Pausing for 90 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [pve-fortest]
+
+PLAY [Install Chrony] **********************************************************************************************************************************************************************
+
+TASK [chrony : Installing Chrony] **********************************************************************************************************************************************************
+ok: [bast-host]
+ok: [haproxy-srv2]
+ok: [backend1]
+ok: [haproxy-srv1]
+ok: [db-srv1]
+ok: [backend2]
+ok: [iscsi-srv1]
+
+TASK [chrony : Start Chronyd Service] ******************************************************************************************************************************************************
+ok: [bast-host]
+ok: [db-srv1]
+ok: [haproxy-srv1]
+ok: [haproxy-srv2]
+ok: [backend1]
+ok: [backend2]
+ok: [iscsi-srv1]
+
+TASK [chrony : Set timezone to Europe/Moscow] **********************************************************************************************************************************************
+changed: [haproxy-srv2]
+changed: [bast-host]
+changed: [haproxy-srv1]
+changed: [backend1]
+changed: [db-srv1]
+changed: [backend2]
+changed: [iscsi-srv1]
+
+RUNNING HANDLER [chrony : Restart Chronyd] *************************************************************************************************************************************************
+changed: [bast-host]
+changed: [db-srv1]
+changed: [haproxy-srv1]
+changed: [haproxy-srv2]
+changed: [backend1]
+changed: [backend2]
+changed: [iscsi-srv1]
+
+PLAY [install targetcli, create lun] *******************************************************************************************************************************************************
+
+TASK [targetcli : Install targetcli] *******************************************************************************************************************************************************
+changed: [iscsi-srv1]
+
+TASK [targetcli : Gather targetcli status] *************************************************************************************************************************************************
+fatal: [iscsi-srv1]: FAILED! => {"changed": true, "cmd": ["targetcli", "/backstores/block/disk01", "info"], "delta": "0:00:00.409643", "end": "2024-09-16 09:21:36.750453", "msg": "non-zero return code", "rc": 1, "start": "2024-09-16 09:21:36.340810", "stderr": "No such path /backstores/block/disk01", "stderr_lines": ["No such path /backstores/block/disk01"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [targetcli : Run targetcli configure] *************************************************************************************************************************************************
+changed: [iscsi-srv1] => (item=targetcli /backstores/block create disk01 /dev/sdb)
+changed: [iscsi-srv1] => (item=targetcli /iscsi create iqn.2023-11.ru.otus:storage.target00)
+changed: [iscsi-srv1] => (item=targetcli /iscsi/iqn.2023-11.ru.otus:storage.target00/tpg1/luns create /backstores/block/disk01 lun=1)
+changed: [iscsi-srv1] => (item=targetcli /iscsi/iqn.2023-11.ru.otus:storage.target00/tpg1/acls create iqn.1994-05.com.redhat:cf70d4c706e)
+changed: [iscsi-srv1] => (item=targetcli /iscsi/iqn.2023-11.ru.otus:storage.target00/tpg1/acls create iqn.1994-05.com.redhat:f5cfb68ca8f)
+
+PLAY [install iscsi-client] ****************************************************************************************************************************************************************
+
+TASK [iscsi-client : Install open-iscsi] ***************************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [iscsi-client : change InitiatorName backend1] ****************************************************************************************************************************************
+skipping: [backend2]
+changed: [backend1]
+
+TASK [iscsi-client : change InitiatorName backend2] ****************************************************************************************************************************************
+skipping: [backend1]
+changed: [backend2]
+
+TASK [iscsi-client : iscsi_login] **********************************************************************************************************************************************************
+changed: [backend1] => (item=iscsiadm -m discovery -t st -p 10.6.7.8)
+changed: [backend2] => (item=iscsiadm -m discovery -t st -p 10.6.7.8)
+changed: [backend1] => (item=iscsiadm -m node -l -T iqn.2023-11.ru.otus:storage.target00)
+changed: [backend2] => (item=iscsiadm -m node -l -T iqn.2023-11.ru.otus:storage.target00)
+
+RUNNING HANDLER [iscsi-client : start_iscsi] ***********************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+RUNNING HANDLER [iscsi-client : restart_iscsid] ********************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+PLAY [install ha-cluster] ******************************************************************************************************************************************************************
+
+TASK [ha-cluster : Install the Packages] ***************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Add backend2 to /etc/hosts backend1] ************************************************************************************************************************************
+skipping: [backend2]
+changed: [backend1]
+
+TASK [ha-cluster : Add backend1 to /etc/hosts backend2] ************************************************************************************************************************************
+skipping: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Start the pcs service] **************************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [ha-cluster : Set the password for the use hacluster] *********************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [ha-cluster : Authenticate the host] **************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Gather cluster status] **************************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "cluster", "status"], "delta": "0:00:00.562214", "end": "2024-09-16 09:24:10.239314", "msg": "non-zero return code", "rc": 1, "start": "2024-09-16 09:24:09.677100", "stderr": "Error: cluster is not currently running on this node", "stderr_lines": ["Error: cluster is not currently running on this node"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "cluster", "status"], "delta": "0:00:00.555105", "end": "2024-09-16 09:24:10.232385", "msg": "non-zero return code", "rc": 1, "start": "2024-09-16 09:24:09.677280", "stderr": "Error: cluster is not currently running on this node", "stderr_lines": ["Error: cluster is not currently running on this node"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Setup the HA-Cluster] ***************************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Start the HA-Cluster] ***************************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Enable the HA-Cluster] **************************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Download fence-egent-common] ********************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Download fence-egent-pve] ***********************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Install fence-egent-pve from a local file] ******************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [ha-cluster : Gather stonith status] **************************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "stonith", "status", "cccc"], "delta": "0:00:00.571542", "end": "2024-09-16 09:24:25.663134", "msg": "non-zero return code", "rc": 1, "start": "2024-09-16 09:24:25.091592", "stderr": "Error: resource or tag id 'cccc' not found", "stderr_lines": ["Error: resource or tag id 'cccc' not found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : pcs cluster cib fencing.xml] ********************************************************************************************************************************************
+changed: [backend1] => (item=pcs cluster cib fencing.xml)
+changed: [backend1] => (item=pcs -f fencing.xml stonith create fence_vm_backend1 fence_pve pcmk_host_list="backend1" pcmk_host_check="static-list" ip="10.6.6.10" pve_node="pve-fortest" username="root@pam" password="GTa4Cl" ssl_insecure=yes plug="101" power_wait="10" vmtype="qemu")
+changed: [backend1] => (item=pcs -f fencing.xml stonith create fence_vm_backend2 fence_pve pcmk_host_list="backend2" pcmk_host_check="static-list" ip="10.6.6.10" pve_node="pve-fortest" username="root@pam" password="GTa4Cl" ssl_insecure=yes plug="102" power_wait="10" vmtype="qemu")
+changed: [backend1] => (item=pcs -f fencing.xml constraint location fence_vm_backend1 avoids backend1=INFINITY)
+changed: [backend1] => (item=pcs -f fencing.xml constraint location fence_vm_backend2 avoids backend2=INFINITY)
+changed: [backend1] => (item=pcs cluster cib-push scope=configuration fencing.xml)
+
+TASK [ha-cluster : Setting stonith-enabled=false] ******************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Setting 'No Quorum' Policy] *********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather dlm resource status] *********************************************************************************************************************************************
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "dlm-clone"], "delta": "0:00:00.555558", "end": "2024-09-16 09:24:36.156590", "msg": "non-zero return code", "rc": 1, "start": "2024-09-16 09:24:35.601032", "stderr": "Warning: Unable to find resource 'dlm-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'dlm-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "dlm-clone"], "delta": "0:00:00.552004", "end": "2024-09-16 09:24:36.147369", "msg": "non-zero return code", "rc": 1, "start": "2024-09-16 09:24:35.595365", "stderr": "Warning: Unable to find resource 'dlm-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'dlm-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating 'dlm' Resource] ************************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather lvmlockd resource status] ****************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "lvmlockd-clone"], "delta": "0:00:00.548872", "end": "2024-09-16 09:24:38.431021", "msg": "non-zero return code", "rc": 1, "start": "2024-09-16 09:24:37.882149", "stderr": "Warning: Unable to find resource 'lvmlockd-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'lvmlockd-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "lvmlockd-clone"], "delta": "0:00:00.559012", "end": "2024-09-16 09:24:38.444073", "msg": "non-zero return code", "rc": 1, "start": "2024-09-16 09:24:37.885061", "stderr": "Warning: Unable to find resource 'lvmlockd-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'lvmlockd-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating lvmlockd Resource] *********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Creating First Constraint] **********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Pause] ******************************************************************************************************************************************************************
+Pausing for 10 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [backend1]
+
+TASK [ha-cluster : Gather pvs /dev/sdb] ****************************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": "pvs | grep /dev/sdb", "delta": "0:00:01.047958", "end": "2024-09-16 09:24:52.814682", "msg": "non-zero return code", "rc": 1, "start": "2024-09-16 09:24:51.766724", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Physical Volume] ***********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather vgs /dev/sdb] ****************************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": "vgs | grep cluster_vg", "delta": "0:00:00.035572", "end": "2024-09-16 09:24:54.067191", "msg": "non-zero return code", "rc": 1, "start": "2024-09-16 09:24:54.031619", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Volume Group] **************************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : start lock manager for shared] ******************************************************************************************************************************************
+skipping: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Pause] ******************************************************************************************************************************************************************
+Pausing for 10 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [backend1]
+
+TASK [ha-cluster : Gather lvs | grep cluster_lv] *******************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": "lvs | grep cluster_lv", "delta": "0:00:00.036275", "end": "2024-09-16 09:25:11.019200", "msg": "non-zero return code", "rc": 1, "start": "2024-09-16 09:25:10.982925", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Logical Volume] ************************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Formatting Logical Volume With GFS2] ************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather cluster_vg-clone resource status] ********************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "cluster_vg-clone"], "delta": "0:00:00.576747", "end": "2024-09-16 09:25:14.172494", "msg": "non-zero return code", "rc": 1, "start": "2024-09-16 09:25:13.595747", "stderr": "Warning: Unable to find resource 'cluster_vg-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'cluster_vg-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "cluster_vg-clone"], "delta": "0:00:00.576957", "end": "2024-09-16 09:25:14.228780", "msg": "non-zero return code", "rc": 1, "start": "2024-09-16 09:25:13.651823", "stderr": "Warning: Unable to find resource 'cluster_vg-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'cluster_vg-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : create LVM-activate resource] *******************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : set start order as [locking] → [shared_vg]] *****************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : set that [shared_vg] and [locking] start on a same node] ****************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather clusterfs-clone resource status] *********************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "clusterfs-clone"], "delta": "0:00:00.552808", "end": "2024-09-16 09:25:18.972968", "msg": "non-zero return code", "rc": 1, "start": "2024-09-16 09:25:18.420160", "stderr": "Warning: Unable to find resource 'clusterfs-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'clusterfs-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "clusterfs-clone"], "delta": "0:00:00.563980", "end": "2024-09-16 09:25:19.038965", "msg": "non-zero return code", "rc": 1, "start": "2024-09-16 09:25:18.474985", "stderr": "Warning: Unable to find resource 'clusterfs-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'clusterfs-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Cluster File System] *******************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : set start order as [shared_vg] → [shared_fs]] ***************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : set that [shared_fs] and [shared_vg] start on a same node] **************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Setting stonith-enabled=true] *******************************************************************************************************************************************
+changed: [backend1]
+
+PLAY [install-mysql] ***********************************************************************************************************************************************************************
+
+TASK [db : Install mysql-server package] ***************************************************************************************************************************************************
+changed: [db-srv1]
+
+TASK [db : Save root password in .my.cnf] **************************************************************************************************************************************************
+changed: [db-srv1]
+
+TASK [db : start and enable mysql service] *************************************************************************************************************************************************
+changed: [db-srv1]
+
+TASK [db : Sets the root password] *********************************************************************************************************************************************************
+[WARNING]: Option column_case_sensitive is not provided. The default is now false, so the column's name will be uppercased. The default will be changed to true in community.mysql 4.0.0.
+changed: [db-srv1]
+
+TASK [db : Save root password in .my.cnf] **************************************************************************************************************************************************
+changed: [db-srv1]
+
+TASK [db : creating wp_db] *****************************************************************************************************************************************************************
+changed: [db-srv1]
+
+TASK [db : creating mysql user (medium_post)] **********************************************************************************************************************************************
+changed: [db-srv1]
+
+TASK [db : Restart mysql] ******************************************************************************************************************************************************************
+changed: [db-srv1]
+
+PLAY [install-wordpress] *******************************************************************************************************************************************************************
+
+TASK [wordpress : Installing Nginx Repository] *********************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [wordpress : install Nginx] ***********************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [wordpress : Import Remi KEY] *********************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [wordpress : Installing Remi Repository] **********************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [wordpress : Enable PHP Remi Repository] **********************************************************************************************************************************************
+changed: [backend2] => (item=dnf module reset php -y)
+changed: [backend1] => (item=dnf module reset php -y)
+changed: [backend2] => (item=dnf module enable php:remi-8.3 -y)
+changed: [backend1] => (item=dnf module enable php:remi-8.3 -y)
+
+TASK [wordpress : Install php-fpm and PHP extensions] **************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [wordpress : change user in /etc/php-fpm.d/www.conf] **********************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [wordpress : change group in /etc/php-fpm.d/www.conf] *********************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [wordpress : Check exist dip-akopalev.ru.conf] ****************************************************************************************************************************************
+ok: [backend1]
+ok: [backend2]
+
+TASK [wordpress : Copy wordpress conf] *****************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [wordpress : Check exist /root/latest.tar.gz] *****************************************************************************************************************************************
+ok: [backend1]
+ok: [backend2]
+
+TASK [wordpress : Download wordpress] ******************************************************************************************************************************************************
+changed: [backend1]
+
+TASK [wordpress : Check exist /var/www/wordpress] ******************************************************************************************************************************************
+ok: [backend1]
+ok: [backend2]
+
+TASK [wordpress : Extract wordpress] *******************************************************************************************************************************************************
+changed: [backend1] => (item=tar -xzf /root/latest.tar.gz)
+changed: [backend1] => (item=mv /home/akopalev/wordpress /var/www/)
+changed: [backend1] => (item=chown -R nginx:nginx /var/www/wordpress)
+
+TASK [wordpress : Template a file to /var/www/wordpress/wp-config.php] *********************************************************************************************************************
+changed: [backend1]
+
+TASK [wordpress : Start Nginx Service] *****************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [wordpress : Start php-fpm Service] ***************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+PLAY [install keepalived, haproxy] *********************************************************************************************************************************************************
+
+TASK [keepalived : Install packages] *******************************************************************************************************************************************************
+changed: [haproxy-srv2]
+changed: [haproxy-srv1]
+
+TASK [keepalived : Change sysctl config] ***************************************************************************************************************************************************
+changed: [haproxy-srv2] => (item={'name': 'net.ipv4.ip_forward', 'value': '1'})
+changed: [haproxy-srv1] => (item={'name': 'net.ipv4.ip_forward', 'value': '1'})
+changed: [haproxy-srv1] => (item={'name': 'net.ipv4.ip_nonlocal_bind', 'value': '1'})
+changed: [haproxy-srv2] => (item={'name': 'net.ipv4.ip_nonlocal_bind', 'value': '1'})
+
+TASK [keepalived : Backup default haproxy config file] *************************************************************************************************************************************
+changed: [haproxy-srv2]
+changed: [haproxy-srv1]
+
+TASK [keepalived : Template custom haproxy config file] ************************************************************************************************************************************
+changed: [haproxy-srv1]
+changed: [haproxy-srv2]
+
+TASK [keepalived : Start and enable haproxy service] ***************************************************************************************************************************************
+changed: [haproxy-srv2]
+changed: [haproxy-srv1]
+
+TASK [keepalived : Backup default keepalived config file] **********************************************************************************************************************************
+changed: [haproxy-srv1]
+changed: [haproxy-srv2]
+
+TASK [keepalived : Template custom keepalived config file] *********************************************************************************************************************************
+changed: [haproxy-srv1]
+changed: [haproxy-srv2]
+
+TASK [keepalived : Start and enable keepalived service] ************************************************************************************************************************************
+changed: [haproxy-srv1]
+changed: [haproxy-srv2]
+
+PLAY RECAP *********************************************************************************************************************************************************************************
+backend1                   : ok=65   changed=58   unreachable=0    failed=0    skipped=3    rescued=0    ignored=9   
+backend2                   : ok=37   changed=32   unreachable=0    failed=0    skipped=2    rescued=0    ignored=5   
+bast-host                  : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+db-srv1                    : ok=12   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+haproxy-srv1               : ok=12   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+haproxy-srv2               : ok=12   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+iscsi-srv1                 : ok=7    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1   
+pve-fortest                : ok=8    changed=6    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

@@ -1,0 +1,11 @@
+# code: language=ansible
+
+- name: Create vms
+  hosts: proxmox
+  vars_files:
+    - ./roles/create-vm/vms.yml
+    - ./roles/create-vm/vars/main.yml
+  gather_facts: false
+  become: yes
+  roles:
+  - create-vm

@@ -1,0 +1,6 @@
+- name: install-db
+  hosts: db_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - db

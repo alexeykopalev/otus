@@ -1,0 +1,27 @@
+api_host: pve-fortest
+api_user: otus@pve-fortest
+api_token_id: ansible
+api_token_secret: "{{ api_token_secret }}"
+node: pve-fortest
+vms:
+  bast_host:
+    name: bast-host
+    vmid: 100
+  haproxy_srv1:
+    name: haproxy-srv1
+    vmid: 101
+  haproxy_srv2:
+    name: haproxy-srv2
+    vmid: 102
+  db_srv1:
+    name: db-srv1
+    vmid: 103
+  backend1:
+    name: backend1
+    vmid: 104
+  backend2:
+    name: backend2
+    vmid: 105
+  iscsi-srv1:
+    name: iscsi-srv1
+    vmid: 106

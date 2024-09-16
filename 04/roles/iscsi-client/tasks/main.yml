@@ -1,0 +1,25 @@
+- name: Install open-iscsi
+  yum:
+    name:
+      - iscsi-initiator-utils
+    state: present
+
+- name: change InitiatorName backend1
+  shell: 
+    echo '{{ iqn_backend1 }}' > /etc/iscsi/initiatorname.iscsi
+  when:
+    inventory_hostname == play_hosts[0]
+  notify: restart_iscsid
+- name: change InitiatorName backend2
+  shell: 
+    echo '{{ iqn_backend2 }}' > /etc/iscsi/initiatorname.iscsi
+  when:
+    inventory_hostname == play_hosts[1]
+  notify: restart_iscsid
+
+- name: iscsi_login
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - iscsiadm -m discovery -t st -p 10.6.7.8
+    - iscsiadm -m node -l -T {{ iqn_server }}
+  notify: start_iscsi
