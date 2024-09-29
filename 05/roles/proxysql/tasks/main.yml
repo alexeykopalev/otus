@@ -1,0 +1,67 @@
+# - name: Install epel-release
+#   dnf:
+#     name: 
+#       - epel-release
+
+- name: install percona key
+  ansible.builtin.rpm_key:
+    key: https://repo.percona.com/yum/PERCONA-PACKAGING-KEY
+    #https://downloads.percona.com/downloads/RPM-GPG-KEY-percona
+    state: present
+
+    #https://repo.percona.com/yum/PERCONA-PACKAGING-KEY
+
+- name: Install percona repo
+  ansible.builtin.package:
+    name: 'https://repo.percona.com/yum/percona-release-latest.noarch.rpm'
+    state: present
+    update_cache: true
+
+- name: Update cache
+  ansible.builtin.dnf: 
+    update_cache: yes
+
+- name: percona-release setup pxc-80
+  ansible.builtin.shell: echo 'y' | percona-release setup pxc-80
+
+- name: Install packages
+  ansible.builtin.package:
+    name: 
+      - percona-xtradb-cluster-client
+      - proxysql2
+      - python3-PyMySQL
+    state: latest
+
+- name: Check exist /var/lib/proxysql/proxysql.db
+  ansible.builtin.stat:
+    path: /var/lib/proxysql/proxysql.db
+  register: result_proxysql_db
+
+- name: Change var proxysql_initial
+  ansible.builtin.set_fact:
+    proxysql_initial: true
+  when: not result_proxysql_db.stat.exists
+
+- name: Wait a little
+  ansible.builtin.pause:
+    seconds: 5
+
+- name: Configures proxysql
+  template:
+    src: proxysql.cnf.j2
+    dest: /etc/proxysql.cnf
+    mode: 0644
+    backup: true
+  notify:
+    - Load config from file to memory
+
+- name: Adds proxysql.my.cnf
+  template:
+    src: proxysql.my.cnf.j2
+    dest: /etc/proxysql.my.cnf
+    mode: 0600
+
+- name: Restart proxysql service
+  ansible.builtin.service:
+    name: proxysql
+    state: restarted

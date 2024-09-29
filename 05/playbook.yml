@@ -1,0 +1,72 @@
+# code: language=ansible
+
+# - name: Create vms
+#   hosts: pve-fortest
+#   vars_files:
+#     - ./roles/create-vm/vars/vms.yml
+#     - ./roles/create-vm/vars/main.yml
+#   gather_facts: false
+#   become: yes
+#   roles:
+#   - create-vm
+
+- name: Install Chrony
+  hosts: 
+    - bast-host
+    - haproxy_hosts
+    - db_hosts
+    - backend_hosts
+    - iscsi_srv
+  gather_facts: false
+  become: true
+  roles:
+    - chrony
+
+- name: install targetcli, create lun
+  hosts: iscsi_srv
+  gather_facts: false
+  become: yes
+  roles:
+  - targetcli
+
+- name: install iscsi-client
+  hosts: backend_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - iscsi-client
+
+- name: install ha-cluster
+  hosts: backend_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - ha-cluster
+
+- name: install-mysql
+  hosts: db_hosts
+  become: yes
+  roles:
+  - db
+
+- name: install-proxysql
+  hosts: backend_hosts
+  become: yes
+  vars_files:
+    - roles/proxysql/vars/my_vars.yml
+  roles:
+  - proxysql
+
+- name: install-wordpress
+  hosts: backend_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - wordpress
+
+- name: install keepalived, haproxy
+  hosts: haproxy_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - keepalived

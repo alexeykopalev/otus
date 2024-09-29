@@ -1,0 +1,21 @@
+#cloud-config
+hostname: nginx-srv
+manage_etc_hosts: false
+fqdn: nginx-srv.otushl.local
+user: akopalev
+password: $5$i9Jd8SAh$0b3vTZXfHzZyMh31uPb3dEzLfizim02GH1czS7gFqvC
+ssh_authorized_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCxHlMc4ySp0W7oIBf1aRAxdIaoFyx3IZ+PNpAvDgluLZxmNLJ22ImYIcQkloY9tLwhD6guIdkoWtSusrjPfAO5bEPwKfa5GI51Qoq76gZ5/KyMtnYAARDyuSbMjeqaAJaF71oGKC4032hTlXtvMf7wAy8nfrP3zrRE7PDsqLh5vuVctAa78SFHp92394GYU0LkeCbE8dN+RW7T1wFoK7jK2HfVfLZMXtiJT3pji7jtkB7SKW8hNCeojKylZSW/AQhEyo32aPjZHomtQDkJ4DPVkPiGmcpDtpQ5u0fm0soEkODlKzECiNZM2pQq/gRdSmvObMbCkot5yjS4+uAqxl4jnzJU57lWDtFrIvkBDGJ2Y564r/pctq9uWp/QSbPgEv8uT/QaIoVeYMO723HHSzLRPVslrQiwkCU1qTFFHFCA2OlGJLZF05mGEi7pDAv2EX6PmfTdKwh8IsamEUgZsYbo+/RWKi56VDFGsZttrW3kVQ9mYEUAgitkDWnwpFO8DVU= alexey@vivobook-fedora
+chpasswd:
+  expire: False
+users:
+  - default
+package_upgrade: true
+# write_files:
+#   - path: /etc/sysctl.d/10-disable-ipv6.conf
+#     permissions: 0644
+#     owner: root
+#     content: |
+#       net.ipv6.conf.eth0.disable_ipv6 = 1
+bootcmd:
+  - echo 10.6.7.3 nginx-srv.otushl.local nginx-srv >> /etc/hosts

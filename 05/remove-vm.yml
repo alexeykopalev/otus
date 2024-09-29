@@ -1,0 +1,9 @@
+# code: language=ansible
+- name: Remove vms
+  hosts: pve-fortest
+  vars_files:
+    - ./roles/remove-vm/vars/vms.yml
+  gather_facts: false
+  become: yes
+  roles:
+  - remove-vm

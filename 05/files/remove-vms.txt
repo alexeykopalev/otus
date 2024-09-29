@@ -1,0 +1,28 @@
+alexey@ask-pc-fed-vb:~/otus/otus-hl-hw/05$ ansible-playbook remove-vm.yml 
+
+PLAY [Remove vms] **************************************************************************************************************************************************************************
+
+TASK [remove-vm : Stopped VMs] *************************************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'bast_host', 'value': {'name': 'bast-host', 'vmid': 100}})
+changed: [pve-fortest] => (item={'key': 'iscsi-srv1', 'value': {'name': 'iscsi-srv1', 'vmid': 101}})
+changed: [pve-fortest] => (item={'key': 'haproxy_srv1', 'value': {'name': 'haproxy-srv1', 'vmid': 102}})
+changed: [pve-fortest] => (item={'key': 'haproxy_srv2', 'value': {'name': 'haproxy-srv2', 'vmid': 103}})
+changed: [pve-fortest] => (item={'key': 'db_srv1', 'value': {'name': 'db-srv1', 'vmid': 104}})
+changed: [pve-fortest] => (item={'key': 'db_srv2', 'value': {'name': 'db-srv2', 'vmid': 105}})
+changed: [pve-fortest] => (item={'key': 'db_srv3', 'value': {'name': 'db-srv3', 'vmid': 106}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'vmid': 107}})
+changed: [pve-fortest] => (item={'key': 'backend2', 'value': {'name': 'backend2', 'vmid': 108}})
+
+TASK [remove-vm : Remove VMs] **************************************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'bast_host', 'value': {'name': 'bast-host', 'vmid': 100}})
+ok: [pve-fortest] => (item={'key': 'iscsi-srv1', 'value': {'name': 'iscsi-srv1', 'vmid': 101}})
+changed: [pve-fortest] => (item={'key': 'haproxy_srv1', 'value': {'name': 'haproxy-srv1', 'vmid': 102}})
+changed: [pve-fortest] => (item={'key': 'haproxy_srv2', 'value': {'name': 'haproxy-srv2', 'vmid': 103}})
+changed: [pve-fortest] => (item={'key': 'db_srv1', 'value': {'name': 'db-srv1', 'vmid': 104}})
+changed: [pve-fortest] => (item={'key': 'db_srv2', 'value': {'name': 'db-srv2', 'vmid': 105}})
+changed: [pve-fortest] => (item={'key': 'db_srv3', 'value': {'name': 'db-srv3', 'vmid': 106}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'vmid': 107}})
+changed: [pve-fortest] => (item={'key': 'backend2', 'value': {'name': 'backend2', 'vmid': 108}})
+
+PLAY RECAP *********************************************************************************************************************************************************************************
+pve-fortest                : ok=2    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

@@ -1,0 +1,9 @@
+- name: install-proxysql
+  #hosts: proxysql_hosts
+  hosts: backend__hosts
+  gather_facts: false
+  vars_files:
+    - roles/proxysql/vars/my_vars.yml
+  become: yes
+  roles:
+  - proxysql

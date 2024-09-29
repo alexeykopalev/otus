@@ -1,0 +1,43 @@
+all:
+  hosts:
+    pve-fortest:
+      ansible_host: 10.6.6.10
+    bast-host:
+      ansible_host: 10.6.6.11
+      ansible_user: akopalev
+iscsi_srv:
+  hosts:
+    iscsi-srv1:
+      ansible_host: 10.6.7.3
+haproxy_hosts: 
+  hosts:
+    haproxy-srv1:
+      ansible_host: 10.6.7.4
+    haproxy-srv2:
+      ansible_host: 10.6.7.5
+db_hosts:
+  hosts:
+    db-srv1:
+      ansible_host: 10.6.7.6
+    db-srv2:
+      ansible_host: 10.6.7.7
+    db-srv3:
+      ansible_host: 10.6.7.8
+backend_hosts:
+  hosts:
+    backend1:
+      ansible_host: 10.6.7.9
+    backend2:
+      ansible_host: 10.6.7.10 
+# proxysql_hosts:
+#   hosts:
+#     proxysql1:
+#       ansible_host: 10.6.7.11
+group_test:
+  children:
+    iscsi_srv:
+    haproxy_hosts:
+    db_hosts:
+    backend_hosts:
+    proxysql_hosts:
+

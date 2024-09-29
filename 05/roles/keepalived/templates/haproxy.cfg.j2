@@ -1,0 +1,42 @@
+global
+  log /dev/log local0
+  log /dev/log local1 notice
+  chroot /var/lib/haproxy
+  stats timeout 30s
+  user haproxy
+  group haproxy
+  daemon
+defaults
+log global
+mode http
+option httplog
+option dontlognull
+timeout connect 5000
+timeout client 50000
+timeout server 50000
+
+#frontend
+frontend http_front
+bind *:80
+stats uri /haproxy?stats
+default_backend http_back
+
+#frontend proxysql
+#mode tcp
+#bind :6033
+#default_backend proxysql
+
+#round robin balancing backend http
+backend http_back
+balance roundrobin
+mode http
+server backend1 10.6.7.9:80 check
+server backend2 10.6.7.10:80 check
+
+#round robin balancing proxysql
+#backend proxysql
+#balance roundrobin
+#mode tcp
+#server db-srv1 10.6.7.6:6033 check
+#server db-srv2 10.6.7.7:6033 check
+#server db-srv3 10.6.7.8:6033 check

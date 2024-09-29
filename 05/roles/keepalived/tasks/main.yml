@@ -1,0 +1,56 @@
+- name: Install packages
+  ansible.builtin.dnf:
+    name:
+      - keepalived
+      - haproxy
+    state: latest
+    update_cache: true
+
+- name: Change sysctl config
+  ansible.posix.sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    sysctl_set: true
+    state: present
+    reload: true
+  loop: 
+    - { name: 'net.ipv4.ip_forward', value: '1' }
+    - { name: 'net.ipv4.ip_nonlocal_bind', value: '1' }
+
+#---------------- haproxy config--------------
+
+- name: Backup default haproxy config file
+  ansible.builtin.copy:
+    src: /etc/haproxy/haproxy.cfg
+    dest: /etc/haproxy/haproxy.cfg.backup
+    remote_src: true
+
+- name: Template custom haproxy config file
+  ansible.builtin.template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+
+- name: "Start and enable haproxy service"
+  ansible.builtin.service:
+    name: haproxy
+    state: restarted
+    enabled: true
+
+#---------------- keepalived config--------------
+
+- name: Backup default keepalived config file
+  ansible.builtin.copy:
+    src: /etc/keepalived/keepalived.conf
+    dest: /etc/keepalived/keepalived.conf.backup
+    remote_src: true
+
+- name: Template custom keepalived config file
+  ansible.builtin.template:
+    src: keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+
+- name: "Start and enable keepalived service"
+  ansible.builtin.service:
+    name: keepalived
+    state: restarted
+    enabled: true
