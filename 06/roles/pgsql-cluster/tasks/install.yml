@@ -1,0 +1,45 @@
+- name: Install support apps
+  ansible.builtin.dnf:
+    name:
+      - git
+      - nano 
+      - telnet
+    state: latest
+
+- name: Import PostgreSQL Repository KEY
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://download.postgresql.org/pub/repos/yum/keys/PGDG-RPM-GPG-KEY-RHEL
+
+- name: Installing PostgreSQL Repository
+  ansible.builtin.yum:
+    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    state: latest
+    update_cache: yes
+
+- name: Install 'dnf-command(config-manager)'
+  ansible.builtin.dnf:
+      name:
+        - 'dnf-command(config-manager)'
+      state: latest
+
+- name: Install python3 python3-devel python3-pip gcc
+  ansible.builtin.dnf:
+    name:
+      - python3 
+      - python3-devel 
+      - python3-pip 
+      - gcc
+    state: present
+
+- name: Install psycopg2 python3-etcd
+  ansible.builtin.dnf:
+      name:
+        - python3-psycopg2
+        - python3-etcd
+      state: latest
+
+- name: Install EPEL release
+  ansible.builtin.dnf:
+      name: epel-release
+      state: present

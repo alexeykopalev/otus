@@ -1,0 +1,523 @@
+alexey@ask-pc-fed-vb:~/otus/otus-hl-hw/06$ ansible-playbook playbook.yml 
+
+PLAY [Install Chrony] **********************************************************************************************************************************************************************
+
+TASK [chrony : Installing Chrony] **********************************************************************************************************************************************************
+ok: [bast-host]
+ok: [haproxy-srv1]
+ok: [haproxy-srv2]
+ok: [db-srv3]
+ok: [backend1]
+ok: [db-srv1]
+ok: [iscsi-srv1]
+ok: [db-srv2]
+ok: [backend2]
+
+TASK [chrony : Start Chronyd Service] ******************************************************************************************************************************************************
+ok: [db-srv1]
+ok: [db-srv2]
+ok: [haproxy-srv1]
+ok: [bast-host]
+ok: [haproxy-srv2]
+ok: [backend1]
+ok: [db-srv3]
+ok: [backend2]
+ok: [iscsi-srv1]
+
+TASK [chrony : Set timezone to Europe/Moscow] **********************************************************************************************************************************************
+changed: [db-srv1]
+changed: [haproxy-srv1]
+changed: [bast-host]
+changed: [db-srv2]
+changed: [haproxy-srv2]
+changed: [db-srv3]
+changed: [backend1]
+changed: [backend2]
+changed: [iscsi-srv1]
+
+RUNNING HANDLER [chrony : Restart Chronyd] *************************************************************************************************************************************************
+changed: [bast-host]
+changed: [db-srv1]
+changed: [db-srv2]
+changed: [haproxy-srv1]
+changed: [haproxy-srv2]
+changed: [db-srv3]
+changed: [backend1]
+changed: [backend2]
+changed: [iscsi-srv1]
+
+PLAY [install targetcli, create lun] *******************************************************************************************************************************************************
+
+TASK [targetcli : Install targetcli] *******************************************************************************************************************************************************
+changed: [iscsi-srv1]
+
+TASK [targetcli : Gather targetcli status] *************************************************************************************************************************************************
+fatal: [iscsi-srv1]: FAILED! => {"changed": true, "cmd": ["targetcli", "/backstores/block/disk01", "info"], "delta": "0:00:00.233437", "end": "2024-10-10 09:56:31.855531", "msg": "non-zero return code", "rc": 1, "start": "2024-10-10 09:56:31.622094", "stderr": "No such path /backstores/block/disk01", "stderr_lines": ["No such path /backstores/block/disk01"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [targetcli : Run targetcli configure] *************************************************************************************************************************************************
+changed: [iscsi-srv1] => (item=targetcli /backstores/block create disk01 /dev/sdb)
+changed: [iscsi-srv1] => (item=targetcli /iscsi create iqn.2023-11.ru.otus:storage.target00)
+changed: [iscsi-srv1] => (item=targetcli /iscsi/iqn.2023-11.ru.otus:storage.target00/tpg1/luns create /backstores/block/disk01 lun=1)
+changed: [iscsi-srv1] => (item=targetcli /iscsi/iqn.2023-11.ru.otus:storage.target00/tpg1/acls create iqn.1994-05.com.redhat:cf70d4c706e)
+changed: [iscsi-srv1] => (item=targetcli /iscsi/iqn.2023-11.ru.otus:storage.target00/tpg1/acls create iqn.1994-05.com.redhat:f5cfb68ca8f)
+
+PLAY [install iscsi-client] ****************************************************************************************************************************************************************
+
+TASK [iscsi-client : Install open-iscsi] ***************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [iscsi-client : change InitiatorName backend1] ****************************************************************************************************************************************
+skipping: [backend2]
+changed: [backend1]
+
+TASK [iscsi-client : change InitiatorName backend2] ****************************************************************************************************************************************
+skipping: [backend1]
+changed: [backend2]
+
+TASK [iscsi-client : iscsi_login] **********************************************************************************************************************************************************
+changed: [backend1] => (item=iscsiadm -m discovery -t st -p 10.6.7.3)
+changed: [backend2] => (item=iscsiadm -m discovery -t st -p 10.6.7.3)
+changed: [backend2] => (item=iscsiadm -m node -l -T iqn.2023-11.ru.otus:storage.target00)
+changed: [backend1] => (item=iscsiadm -m node -l -T iqn.2023-11.ru.otus:storage.target00)
+
+RUNNING HANDLER [iscsi-client : start_iscsi] ***********************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+RUNNING HANDLER [iscsi-client : restart_iscsid] ********************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+PLAY [install ha-cluster] ******************************************************************************************************************************************************************
+
+TASK [ha-cluster : Install the Packages] ***************************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [ha-cluster : Add backend2 to /etc/hosts backend1] ************************************************************************************************************************************
+skipping: [backend2]
+changed: [backend1]
+
+TASK [ha-cluster : Add backend1 to /etc/hosts backend2] ************************************************************************************************************************************
+skipping: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Start the pcs service] **************************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [ha-cluster : Set the password for the use hacluster] *********************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [ha-cluster : Authenticate the host] **************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Gather cluster status] **************************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "cluster", "status"], "delta": "0:00:00.558126", "end": "2024-10-10 09:57:48.304112", "msg": "non-zero return code", "rc": 1, "start": "2024-10-10 09:57:47.745986", "stderr": "Error: cluster is not currently running on this node", "stderr_lines": ["Error: cluster is not currently running on this node"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "cluster", "status"], "delta": "0:00:00.558971", "end": "2024-10-10 09:57:48.318532", "msg": "non-zero return code", "rc": 1, "start": "2024-10-10 09:57:47.759561", "stderr": "Error: cluster is not currently running on this node", "stderr_lines": ["Error: cluster is not currently running on this node"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Setup the HA-Cluster] ***************************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Start the HA-Cluster] ***************************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Enable the HA-Cluster] **************************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Download fence-egent-common] ********************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Download fence-egent-pve] ***********************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [ha-cluster : Install fence-egent-pve from a local file] ******************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Gather stonith status] **************************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "stonith", "status", "cccc"], "delta": "0:00:00.564594", "end": "2024-10-10 09:58:04.474017", "msg": "non-zero return code", "rc": 1, "start": "2024-10-10 09:58:03.909423", "stderr": "Error: resource or tag id 'cccc' not found", "stderr_lines": ["Error: resource or tag id 'cccc' not found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : pcs cluster cib fencing.xml] ********************************************************************************************************************************************
+changed: [backend1] => (item=pcs cluster cib fencing.xml)
+changed: [backend1] => (item=pcs -f fencing.xml stonith create fence_vm_backend1 fence_pve pcmk_host_list="backend1" pcmk_host_check="static-list" ip="10.6.6.10" pve_node="pve-fortest" username="root@pam" password="GTa4Cl" ssl_insecure=yes plug="101" power_wait="10" vmtype="qemu")
+changed: [backend1] => (item=pcs -f fencing.xml stonith create fence_vm_backend2 fence_pve pcmk_host_list="backend2" pcmk_host_check="static-list" ip="10.6.6.10" pve_node="pve-fortest" username="root@pam" password="GTa4Cl" ssl_insecure=yes plug="102" power_wait="10" vmtype="qemu")
+changed: [backend1] => (item=pcs -f fencing.xml constraint location fence_vm_backend1 avoids backend1=INFINITY)
+changed: [backend1] => (item=pcs -f fencing.xml constraint location fence_vm_backend2 avoids backend2=INFINITY)
+changed: [backend1] => (item=pcs cluster cib-push scope=configuration fencing.xml)
+
+TASK [ha-cluster : Setting stonith-enabled=false] ******************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Setting 'No Quorum' Policy] *********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather dlm resource status] *********************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "dlm-clone"], "delta": "0:00:00.569243", "end": "2024-10-10 09:58:14.828458", "msg": "non-zero return code", "rc": 1, "start": "2024-10-10 09:58:14.259215", "stderr": "Warning: Unable to find resource 'dlm-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'dlm-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "dlm-clone"], "delta": "0:00:00.574352", "end": "2024-10-10 09:58:14.834694", "msg": "non-zero return code", "rc": 1, "start": "2024-10-10 09:58:14.260342", "stderr": "Warning: Unable to find resource 'dlm-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'dlm-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating 'dlm' Resource] ************************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather lvmlockd resource status] ****************************************************************************************************************************************
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "lvmlockd-clone"], "delta": "0:00:00.578811", "end": "2024-10-10 09:58:17.097747", "msg": "non-zero return code", "rc": 1, "start": "2024-10-10 09:58:16.518936", "stderr": "Warning: Unable to find resource 'lvmlockd-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'lvmlockd-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "lvmlockd-clone"], "delta": "0:00:00.634926", "end": "2024-10-10 09:58:17.158285", "msg": "non-zero return code", "rc": 1, "start": "2024-10-10 09:58:16.523359", "stderr": "Warning: Unable to find resource 'lvmlockd-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'lvmlockd-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating lvmlockd Resource] *********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Creating First Constraint] **********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Pause] ******************************************************************************************************************************************************************
+Pausing for 10 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [backend1]
+
+TASK [ha-cluster : Gather pvs /dev/sdb] ****************************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": "pvs | grep /dev/sdb", "delta": "0:00:01.048524", "end": "2024-10-10 09:58:31.615909", "msg": "non-zero return code", "rc": 1, "start": "2024-10-10 09:58:30.567385", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Physical Volume] ***********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather vgs /dev/sdb] ****************************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": "vgs | grep cluster_vg", "delta": "0:00:00.032452", "end": "2024-10-10 09:58:32.758349", "msg": "non-zero return code", "rc": 1, "start": "2024-10-10 09:58:32.725897", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Volume Group] **************************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : start lock manager for shared] ******************************************************************************************************************************************
+skipping: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Pause] ******************************************************************************************************************************************************************
+Pausing for 10 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [backend1]
+
+TASK [ha-cluster : Gather lvs | grep cluster_lv] *******************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": "lvs | grep cluster_lv", "delta": "0:00:00.039313", "end": "2024-10-10 09:58:49.500275", "msg": "non-zero return code", "rc": 1, "start": "2024-10-10 09:58:49.460962", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Logical Volume] ************************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Formatting Logical Volume With GFS2] ************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather cluster_vg-clone resource status] ********************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "cluster_vg-clone"], "delta": "0:00:00.566211", "end": "2024-10-10 09:58:52.386745", "msg": "non-zero return code", "rc": 1, "start": "2024-10-10 09:58:51.820534", "stderr": "Warning: Unable to find resource 'cluster_vg-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'cluster_vg-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "cluster_vg-clone"], "delta": "0:00:00.566096", "end": "2024-10-10 09:58:52.395716", "msg": "non-zero return code", "rc": 1, "start": "2024-10-10 09:58:51.829620", "stderr": "Warning: Unable to find resource 'cluster_vg-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'cluster_vg-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : create LVM-activate resource] *******************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : set start order as [locking] → [shared_vg]] *****************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : set that [shared_vg] and [locking] start on a same node] ****************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather clusterfs-clone resource status] *********************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "clusterfs-clone"], "delta": "0:00:00.561231", "end": "2024-10-10 09:58:56.915681", "msg": "non-zero return code", "rc": 1, "start": "2024-10-10 09:58:56.354450", "stderr": "Warning: Unable to find resource 'clusterfs-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'clusterfs-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "clusterfs-clone"], "delta": "0:00:00.576517", "end": "2024-10-10 09:58:56.941988", "msg": "non-zero return code", "rc": 1, "start": "2024-10-10 09:58:56.365471", "stderr": "Warning: Unable to find resource 'clusterfs-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'clusterfs-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Cluster File System] *******************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : set start order as [shared_vg] → [shared_fs]] ***************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : set that [shared_fs] and [shared_vg] start on a same node] **************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Setting stonith-enabled=true] *******************************************************************************************************************************************
+changed: [backend1]
+
+PLAY [install keepalived, haproxy] *********************************************************************************************************************************************************
+
+TASK [keepalived : Install packages] *******************************************************************************************************************************************************
+changed: [haproxy-srv1]
+changed: [haproxy-srv2]
+
+TASK [keepalived : Change sysctl config] ***************************************************************************************************************************************************
+changed: [haproxy-srv2] => (item={'name': 'net.ipv4.ip_forward', 'value': '1'})
+changed: [haproxy-srv1] => (item={'name': 'net.ipv4.ip_forward', 'value': '1'})
+changed: [haproxy-srv2] => (item={'name': 'net.ipv4.ip_nonlocal_bind', 'value': '1'})
+changed: [haproxy-srv1] => (item={'name': 'net.ipv4.ip_nonlocal_bind', 'value': '1'})
+
+TASK [keepalived : Backup default haproxy config file] *************************************************************************************************************************************
+changed: [haproxy-srv2]
+changed: [haproxy-srv1]
+
+TASK [keepalived : Template custom haproxy config file] ************************************************************************************************************************************
+changed: [haproxy-srv1]
+changed: [haproxy-srv2]
+
+TASK [keepalived : Start and enable haproxy service] ***************************************************************************************************************************************
+changed: [haproxy-srv1]
+changed: [haproxy-srv2]
+
+TASK [keepalived : Backup default keepalived config file] **********************************************************************************************************************************
+changed: [haproxy-srv1]
+changed: [haproxy-srv2]
+
+TASK [keepalived : Template custom keepalived config file] *********************************************************************************************************************************
+changed: [haproxy-srv1]
+changed: [haproxy-srv2]
+
+TASK [keepalived : Start and enable keepalived service] ************************************************************************************************************************************
+changed: [haproxy-srv1]
+changed: [haproxy-srv2]
+
+PLAY [Install PostgreSQL, Panroni, ETCD] ***************************************************************************************************************************************************
+
+TASK [Gathering Facts] *********************************************************************************************************************************************************************
+ok: [db-srv3]
+ok: [db-srv1]
+ok: [db-srv2]
+
+TASK [pgsql-cluster : Install software] ****************************************************************************************************************************************************
+included: /home/alexey/otus/otus-hl-hw/06/roles/pgsql-cluster/tasks/install.yml for db-srv1, db-srv2, db-srv3
+
+TASK [pgsql-cluster : Install support apps] ************************************************************************************************************************************************
+changed: [db-srv3]
+changed: [db-srv1]
+changed: [db-srv2]
+
+TASK [pgsql-cluster : Import PostgreSQL Repository KEY] ************************************************************************************************************************************
+changed: [db-srv1]
+changed: [db-srv2]
+changed: [db-srv3]
+
+TASK [pgsql-cluster : Installing PostgreSQL Repository] ************************************************************************************************************************************
+changed: [db-srv1]
+changed: [db-srv3]
+changed: [db-srv2]
+
+TASK [pgsql-cluster : Install 'dnf-command(config-manager)'] *******************************************************************************************************************************
+ok: [db-srv1]
+ok: [db-srv2]
+ok: [db-srv3]
+
+TASK [pgsql-cluster : Install python3 python3-devel python3-pip gcc] ***********************************************************************************************************************
+changed: [db-srv1]
+changed: [db-srv3]
+changed: [db-srv2]
+
+TASK [pgsql-cluster : Install psycopg2 python3-etcd] ***************************************************************************************************************************************
+changed: [db-srv3]
+changed: [db-srv1]
+changed: [db-srv2]
+
+TASK [pgsql-cluster : Install EPEL release] ************************************************************************************************************************************************
+changed: [db-srv3]
+changed: [db-srv1]
+changed: [db-srv2]
+
+TASK [pgsql-cluster : Install and configure ETCD] ******************************************************************************************************************************************
+included: /home/alexey/otus/otus-hl-hw/06/roles/pgsql-cluster/tasks/etcd.yml for db-srv1, db-srv2, db-srv3
+
+TASK [pgsql-cluster : Copy /etc/hosts] *****************************************************************************************************************************************************
+changed: [db-srv3]
+changed: [db-srv1]
+changed: [db-srv2]
+
+TASK [pgsql-cluster : Install etcd] ********************************************************************************************************************************************************
+changed: [db-srv3]
+changed: [db-srv1]
+changed: [db-srv2]
+
+TASK [pgsql-cluster : Check etcd.conf] *****************************************************************************************************************************************************
+ok: [db-srv1]
+ok: [db-srv3]
+ok: [db-srv2]
+
+TASK [pgsql-cluster : Backup config file /etc/etcd/etcd.conf to /etc/etcd/etcd.conf.old] ***************************************************************************************************
+changed: [db-srv1]
+changed: [db-srv2]
+changed: [db-srv3]
+
+TASK [pgsql-cluster : Copy /etc/etcd/etcd.conf] ********************************************************************************************************************************************
+changed: [db-srv1]
+changed: [db-srv3]
+changed: [db-srv2]
+
+TASK [pgsql-cluster : Start etcd] **********************************************************************************************************************************************************
+changed: [db-srv3]
+changed: [db-srv2]
+changed: [db-srv1]
+
+TASK [pgsql-cluster : Install and configure Patroni] ***************************************************************************************************************************************
+included: /home/alexey/otus/otus-hl-hw/06/roles/pgsql-cluster/tasks/patroni.yml for db-srv1, db-srv2, db-srv3
+
+TASK [pgsql-cluster : Disable the built-in PostgreSQL module] ******************************************************************************************************************************
+changed: [db-srv3] => (item=dnf -qy module disable postgresql)
+changed: [db-srv1] => (item=dnf -qy module disable postgresql)
+changed: [db-srv2] => (item=dnf -qy module disable postgresql)
+
+TASK [pgsql-cluster : Install PostgreSQL-16] ***********************************************************************************************************************************************
+changed: [db-srv1]
+changed: [db-srv2]
+changed: [db-srv3]
+
+TASK [pgsql-cluster : Install patroni patroni-etcd watchdog] *******************************************************************************************************************************
+changed: [db-srv3]
+changed: [db-srv1]
+changed: [db-srv2]
+
+TASK [pgsql-cluster : Check /etc/patroni] **************************************************************************************************************************************************
+ok: [db-srv1]
+ok: [db-srv3]
+ok: [db-srv2]
+
+TASK [pgsql-cluster : Create a directory /etc/patroni, if it does not exist] ***************************************************************************************************************
+skipping: [db-srv1]
+skipping: [db-srv2]
+skipping: [db-srv3]
+
+TASK [pgsql-cluster : Copy /usr/share/doc/patroni/postgres0.yml to /etc/patroni/patroni.yml and backup file] *******************************************************************************
+changed: [db-srv1] => (item=patroni.yml)
+changed: [db-srv3] => (item=patroni.yml)
+changed: [db-srv2] => (item=patroni.yml)
+changed: [db-srv3] => (item=patroni.yml.old)
+changed: [db-srv1] => (item=patroni.yml.old)
+changed: [db-srv2] => (item=patroni.yml.old)
+
+TASK [pgsql-cluster : Copy /etc/patroni/patroni.yml] ***************************************************************************************************************************************
+changed: [db-srv1]
+changed: [db-srv3]
+changed: [db-srv2]
+
+TASK [pgsql-cluster : Start patroni] *******************************************************************************************************************************************************
+changed: [db-srv1]
+changed: [db-srv2]
+changed: [db-srv3]
+
+TASK [pgsql-cluster : Pause] ***************************************************************************************************************************************************************
+Pausing for 30 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [db-srv1]
+
+TASK [pgsql-cluster : Create db and users] *************************************************************************************************************************************************
+included: /home/alexey/otus/otus-hl-hw/06/roles/pgsql-cluster/tasks/db.yml for db-srv1, db-srv2, db-srv3
+
+TASK [pgsql-cluster : create a user for joomla] ********************************************************************************************************************************************
+[WARNING]: Module remote_tmp /var/lib/pgsql/.ansible/tmp did not exist and was created with a mode of 0700, this may cause issues when running as another user. To avoid this, create the
+remote_tmp dir with the correct permissions manually
+changed: [db-srv1]
+
+TASK [pgsql-cluster : Create a database for joomla] ****************************************************************************************************************************************
+changed: [db-srv1]
+
+PLAY [Joomla CMS] **************************************************************************************************************************************************************************
+
+TASK [joomla : Install software] ***********************************************************************************************************************************************************
+included: /home/alexey/otus/otus-hl-hw/06/roles/joomla/tasks/install.yml for backend1, backend2
+
+TASK [joomla : Installing Nginx Repository] ************************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [joomla : install Nginx] **************************************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [joomla : Import Remi KEY] ************************************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [joomla : Installing Remi Repository] *************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [joomla : Enable PHP Remi Repository] *************************************************************************************************************************************************
+changed: [backend2] => (item=dnf module reset php -y)
+changed: [backend1] => (item=dnf module reset php -y)
+changed: [backend2] => (item=dnf module enable php:remi-8.3 -y)
+changed: [backend1] => (item=dnf module enable php:remi-8.3 -y)
+
+TASK [joomla : Install php-fpm and PHP extensions] *****************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [joomla : change user in /etc/php-fpm.d/www.conf] *************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [joomla : change group in /etc/php-fpm.d/www.conf] ************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [joomla : Change ownership /var/lib/php/session/] *************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [joomla : Install joomla] *************************************************************************************************************************************************************
+included: /home/alexey/otus/otus-hl-hw/06/roles/joomla/tasks/joomla.yml for backend1, backend2
+
+TASK [joomla : Check exist joomla.conf] ****************************************************************************************************************************************************
+ok: [backend1]
+ok: [backend2]
+
+TASK [joomla : Copy joomla.conf] ***********************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [joomla : Check exist /home/akopalev/joomla.tar.gz] ***********************************************************************************************************************************
+ok: [backend1]
+ok: [backend2]
+
+TASK [joomla : Download joomla] ************************************************************************************************************************************************************
+changed: [backend1]
+
+TASK [joomla : Check exist /var/www/html/joomla/administrator] *****************************************************************************************************************************
+ok: [backend1]
+ok: [backend2]
+
+TASK [joomla : Change ownership of Joomla directory] ***************************************************************************************************************************************
+changed: [backend1]
+
+TASK [joomla : Extract joomla.tar.gz into /var/www/html/joomla] ****************************************************************************************************************************
+changed: [backend1]
+
+TASK [joomla : Change ownership of Joomla directory] ***************************************************************************************************************************************
+changed: [backend1]
+
+TASK [joomla : Start Nginx Service] ********************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [joomla : Start php-fpm Service] ******************************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+PLAY RECAP *********************************************************************************************************************************************************************************
+backend1                   : ok=69   changed=60   unreachable=0    failed=0    skipped=3    rescued=0    ignored=9   
+backend2                   : ok=40   changed=33   unreachable=0    failed=0    skipped=2    rescued=0    ignored=5   
+bast-host                  : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+db-srv1                    : ok=32   changed=21   unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+db-srv2                    : ok=29   changed=19   unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+db-srv3                    : ok=29   changed=19   unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+haproxy-srv1               : ok=12   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+haproxy-srv2               : ok=12   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+iscsi-srv1                 : ok=7    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1   

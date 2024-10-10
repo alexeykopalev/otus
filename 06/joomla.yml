@@ -1,0 +1,6 @@
+- name: install-joomla
+  hosts: backend_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - joomla

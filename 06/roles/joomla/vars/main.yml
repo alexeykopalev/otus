@@ -1,0 +1,17 @@
+joomla_install: true
+joomla_force_reinstall: true
+jm_php_version: 8.2
+jm_version: "5.1.4"
+jm_install_dir: "joomla"
+jm_db_name: "joomla"
+jm_db_user: "joomla_user"
+jm_db_password: "mysqlpass"
+#wp_db_host: "{{ ip_address['otus-nodedb-1-db'] }}"
+#wp_db_host: "10.110.0.50"
+jm_db_host: "127.0.0.1"
+jm_db_port: "5432" 
+jm_db_collate: 'utf8_general_ci'
+jm_table_prefix: 'jm_'
+jm_debug: false
+jm_admin_email: 'admin@example.com'
+jm_webserver: nginx

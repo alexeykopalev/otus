@@ -1,0 +1,12 @@
+---
+- name: "Install software"
+  ansible.builtin.include_tasks: install.yml
+
+- name: "Install and configure ETCD"
+  ansible.builtin.include_tasks: etcd.yml
+
+- name: "Install and configure Patroni"
+  ansible.builtin.include_tasks: patroni.yml
+
+- name: "Create db and users"
+  ansible.builtin.include_tasks: db.yml

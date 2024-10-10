@@ -1,0 +1,9 @@
+- name: Install Chrony
+  hosts: 
+    - group_web_sql
+  gather_facts: false
+  become: true
+  vars :
+    ansible_ssh_private_key_file: /home/alexey/.ssh/akopalev-dip
+  roles:
+    - chrony

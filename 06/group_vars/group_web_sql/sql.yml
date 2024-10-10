@@ -1,0 +1,15 @@
+etcd_servers_hosts:
+  - { name: "db-srv1", host: "db-srv1.otushl.local", ip: "10.6.7.6" }
+  - { name: "db-srv2", host: "db-srv2.otushl.local", ip: "10.6.7.7" }
+  - { name: "db-srv3", host: "db-srv3.otushl.local", ip: "10.6.7.8" }
+
+db_servers_hosts:
+  - { name: "db-srv1", host: "db-srv1.otushl.local", ip: "10.6.7.6" }
+  - { name: "db-srv2", host: "db-srv2.otushl.local", ip: "10.6.7.7" }
+  - { name: "db-srv3", host: "db-srv3.otushl.local", ip: "10.6.7.8" }
+
+db_name: "joomla_db"
+db_user: "joomla_user"
+sql_host: "10.6.7.50"
+sql_port: "5432"
+sql_user: "postgres"

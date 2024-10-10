@@ -1,0 +1,10 @@
+# code: language=ansible
+
+- name: Create vms
+  hosts: pve-fortest
+  vars_files:
+    - ./roles/create-vm/vars/vms.yml
+  gather_facts: false
+  become: yes
+  roles:
+  - create-vm

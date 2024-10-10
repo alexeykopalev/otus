@@ -1,0 +1,7 @@
+- name: Install PostgresSQL Cluster 
+  hosts: db_hosts
+  vars_files:
+    - ./roles/pgsql-cluster/vars/my_vars.yml
+  become: yes
+  roles:
+  - pgsql-cluster

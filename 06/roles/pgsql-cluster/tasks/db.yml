@@ -1,0 +1,23 @@
+
+- name: create a user for joomla
+  community.postgresql.postgresql_user:
+    name: '{{ db_user }}'
+    password: '{{ db_pass }}'
+    login_user: '{{ sql_user }}'
+    login_password: '{{ sql_pass }}'
+    login_host: '{{ sql_host }}'
+    port: '{{ sql_port }}'
+  become_user: postgres
+  run_once: true
+
+- name: Create a database for joomla
+  community.postgresql.postgresql_db:
+    name: '{{ db_name }}'
+    login_user: '{{ sql_user }}'
+    login_password: '{{ sql_pass }}'
+    login_host: '{{ sql_host }}'
+    port: '{{ sql_port }}'
+    owner: '{{ db_user }}'
+  become_user: postgres
+  run_once: true
+
