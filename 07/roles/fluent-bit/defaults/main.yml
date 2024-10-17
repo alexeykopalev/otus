@@ -1,0 +1,29 @@
+---
+
+fluentbit_svc:
+  flush_seconds: 1
+  daemon: false
+  log_level: info
+  storage_path: "{{log_root}}/flb-storage"
+  storage_sync: normal
+  storage_checksum: !unsafe "off"
+  storage_mem_limit: 200M
+  ## optional
+  # log_file: ""
+  custom_parsers_files: []
+  custom_plugins_files: []
+  ## optional
+  # streams_file: ""
+  http_server:
+    state: true
+    listen_ip: 0.0.0.0
+    listen_port: 2020
+
+# fluentbit_filters: []
+# fluentbit_inputs: []
+# fluentbit_outputs: []
+# fluentbit_parsers: []
+
+
+fluentbit_apt_repo_focal: 'deb https://packages.fluentbit.io/ubuntu/focal focal main'
+fluentbit_apt_repo_bionic: 'deb https://packages.fluentbit.io/ubuntu/bionic bionic main'

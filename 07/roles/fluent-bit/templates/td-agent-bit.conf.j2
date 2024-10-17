@@ -1,0 +1,47 @@
+# {{ansible_managed}}
+
+[SERVICE]
+
+    Flush {{ fluentbit_svc.flush_seconds }}
+
+    Daemon {{ (fluentbit_svc.daemon | bool) | ternary('On', 'Off' ) }}
+
+    Log_Level {{ fluentbit_svc.log_level }}
+
+{% if fluentbit_svc.log_file is defined %}
+    Log_File {{  fluentbit_svc.log_file }}
+{% endif %}
+
+{% if fluentbit_svc.storage_path is defined %}
+    storage.path              {{ fluentbit_svc.storage_path }}
+    storage.sync              {{ fluentbit_svc.storage_sync }}
+    storage.checksum          {{ fluentbit_svc.storage_checksum }}
+    storage.backlog.mem_limit {{ fluentbit_svc.storage_mem_limit }}
+{% endif %}
+
+    Parsers_File parsers.conf
+{% if fluentbit_custom_parsers is defined %}
+    Parsers_File custom_parsers.conf
+{% endif %}
+
+    Plugins_File plugins.conf
+{% for plugins_file in fluentbit_svc.custom_plugins_files %}
+    Pluins_File {{ plugins_file.name }}
+{% endfor %}
+
+{% if fluentbit_svc.streams_file is defined %}
+    Streams_file {{ fluentbit_svc.streams_file }}
+{% endif %}
+
+{% if fluentbit_svc.http_server.state %}
+    HTTP_Server {{ (fluentbit_svc.http_server.state | bool) | ternary('On', 'Off' ) }}
+    HTTP_Listen {{ fluentbit_svc.http_server.listen_ip }}
+    HTTP_Port {{ fluentbit_svc.http_server.listen_port }}
+{% endif %}
+
+@INCLUDE inputs.conf
+@INCLUDE outputs.conf
+{% if fluentbit_filters is defined %}
+@INCLUDE filters.conf
+{% endif %}
+

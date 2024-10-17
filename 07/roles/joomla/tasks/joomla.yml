@@ -1,0 +1,79 @@
+- name: Check exist joomla.conf 
+  ansible.builtin.stat:
+    path: /etc/nginx/conf.d/joomla.conf
+  register: result_site_conf
+
+- name: Copy joomla.conf
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/conf.d/joomla.conf
+    owner: nginx
+    group: nginx
+  #when: not result_site_conf.stat.exists
+
+- name: Check exist /home/akopalev/joomla.tar.gz
+  ansible.builtin.stat:
+    path: /home/akopalev/joomla.tar.gz
+  register: result_joomla_distr
+
+- name: Download joomla
+  ansible.builtin.get_url:
+    url: https://github.com/joomla/joomla-cms/releases/download/5.1.4/Joomla_5.1.4-Stable-Full_Package.tar.gz
+    dest: /home/akopalev/joomla.tar.gz
+  run_once: true
+  when: not result_joomla_distr.stat.exists
+
+- name: Check exist /var/www/html/joomla/administrator
+  ansible.builtin.stat:
+    path: /var/www/html/joomla/administrator
+  register: result_joomla_site
+
+- name: Change ownership of Joomla directory
+  file:
+    path: /var/www/html/joomla
+    owner: nginx
+    group: nginx
+    state: directory
+    mode: '2775'
+  run_once: true
+  when: not result_joomla_site.stat.exists
+
+- name: Extract joomla.tar.gz into /var/www/html/joomla
+  ansible.builtin.unarchive:
+    src: /home/akopalev/joomla.tar.gz
+    dest: /var/www/html/joomla
+    remote_src: yes
+  run_once: true
+  when: not result_joomla_site.stat.exists
+
+- name: Change ownership of Joomla directory
+  file:
+    path: /var/www/html/joomla
+    owner: nginx
+    group: nginx
+    state: directory
+    mode: '2775'
+    recurse: yes
+  run_once: true
+  when: not result_joomla_site.stat.exists
+
+# - name: Change ownership of logs
+#   file:
+#     path: 
+#       - /var/log/nginx/joomla_access.log
+#       - /var/log/nginx/joomla_error.log
+#     owner: nginx
+#     group: nginx
+#   run_once: true
+
+- name: Start Nginx Service
+  ansible.builtin.systemd:
+    name: nginx
+    state: restarted
+    enabled: yes
+
+- name: Start php-fpm Service
+  ansible.builtin.systemd:
+    name: php-fpm
+    state: restarted
+    enabled: yes

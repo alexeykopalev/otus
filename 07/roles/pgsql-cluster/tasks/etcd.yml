@@ -1,0 +1,43 @@
+---
+
+- name: Copy /etc/hosts
+  ansible.builtin.template:
+    src: hosts.j2
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install etcd
+  ansible.builtin.dnf:
+      name:
+        - etcd
+      state: latest
+      enablerepo: pgdg-rhel9-extras
+
+- name: Check etcd.conf
+  ansible.builtin.stat:
+    path: /etc/etcd/etcd.conf.old
+  register: etcd_conf_old_result
+
+- name: Backup config file /etc/etcd/etcd.conf to /etc/etcd/etcd.conf.old
+  ansible.builtin.copy:
+    src: /etc/etcd/etcd.conf
+    dest: /etc/etcd/etcd.conf.old
+    remote_src: true
+  when: not etcd_conf_old_result.stat.exists
+
+- name: Copy /etc/etcd/etcd.conf
+  ansible.builtin.template:
+    src: etcd.conf.j2
+    dest: /etc/etcd/etcd.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Start etcd
+  ansible.builtin.service:
+    name: etcd
+    state: restarted
+    enabled: true
+

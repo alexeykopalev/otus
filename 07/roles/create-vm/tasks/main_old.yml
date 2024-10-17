@@ -1,0 +1,73 @@
+
+- name: Clone VMs
+  community.general.proxmox_kvm:
+    node: "{{ node }}"
+    name: "{{ item.value.name }}"
+    newid: "{{ item.value.vmid }}"
+    api_host: "{{ api_host }}"
+    api_token_id: "{{ api_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    api_user: "{{ api_user }}"
+    clone: "{{ clone_vm }}"
+    full: yes
+  loop: "{{ lookup('dict', vms) }}"
+
+- name: Copy userconfig.yaml
+  ansible.builtin.template:
+      src: userconfig.yaml.j2
+      dest: /mnt/pve/ssd_1tb/snippets/userconfig_{{ item.value.name }}.yaml
+  loop: "{{ lookup('dict', vms) }}"
+
+- name: set hostname and hosts
+  ansible.builtin.command: 'qm set {{ item.value.vmid }} --cicustom "user=ssd_1tb:snippets/userconfig_{{ item.value.name }}.yaml"'
+  loop: "{{ lookup('dict', vms) }}"
+
+- name: Set IP addresses
+  ansible.builtin.command: "qm set {{ item.value.vmid }}  --ipconfig0 ip={{ item.value.ipaddress }}/{{ item.value.mask }},gw={{ item.value.gateway }}"
+  loop: "{{ lookup('dict', vms) }}"
+
+# - name: add disk to iscsi-srv1
+#   community.general.proxmox_disk:
+#     api_host: "{{ api_host }}"
+#     api_user: "{{ api_user }}"
+#     api_token_id: "{{ api_token_id }}"
+#     api_token_secret: "{{ api_token_secret }}"
+#     name: iscsi-srv1
+#     disk: scsi1
+#     storage: ssd_1tb
+#     size: 15
+#     state: present
+
+- name: Update VMs
+  community.general.proxmox_kvm:
+    api_host:     "{{ api_host }}"
+    api_token_id: "{{ api_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    api_user:     "{{ api_user }}"
+    cores:        "{{ item.value.cores }}"
+    sockets:      "{{ item.value.sockets }}"
+    memory:       "{{ item.value.memory }}"
+    net:
+        net0: virtio,bridge={{ item.value.bridge }}
+    update: true
+    update_unsafe: true
+    vmid:         "{{ item.value.vmid }}"
+    node:         "{{ node }}"
+    name:         "{{ item.value.name }}"
+    #state:        started
+  loop: "{{ lookup('dict', vms) }}"
+
+- name: Start VMs
+  community.general.proxmox_kvm:
+    api_host:     "{{ api_host }}"
+    api_token_id: "{{ api_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    api_user:     "{{ api_user }}"
+    vmid:         "{{ item.value.vmid }}"
+    node:         "{{ node }}"
+    state:        started
+  loop: "{{ lookup('dict', vms) }}"
+
+- name: Wait a little
+  ansible.builtin.pause:
+    seconds: 60

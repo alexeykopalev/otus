@@ -1,0 +1,61 @@
+- name: Disable the built-in PostgreSQL module
+  ansible.builtin.command: "{{ item }}"
+  with_items: 
+    - dnf -qy module disable postgresql
+
+- name: Install PostgreSQL-16
+  ansible.builtin.dnf:
+    name:
+      - postgresql16-server
+      - postgresql16-contrib
+    state: latest
+
+  # dnf -y install patroni patroni-etcd watchdog
+- name: Install patroni patroni-etcd watchdog
+  ansible.builtin.dnf:
+      name:
+        - patroni 
+        - patroni-etcd 
+        - watchdog
+      state: latest
+
+- name: Check /etc/patroni
+  ansible.builtin.stat:
+    path: /etc/patroni
+  register: result
+
+- name: Create a directory /etc/patroni, if it does not exist
+  ansible.builtin.file:
+    path: /etc/patroni
+    state: directory
+  when: not result.stat.exists
+
+# cp -p /usr/share/doc/patroni/postgres0.yml /etc/patroni/patroni.yml
+- name: Copy /usr/share/doc/patroni/postgres0.yml to /etc/patroni/patroni.yml and backup file
+  ansible.builtin.copy:
+    src: /usr/share/doc/patroni/postgres0.yml
+    dest: "/etc/patroni/{{ item }}"
+    remote_src: true
+  loop: 
+    - patroni.yml
+    - patroni.yml.old
+
+- name: Copy /etc/patroni/patroni.yml
+  ansible.builtin.template:
+    src: patroni.yml.j2
+    dest: /etc/patroni/patroni.yml
+    owner: root
+    group: root
+    mode: '0644'
+
+# systemctl start patroni
+- name: Start patroni
+  ansible.builtin.service:
+    name: patroni
+    state: restarted
+    enabled: true
+
+- name: "Pause"
+  ansible.builtin.pause:
+    seconds: 30
+  run_once: true

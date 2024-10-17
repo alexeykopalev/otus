@@ -1,0 +1,68 @@
+global
+  log /dev/log local0
+  log /dev/log local1 notice
+  chroot /var/lib/haproxy
+  stats timeout 30s
+  user haproxy
+  group haproxy
+  daemon
+defaults
+log global
+mode http
+option httplog
+option dontlognull
+timeout connect 5000
+timeout client 50000
+timeout server 50000
+
+listen stats
+    mode http
+    log global
+    bind *:7000
+
+    maxconn 10
+
+    timeout client      100s
+    timeout server      100s
+    timeout connect     100s
+    timeout queue       100s
+
+    stats enable
+    stats hide-version
+    stats refresh 30s
+    stats show-node
+    stats auth admin:password
+    stats uri /
+
+#frontend
+frontend http_front
+bind *:80
+
+default_backend http_back
+
+#frontend patroni
+frontend patroni
+mode tcp
+bind *:{{ sql_port }}
+default_backend patroni
+
+#round robin balancing backend http
+backend http_back
+#balance roundrobin
+balance source
+mode http
+option forwardfor
+server backend1 10.6.7.9:80 check
+server backend2 10.6.7.10:80 check
+
+#balancing patroni
+backend patroni
+default-server inter 3s fall 3 rise 2 on-marked-down shutdown-sessions
+mode tcp
+option httpchk
+http-check expect status 200
+#server db-srv1 10.6.7.6:5432 maxconn 100 check port 8008
+#server db-srv2 10.6.7.7:5432 maxconn 100 check port 8008
+#server db-srv3 10.6.7.8:5432 maxconn 100 check port 8008
+{% for item in db_servers_hosts %}server {{ item.name }} {{ item.ip }}:{{ sql_port }} maxconn 100 check port 8008
+{% endfor %}

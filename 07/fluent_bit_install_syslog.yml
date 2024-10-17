@@ -1,0 +1,6 @@
+- name: Install and configure FluentBit (syslog_only)
+  hosts: group_front_sql_logs
+  gather_facts: true
+  become: yes
+  roles:
+    - fluent-bit

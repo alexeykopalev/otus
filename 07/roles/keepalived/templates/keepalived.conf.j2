@@ -1,0 +1,23 @@
+vrrp_script chk_haproxy {
+  script "killall -0 haproxy"
+  interval 2
+  weight 2
+}
+
+vrrp_instance VI_1 {
+  interface eth0
+  state {% if inventory_hostname == 'haproxy-srv1' %}MASTER{% elif inventory_hostname == 'haproxy-srv2' %}BACKUP{% endif %}
+
+  virtual_router_id 1
+  priority 101
+  virtual_ipaddress {
+    10.6.7.50
+  }
+  track_script {
+    chk_haproxy
+  }
+  authentication {
+    auth_type PASS
+    auth_pass secret_password
+  }
+}

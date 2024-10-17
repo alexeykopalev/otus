@@ -1,0 +1,13 @@
+---
+- name: Copy config
+  ansible.builtin.template:
+    src: '60-fluent-bit.conf.j2'
+    dest: '/etc/rsyslog.d/60-fluent-bit.conf'
+    mode: 0644
+
+- name: Restart rsyslog service
+  service:
+    name: rsyslog
+    enabled: true
+    state: restarted
+  become: true

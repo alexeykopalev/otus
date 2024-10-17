@@ -1,0 +1,5 @@
+- name: "Install software"
+  ansible.builtin.include_tasks: install.yml
+
+- name: "Install joomla"
+  ansible.builtin.include_tasks: joomla.yml

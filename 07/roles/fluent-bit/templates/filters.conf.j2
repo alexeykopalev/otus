@@ -1,0 +1,8 @@
+{% if fluentbit_filters is defined %}
+{% for filter in fluentbit_filters %}
+[FILTER]
+{% for key in filter %}
+    {{ key | regex_replace ('^[0-9]+__', '') }} {{ filter[key] }}
+{% endfor %}
+{% endfor %}
+{% endif %}

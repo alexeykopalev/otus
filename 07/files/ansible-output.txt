@@ -1,0 +1,1225 @@
+alexey@ask-pc-fed-vb:~/otus/otus-hl-hw/07$ ansible-playbook playbook.yml 
+
+PLAY [Playbook of chrony] **************************************************************************************************************************************************************
+
+TASK [chrony : Installing Chrony] ******************************************************************************************************************************************************
+ok: [iscsi-srv1]
+ok: [haproxy-srv2]
+ok: [db-srv1]
+ok: [haproxy-srv1]
+ok: [db-srv2]
+ok: [backend2]
+ok: [backend1]
+ok: [db-srv3]
+ok: [os1]
+ok: [os2]
+ok: [dashboards1]
+ok: [os3]
+
+TASK [chrony : Start Chronyd Service] **************************************************************************************************************************************************
+ok: [iscsi-srv1]
+ok: [haproxy-srv2]
+ok: [db-srv1]
+ok: [db-srv2]
+ok: [haproxy-srv1]
+ok: [db-srv3]
+ok: [backend1]
+ok: [backend2]
+ok: [os2]
+ok: [os1]
+ok: [os3]
+ok: [dashboards1]
+
+TASK [chrony : Set timezone to Europe/Moscow] ******************************************************************************************************************************************
+changed: [haproxy-srv1]
+changed: [haproxy-srv2]
+changed: [db-srv1]
+changed: [db-srv2]
+changed: [iscsi-srv1]
+changed: [db-srv3]
+changed: [backend2]
+changed: [os1]
+changed: [backend1]
+changed: [os2]
+changed: [os3]
+changed: [dashboards1]
+
+RUNNING HANDLER [chrony : Restart Chronyd] *********************************************************************************************************************************************
+changed: [db-srv1]
+changed: [haproxy-srv2]
+changed: [iscsi-srv1]
+changed: [db-srv2]
+changed: [haproxy-srv1]
+changed: [db-srv3]
+changed: [os2]
+changed: [backend2]
+changed: [os1]
+changed: [backend1]
+changed: [os3]
+changed: [dashboards1]
+
+PLAY [Playbook of targetcli] ***********************************************************************************************************************************************************
+
+TASK [targetcli : Install targetcli] ***************************************************************************************************************************************************
+changed: [iscsi-srv1]
+
+TASK [targetcli : Gather targetcli status] *********************************************************************************************************************************************
+fatal: [iscsi-srv1]: FAILED! => {"changed": true, "cmd": ["targetcli", "/backstores/block/disk01", "info"], "delta": "0:00:00.226790", "end": "2024-10-17 22:23:17.971600", "msg": "non-zero return code", "rc": 1, "start": "2024-10-17 22:23:17.744810", "stderr": "No such path /backstores/block/disk01", "stderr_lines": ["No such path /backstores/block/disk01"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [targetcli : Run targetcli configure] *********************************************************************************************************************************************
+changed: [iscsi-srv1] => (item=targetcli /backstores/block create disk01 /dev/sdb)
+changed: [iscsi-srv1] => (item=targetcli /iscsi create iqn.2023-11.ru.otus:storage.target00)
+changed: [iscsi-srv1] => (item=targetcli /iscsi/iqn.2023-11.ru.otus:storage.target00/tpg1/luns create /backstores/block/disk01 lun=1)
+changed: [iscsi-srv1] => (item=targetcli /iscsi/iqn.2023-11.ru.otus:storage.target00/tpg1/acls create iqn.1994-05.com.redhat:cf70d4c706e)
+changed: [iscsi-srv1] => (item=targetcli /iscsi/iqn.2023-11.ru.otus:storage.target00/tpg1/acls create iqn.1994-05.com.redhat:f5cfb68ca8f)
+
+PLAY [Playbook of iscsi-client] ********************************************************************************************************************************************************
+
+TASK [iscsi-client : Install open-iscsi] ***********************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [iscsi-client : change InitiatorName backend1] ************************************************************************************************************************************
+skipping: [backend2]
+changed: [backend1]
+
+TASK [iscsi-client : change InitiatorName backend2] ************************************************************************************************************************************
+skipping: [backend1]
+changed: [backend2]
+
+TASK [iscsi-client : iscsi_login] ******************************************************************************************************************************************************
+changed: [backend1] => (item=iscsiadm -m discovery -t st -p 10.6.7.3)
+changed: [backend2] => (item=iscsiadm -m discovery -t st -p 10.6.7.3)
+changed: [backend1] => (item=iscsiadm -m node -l -T iqn.2023-11.ru.otus:storage.target00)
+changed: [backend2] => (item=iscsiadm -m node -l -T iqn.2023-11.ru.otus:storage.target00)
+
+RUNNING HANDLER [iscsi-client : start_iscsi] *******************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+RUNNING HANDLER [iscsi-client : restart_iscsid] ****************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+PLAY [Playbook of ha-cluster] **********************************************************************************************************************************************************
+
+TASK [ha-cluster : Install the Packages] ***********************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Add backend2 to /etc/hosts backend1] ********************************************************************************************************************************
+skipping: [backend2]
+changed: [backend1]
+
+TASK [ha-cluster : Add backend1 to /etc/hosts backend2] ********************************************************************************************************************************
+skipping: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Start the pcs service] **********************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Set the password for the use hacluster] *****************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [ha-cluster : Authenticate the host] **********************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Gather cluster status] **********************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "cluster", "status"], "delta": "0:00:00.564247", "end": "2024-10-17 22:24:12.868092", "msg": "non-zero return code", "rc": 1, "start": "2024-10-17 22:24:12.303845", "stderr": "Error: cluster is not currently running on this node", "stderr_lines": ["Error: cluster is not currently running on this node"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "cluster", "status"], "delta": "0:00:00.574893", "end": "2024-10-17 22:24:12.889467", "msg": "non-zero return code", "rc": 1, "start": "2024-10-17 22:24:12.314574", "stderr": "Error: cluster is not currently running on this node", "stderr_lines": ["Error: cluster is not currently running on this node"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Setup the HA-Cluster] ***********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Start the HA-Cluster] ***********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Enable the HA-Cluster] **********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Download fence-egent-common] ****************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Download fence-egent-pve] *******************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Install fence-egent-pve from a local file] **************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Gather stonith status] **********************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "stonith", "status", "cccc"], "delta": "0:00:00.570601", "end": "2024-10-17 22:24:28.827184", "msg": "non-zero return code", "rc": 1, "start": "2024-10-17 22:24:28.256583", "stderr": "Error: resource or tag id 'cccc' not found", "stderr_lines": ["Error: resource or tag id 'cccc' not found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : pcs cluster cib fencing.xml] ****************************************************************************************************************************************
+changed: [backend1] => (item=pcs cluster cib fencing.xml)
+changed: [backend1] => (item=pcs -f fencing.xml stonith create fence_vm_backend1 fence_pve pcmk_host_list="backend1" pcmk_host_check="static-list" ip="10.6.6.10" pve_node="pve-fortest" username="root@pam" password="GTa4Cl" ssl_insecure=yes plug="101" power_wait="10" vmtype="qemu")
+changed: [backend1] => (item=pcs -f fencing.xml stonith create fence_vm_backend2 fence_pve pcmk_host_list="backend2" pcmk_host_check="static-list" ip="10.6.6.10" pve_node="pve-fortest" username="root@pam" password="GTa4Cl" ssl_insecure=yes plug="102" power_wait="10" vmtype="qemu")
+changed: [backend1] => (item=pcs -f fencing.xml constraint location fence_vm_backend1 avoids backend1=INFINITY)
+changed: [backend1] => (item=pcs -f fencing.xml constraint location fence_vm_backend2 avoids backend2=INFINITY)
+changed: [backend1] => (item=pcs cluster cib-push scope=configuration fencing.xml)
+
+TASK [ha-cluster : Setting stonith-enabled=false] **************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Setting 'No Quorum' Policy] *****************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather dlm resource status] *****************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "dlm-clone"], "delta": "0:00:00.561430", "end": "2024-10-17 22:24:39.188308", "msg": "non-zero return code", "rc": 1, "start": "2024-10-17 22:24:38.626878", "stderr": "Warning: Unable to find resource 'dlm-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'dlm-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "dlm-clone"], "delta": "0:00:00.568514", "end": "2024-10-17 22:24:39.225762", "msg": "non-zero return code", "rc": 1, "start": "2024-10-17 22:24:38.657248", "stderr": "Warning: Unable to find resource 'dlm-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'dlm-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating 'dlm' Resource] ********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather lvmlockd resource status] ************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "lvmlockd-clone"], "delta": "0:00:00.559766", "end": "2024-10-17 22:24:41.464023", "msg": "non-zero return code", "rc": 1, "start": "2024-10-17 22:24:40.904257", "stderr": "Warning: Unable to find resource 'lvmlockd-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'lvmlockd-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "lvmlockd-clone"], "delta": "0:00:00.565576", "end": "2024-10-17 22:24:41.508493", "msg": "non-zero return code", "rc": 1, "start": "2024-10-17 22:24:40.942917", "stderr": "Warning: Unable to find resource 'lvmlockd-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'lvmlockd-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating lvmlockd Resource] *****************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Creating First Constraint] ******************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Pause] **************************************************************************************************************************************************************
+Pausing for 10 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [backend1]
+
+TASK [ha-cluster : Gather pvs /dev/sdb] ************************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": "pvs | grep /dev/sdb", "delta": "0:00:01.045845", "end": "2024-10-17 22:24:55.681800", "msg": "non-zero return code", "rc": 1, "start": "2024-10-17 22:24:54.635955", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Physical Volume] *******************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather vgs /dev/sdb] ************************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": "vgs | grep cluster_vg", "delta": "0:00:00.034646", "end": "2024-10-17 22:24:56.854261", "msg": "non-zero return code", "rc": 1, "start": "2024-10-17 22:24:56.819615", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Volume Group] **********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : start lock manager for shared] **************************************************************************************************************************************
+skipping: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Pause] **************************************************************************************************************************************************************
+Pausing for 10 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [backend1]
+
+TASK [ha-cluster : Gather lvs | grep cluster_lv] ***************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": "lvs | grep cluster_lv", "delta": "0:00:00.035289", "end": "2024-10-17 22:25:13.693990", "msg": "non-zero return code", "rc": 1, "start": "2024-10-17 22:25:13.658701", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Logical Volume] ********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Formatting Logical Volume With GFS2] ********************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather cluster_vg-clone resource status] ****************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "cluster_vg-clone"], "delta": "0:00:00.561971", "end": "2024-10-17 22:25:16.744980", "msg": "non-zero return code", "rc": 1, "start": "2024-10-17 22:25:16.183009", "stderr": "Warning: Unable to find resource 'cluster_vg-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'cluster_vg-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "cluster_vg-clone"], "delta": "0:00:00.558956", "end": "2024-10-17 22:25:16.757461", "msg": "non-zero return code", "rc": 1, "start": "2024-10-17 22:25:16.198505", "stderr": "Warning: Unable to find resource 'cluster_vg-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'cluster_vg-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : create LVM-activate resource] ***************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : set start order as [locking] → [shared_vg]] *************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : set that [shared_vg] and [locking] start on a same node] ************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather clusterfs-clone resource status] *****************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "clusterfs-clone"], "delta": "0:00:00.558182", "end": "2024-10-17 22:25:21.372330", "msg": "non-zero return code", "rc": 1, "start": "2024-10-17 22:25:20.814148", "stderr": "Warning: Unable to find resource 'clusterfs-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'clusterfs-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "clusterfs-clone"], "delta": "0:00:00.564554", "end": "2024-10-17 22:25:21.386080", "msg": "non-zero return code", "rc": 1, "start": "2024-10-17 22:25:20.821526", "stderr": "Warning: Unable to find resource 'clusterfs-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'clusterfs-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Cluster File System] ***************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : set start order as [shared_vg] → [shared_fs]] ***********************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : set that [shared_fs] and [shared_vg] start on a same node] **********************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Setting stonith-enabled=true] ***************************************************************************************************************************************
+changed: [backend1]
+
+PLAY [Playbook of keepalived] **********************************************************************************************************************************************************
+
+TASK [keepalived : Install packages] ***************************************************************************************************************************************************
+changed: [haproxy-srv1]
+changed: [haproxy-srv2]
+
+TASK [keepalived : Change sysctl config] ***********************************************************************************************************************************************
+changed: [haproxy-srv2] => (item={'name': 'net.ipv4.ip_forward', 'value': '1'})
+changed: [haproxy-srv1] => (item={'name': 'net.ipv4.ip_forward', 'value': '1'})
+changed: [haproxy-srv2] => (item={'name': 'net.ipv4.ip_nonlocal_bind', 'value': '1'})
+changed: [haproxy-srv1] => (item={'name': 'net.ipv4.ip_nonlocal_bind', 'value': '1'})
+
+TASK [keepalived : Backup default haproxy config file] *********************************************************************************************************************************
+changed: [haproxy-srv2]
+changed: [haproxy-srv1]
+
+TASK [keepalived : Template custom haproxy config file] ********************************************************************************************************************************
+changed: [haproxy-srv2]
+changed: [haproxy-srv1]
+
+TASK [keepalived : Start and enable haproxy service] ***********************************************************************************************************************************
+changed: [haproxy-srv1]
+changed: [haproxy-srv2]
+
+TASK [keepalived : Backup default keepalived config file] ******************************************************************************************************************************
+changed: [haproxy-srv1]
+changed: [haproxy-srv2]
+
+TASK [keepalived : Template custom keepalived config file] *****************************************************************************************************************************
+changed: [haproxy-srv1]
+changed: [haproxy-srv2]
+
+TASK [keepalived : Start and enable keepalived service] ********************************************************************************************************************************
+changed: [haproxy-srv2]
+changed: [haproxy-srv1]
+
+PLAY [Playbook of pgsql-cluster] *******************************************************************************************************************************************************
+
+TASK [Gathering Facts] *****************************************************************************************************************************************************************
+ok: [db-srv1]
+ok: [db-srv3]
+ok: [db-srv2]
+
+TASK [pgsql-cluster : Install software] ************************************************************************************************************************************************
+included: /home/alexey/otus/otus-hl-hw/07/roles/pgsql-cluster/tasks/install.yml for db-srv1, db-srv2, db-srv3
+
+TASK [pgsql-cluster : Install support apps] ********************************************************************************************************************************************
+changed: [db-srv2]
+changed: [db-srv1]
+changed: [db-srv3]
+
+TASK [pgsql-cluster : Import PostgreSQL Repository KEY] ********************************************************************************************************************************
+changed: [db-srv2]
+changed: [db-srv1]
+changed: [db-srv3]
+
+TASK [pgsql-cluster : Installing PostgreSQL Repository] ********************************************************************************************************************************
+changed: [db-srv3]
+changed: [db-srv1]
+changed: [db-srv2]
+
+TASK [pgsql-cluster : Install 'dnf-command(config-manager)'] ***************************************************************************************************************************
+ok: [db-srv2]
+ok: [db-srv1]
+ok: [db-srv3]
+
+TASK [pgsql-cluster : Install python3 python3-devel python3-pip gcc] *******************************************************************************************************************
+changed: [db-srv3]
+changed: [db-srv1]
+changed: [db-srv2]
+
+TASK [pgsql-cluster : Install psycopg2 python3-etcd] ***********************************************************************************************************************************
+changed: [db-srv1]
+changed: [db-srv2]
+changed: [db-srv3]
+
+TASK [pgsql-cluster : Install EPEL release] ********************************************************************************************************************************************
+changed: [db-srv2]
+changed: [db-srv1]
+changed: [db-srv3]
+
+TASK [pgsql-cluster : Install and configure ETCD] **************************************************************************************************************************************
+included: /home/alexey/otus/otus-hl-hw/07/roles/pgsql-cluster/tasks/etcd.yml for db-srv1, db-srv2, db-srv3
+
+TASK [pgsql-cluster : Copy /etc/hosts] *************************************************************************************************************************************************
+changed: [db-srv2]
+changed: [db-srv1]
+changed: [db-srv3]
+
+TASK [pgsql-cluster : Install etcd] ****************************************************************************************************************************************************
+changed: [db-srv2]
+changed: [db-srv1]
+changed: [db-srv3]
+
+TASK [pgsql-cluster : Check etcd.conf] *************************************************************************************************************************************************
+ok: [db-srv2]
+ok: [db-srv1]
+ok: [db-srv3]
+
+TASK [pgsql-cluster : Backup config file /etc/etcd/etcd.conf to /etc/etcd/etcd.conf.old] ***********************************************************************************************
+changed: [db-srv2]
+changed: [db-srv1]
+changed: [db-srv3]
+
+TASK [pgsql-cluster : Copy /etc/etcd/etcd.conf] ****************************************************************************************************************************************
+changed: [db-srv2]
+changed: [db-srv1]
+changed: [db-srv3]
+
+TASK [pgsql-cluster : Start etcd] ******************************************************************************************************************************************************
+changed: [db-srv3]
+changed: [db-srv1]
+changed: [db-srv2]
+
+TASK [pgsql-cluster : Install and configure Patroni] ***********************************************************************************************************************************
+included: /home/alexey/otus/otus-hl-hw/07/roles/pgsql-cluster/tasks/patroni.yml for db-srv1, db-srv2, db-srv3
+
+TASK [pgsql-cluster : Disable the built-in PostgreSQL module] **************************************************************************************************************************
+changed: [db-srv2] => (item=dnf -qy module disable postgresql)
+changed: [db-srv1] => (item=dnf -qy module disable postgresql)
+changed: [db-srv3] => (item=dnf -qy module disable postgresql)
+
+TASK [pgsql-cluster : Install PostgreSQL-16] *******************************************************************************************************************************************
+changed: [db-srv1]
+changed: [db-srv2]
+changed: [db-srv3]
+
+TASK [pgsql-cluster : Install patroni patroni-etcd watchdog] ***************************************************************************************************************************
+changed: [db-srv2]
+changed: [db-srv3]
+changed: [db-srv1]
+
+TASK [pgsql-cluster : Check /etc/patroni] **********************************************************************************************************************************************
+ok: [db-srv1]
+ok: [db-srv3]
+ok: [db-srv2]
+
+TASK [pgsql-cluster : Create a directory /etc/patroni, if it does not exist] ***********************************************************************************************************
+skipping: [db-srv1]
+skipping: [db-srv2]
+skipping: [db-srv3]
+
+TASK [pgsql-cluster : Copy /usr/share/doc/patroni/postgres0.yml to /etc/patroni/patroni.yml and backup file] ***************************************************************************
+changed: [db-srv1] => (item=patroni.yml)
+changed: [db-srv2] => (item=patroni.yml)
+changed: [db-srv3] => (item=patroni.yml)
+changed: [db-srv1] => (item=patroni.yml.old)
+changed: [db-srv2] => (item=patroni.yml.old)
+changed: [db-srv3] => (item=patroni.yml.old)
+
+TASK [pgsql-cluster : Copy /etc/patroni/patroni.yml] ***********************************************************************************************************************************
+changed: [db-srv1]
+changed: [db-srv2]
+changed: [db-srv3]
+
+TASK [pgsql-cluster : Start patroni] ***************************************************************************************************************************************************
+changed: [db-srv1]
+changed: [db-srv2]
+changed: [db-srv3]
+
+TASK [pgsql-cluster : Pause] ***********************************************************************************************************************************************************
+Pausing for 30 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [db-srv1]
+
+TASK [pgsql-cluster : Create db and users] *********************************************************************************************************************************************
+included: /home/alexey/otus/otus-hl-hw/07/roles/pgsql-cluster/tasks/db.yml for db-srv1, db-srv2, db-srv3
+
+TASK [pgsql-cluster : create a user for joomla] ****************************************************************************************************************************************
+[WARNING]: Module remote_tmp /var/lib/pgsql/.ansible/tmp did not exist and was created with a mode of 0700, this may cause issues when running as another user. To avoid this, create
+the remote_tmp dir with the correct permissions manually
+changed: [db-srv1]
+
+TASK [pgsql-cluster : Create a database for joomla] ************************************************************************************************************************************
+changed: [db-srv1]
+
+PLAY [Playbook of Joomla] **************************************************************************************************************************************************************
+
+TASK [joomla : Install software] *******************************************************************************************************************************************************
+included: /home/alexey/otus/otus-hl-hw/07/roles/joomla/tasks/install.yml for backend1, backend2
+
+TASK [joomla : Installing Nginx Repository] ********************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [joomla : install Nginx] **********************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [joomla : Import Remi KEY] ********************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [joomla : Installing Remi Repository] *********************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [joomla : Enable PHP Remi Repository] *********************************************************************************************************************************************
+changed: [backend2] => (item=dnf module reset php -y)
+changed: [backend2] => (item=dnf module enable php:remi-8.3 -y)
+changed: [backend1] => (item=dnf module reset php -y)
+changed: [backend1] => (item=dnf module enable php:remi-8.3 -y)
+
+TASK [joomla : Install php-fpm and PHP extensions] *************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [joomla : change user in /etc/php-fpm.d/www.conf] *********************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [joomla : change group in /etc/php-fpm.d/www.conf] ********************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [joomla : Change ownership /var/lib/php/session/] *********************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [joomla : Install joomla] *********************************************************************************************************************************************************
+included: /home/alexey/otus/otus-hl-hw/07/roles/joomla/tasks/joomla.yml for backend1, backend2
+
+TASK [joomla : Check exist joomla.conf] ************************************************************************************************************************************************
+ok: [backend1]
+ok: [backend2]
+
+TASK [joomla : Copy joomla.conf] *******************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [joomla : Check exist /home/akopalev/joomla.tar.gz] *******************************************************************************************************************************
+ok: [backend1]
+ok: [backend2]
+
+TASK [joomla : Download joomla] ********************************************************************************************************************************************************
+changed: [backend1]
+
+TASK [joomla : Check exist /var/www/html/joomla/administrator] *************************************************************************************************************************
+ok: [backend1]
+ok: [backend2]
+
+TASK [joomla : Change ownership of Joomla directory] ***********************************************************************************************************************************
+changed: [backend1]
+
+TASK [joomla : Extract joomla.tar.gz into /var/www/html/joomla] ************************************************************************************************************************
+changed: [backend1]
+
+TASK [joomla : Change ownership of Joomla directory] ***********************************************************************************************************************************
+changed: [backend1]
+
+TASK [joomla : Start Nginx Service] ****************************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [joomla : Start php-fpm Service] **************************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+PLAY [Playbook of Opensearch_install] **************************************************************************************************************************************************
+
+TASK [Gathering Facts] *****************************************************************************************************************************************************************
+ok: [os1]
+ok: [os3]
+ok: [os2]
+
+TASK [opensearch : Set hostname] *******************************************************************************************************************************************************
+changed: [os3]
+changed: [os1]
+changed: [os2]
+
+TASK [opensearch : Disable the selinux] ************************************************************************************************************************************************
+[WARNING]: SELinux state change will take effect next reboot
+changed: [os1]
+changed: [os3]
+changed: [os2]
+
+TASK [opensearch : Hosts | populate inventory into hosts file] *************************************************************************************************************************
+changed: [os1]
+changed: [os3]
+changed: [os2]
+
+TASK [opensearch : Set vm.max_map_count in sysctl.conf] ********************************************************************************************************************************
+changed: [os1]
+changed: [os2]
+changed: [os3]
+
+TASK [opensearch : Set open files limit in sysctl.conf] ********************************************************************************************************************************
+changed: [os1]
+changed: [os2]
+changed: [os3]
+
+TASK [opensearch : OpenSearch Install | Download opensearch 2.11.1] ********************************************************************************************************************
+changed: [os3]
+changed: [os2]
+changed: [os1]
+
+TASK [opensearch : OpenSearch Install | Create opensearch user] ************************************************************************************************************************
+changed: [os2]
+changed: [os1]
+changed: [os3]
+
+TASK [opensearch : OpenSearch Install | Create home directory] *************************************************************************************************************************
+ok: [os1]
+ok: [os2]
+ok: [os3]
+
+TASK [opensearch : OpenSearch Install | Extract the tar file] **************************************************************************************************************************
+changed: [os3]
+changed: [os1]
+changed: [os2]
+
+TASK [opensearch : OpenSearch Install | Copy Configuration File] ***********************************************************************************************************************
+changed: [os3]
+changed: [os2]
+changed: [os1]
+
+TASK [opensearch : OpenSearch Install | Copy jvm.options File for Instance] ************************************************************************************************************
+changed: [os3]
+changed: [os2]
+changed: [os1]
+
+TASK [opensearch : OpenSearch Install | create systemd service] ************************************************************************************************************************
+changed: [os1]
+changed: [os2]
+changed: [os3]
+
+TASK [opensearch : Security Plugin configuration | Force remove local temporary directory for certificates generation] *****************************************************************
+ok: [os1 -> localhost]
+
+TASK [opensearch : Security Plugin configuration | Create local temporary directory for certificates generation] ***********************************************************************
+changed: [os1 -> localhost]
+
+TASK [opensearch : Security Plugin configuration | Download certificates generation tool] **********************************************************************************************
+changed: [os1 -> localhost]
+
+TASK [opensearch : Security Plugin configuration | Extract the certificates generation tool] *******************************************************************************************
+changed: [os1 -> localhost]
+
+TASK [opensearch : Security Plugin configuration | Make the executable file] ***********************************************************************************************************
+ok: [os1 -> localhost]
+
+TASK [opensearch : Security Plugin configuration | Prepare the certificates generation template file] **********************************************************************************
+changed: [os1 -> localhost]
+
+TASK [opensearch : Security Plugin configuration | Generate the node & admin certificates in local] ************************************************************************************
+changed: [os1 -> localhost]
+
+TASK [opensearch : Security Plugin configuration | Check cert exists] ******************************************************************************************************************
+ok: [os1] => (item=/usr/share/opensearch/config/root-ca.pem)
+ok: [os2] => (item=/usr/share/opensearch/config/root-ca.pem)
+ok: [os3] => (item=/usr/share/opensearch/config/root-ca.pem)
+ok: [os1] => (item=/usr/share/opensearch/config/root-ca.key)
+ok: [os3] => (item=/usr/share/opensearch/config/root-ca.key)
+ok: [os2] => (item=/usr/share/opensearch/config/root-ca.key)
+ok: [os3] => (item=/usr/share/opensearch/config/os3.key)
+ok: [os1] => (item=/usr/share/opensearch/config/os1.key)
+ok: [os2] => (item=/usr/share/opensearch/config/os2.key)
+ok: [os1] => (item=/usr/share/opensearch/config/os1.pem)
+ok: [os3] => (item=/usr/share/opensearch/config/os3.pem)
+ok: [os2] => (item=/usr/share/opensearch/config/os2.pem)
+ok: [os2] => (item=/usr/share/opensearch/config/os2_http.key)
+ok: [os1] => (item=/usr/share/opensearch/config/os1_http.key)
+ok: [os3] => (item=/usr/share/opensearch/config/os3_http.key)
+ok: [os3] => (item=/usr/share/opensearch/config/os3_http.pem)
+ok: [os2] => (item=/usr/share/opensearch/config/os2_http.pem)
+ok: [os1] => (item=/usr/share/opensearch/config/os1_http.pem)
+ok: [os3] => (item=/usr/share/opensearch/config/admin.key)
+ok: [os1] => (item=/usr/share/opensearch/config/admin.key)
+ok: [os2] => (item=/usr/share/opensearch/config/admin.key)
+ok: [os3] => (item=/usr/share/opensearch/config/admin.pem)
+ok: [os1] => (item=/usr/share/opensearch/config/admin.pem)
+ok: [os2] => (item=/usr/share/opensearch/config/admin.pem)
+
+TASK [opensearch : Security Plugin configuration | Set fact. The initial value "Don't update certs"] ***********************************************************************************
+ok: [os1]
+ok: [os2]
+ok: [os3]
+
+TASK [opensearch : Security Plugin configuration | Set fact. Update certificates if at least one certificate is not found] *************************************************************
+ok: [os1] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/root-ca.pem', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/root-ca.pem', 'ansible_loop_var': 'item'})
+ok: [os1] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/root-ca.key', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/root-ca.key', 'ansible_loop_var': 'item'})
+ok: [os1] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/os1.key', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/os1.key', 'ansible_loop_var': 'item'})
+ok: [os1] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/os1.pem', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/os1.pem', 'ansible_loop_var': 'item'})
+ok: [os2] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/root-ca.pem', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/root-ca.pem', 'ansible_loop_var': 'item'})
+ok: [os1] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/os1_http.key', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/os1_http.key', 'ansible_loop_var': 'item'})
+ok: [os3] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/root-ca.pem', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/root-ca.pem', 'ansible_loop_var': 'item'})
+ok: [os2] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/root-ca.key', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/root-ca.key', 'ansible_loop_var': 'item'})
+ok: [os1] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/os1_http.pem', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/os1_http.pem', 'ansible_loop_var': 'item'})
+ok: [os3] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/root-ca.key', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/root-ca.key', 'ansible_loop_var': 'item'})
+ok: [os2] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/os2.key', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/os2.key', 'ansible_loop_var': 'item'})
+ok: [os1] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/admin.key', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/admin.key', 'ansible_loop_var': 'item'})
+ok: [os3] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/os3.key', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/os3.key', 'ansible_loop_var': 'item'})
+ok: [os1] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/admin.pem', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/admin.pem', 'ansible_loop_var': 'item'})
+ok: [os3] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/os3.pem', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/os3.pem', 'ansible_loop_var': 'item'})
+ok: [os2] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/os2.pem', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/os2.pem', 'ansible_loop_var': 'item'})
+ok: [os3] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/os3_http.key', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/os3_http.key', 'ansible_loop_var': 'item'})
+ok: [os2] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/os2_http.key', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/os2_http.key', 'ansible_loop_var': 'item'})
+ok: [os3] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/os3_http.pem', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/os3_http.pem', 'ansible_loop_var': 'item'})
+ok: [os2] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/os2_http.pem', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/os2_http.pem', 'ansible_loop_var': 'item'})
+ok: [os3] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/admin.key', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/admin.key', 'ansible_loop_var': 'item'})
+ok: [os2] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/admin.key', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/admin.key', 'ansible_loop_var': 'item'})
+ok: [os2] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/admin.pem', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/admin.pem', 'ansible_loop_var': 'item'})
+ok: [os3] => (item={'changed': False, 'stat': {'exists': False}, 'invocation': {'module_args': {'path': '/usr/share/opensearch/config/admin.pem', 'get_attributes': False, 'get_checksum': False, 'get_mime': False, 'follow': False, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/usr/share/opensearch/config/admin.pem', 'ansible_loop_var': 'item'})
+
+TASK [opensearch : Security Plugin configuration | Show the force_update_cert setting] *************************************************************************************************
+ok: [os1] => {
+    "msg": "force_update_cert: True"
+}
+ok: [os2] => {
+    "msg": "force_update_cert: True"
+}
+ok: [os3] => {
+    "msg": "force_update_cert: True"
+}
+
+TASK [opensearch : Security Plugin configuration | Count force_update_cert nodes] ******************************************************************************************************
+ok: [os1]
+ok: [os2]
+ok: [os3]
+
+TASK [opensearch : Security Plugin configuration | Show the force_update_cert_nodes_count setting] *************************************************************************************
+ok: [os1] => {
+    "msg": "force_update_cert_nodes_count: 3"
+}
+ok: [os2] => {
+    "msg": "force_update_cert_nodes_count: 3"
+}
+ok: [os3] => {
+    "msg": "force_update_cert_nodes_count: 3"
+}
+
+TASK [opensearch : Security Plugin configuration | Do need to update certificates] *****************************************************************************************************
+ok: [os1] => {
+    "msg": "Need to update certificates..."
+}
+ok: [os2] => {
+    "msg": "Need to update certificates..."
+}
+ok: [os3] => {
+    "msg": "Need to update certificates..."
+}
+
+TASK [opensearch : Security Plugin configuration | IaC disabled - Count force_update_cert nodes] ***************************************************************************************
+skipping: [os1]
+skipping: [os2]
+skipping: [os3]
+
+TASK [opensearch : Security Plugin configuration | Copy the node & admin certificates to opensearch nodes if at least one certificate is not found on at least one server] *************
+changed: [os2] => (item=root-ca.pem)
+changed: [os1] => (item=root-ca.pem)
+changed: [os3] => (item=root-ca.pem)
+changed: [os2] => (item=root-ca.key)
+changed: [os1] => (item=root-ca.key)
+changed: [os3] => (item=root-ca.key)
+changed: [os2] => (item=os2.key)
+changed: [os1] => (item=os1.key)
+changed: [os3] => (item=os3.key)
+changed: [os1] => (item=os1.pem)
+changed: [os2] => (item=os2.pem)
+changed: [os3] => (item=os3.pem)
+changed: [os1] => (item=os1_http.key)
+changed: [os2] => (item=os2_http.key)
+changed: [os3] => (item=os3_http.key)
+changed: [os2] => (item=os2_http.pem)
+changed: [os1] => (item=os1_http.pem)
+changed: [os3] => (item=os3_http.pem)
+changed: [os2] => (item=admin.key)
+changed: [os1] => (item=admin.key)
+changed: [os3] => (item=admin.key)
+changed: [os1] => (item=admin.pem)
+changed: [os2] => (item=admin.pem)
+changed: [os3] => (item=admin.pem)
+
+TASK [opensearch : Security Plugin configuration | Copy the security configuration file 1 to cluster] **********************************************************************************
+changed: [os1]
+changed: [os2]
+changed: [os3]
+
+TASK [opensearch : Security Plugin configuration | Copy the security configuration file 2 to cluster] **********************************************************************************
+changed: [os2]
+changed: [os1]
+changed: [os3]
+
+TASK [opensearch : Security Plugin configuration | Create security plugin configuration folder] ****************************************************************************************
+changed: [os1]
+changed: [os2]
+changed: [os3]
+
+TASK [opensearch : Security Plugin configuration | Copy the security configuration file 3 to cluster] **********************************************************************************
+skipping: [os1]
+skipping: [os2]
+skipping: [os3]
+
+TASK [opensearch : Security Plugin configuration | Prepare the opensearch security configuration file] *********************************************************************************
+changed: [os1]
+changed: [os2]
+changed: [os3]
+
+TASK [opensearch : Security Plugin configuration | Set the file ownerships] ************************************************************************************************************
+changed: [os1]
+changed: [os2]
+changed: [os3]
+
+TASK [opensearch : Security Plugin configuration | Set the folder permission] **********************************************************************************************************
+changed: [os3]
+changed: [os1]
+changed: [os2]
+
+TASK [opensearch : Security Plugin configuration | Restart opensearch with security configuration] *************************************************************************************
+changed: [os1]
+changed: [os2]
+changed: [os3]
+
+TASK [opensearch : Wait for opensearch to startup] *************************************************************************************************************************************
+ok: [os1]
+ok: [os3]
+ok: [os2]
+
+TASK [opensearch : Security Plugin configuration | Copy the opensearch security internal users template] *******************************************************************************
+changed: [os1]
+
+TASK [opensearch : Security Plugin configuration | Copy custom configuration files to cluster] *****************************************************************************************
+changed: [os3] => (item=files/tenants.yml)
+changed: [os2] => (item=files/tenants.yml)
+changed: [os1] => (item=files/tenants.yml)
+changed: [os3] => (item=files/roles.yml)
+changed: [os2] => (item=files/roles.yml)
+changed: [os1] => (item=files/roles.yml)
+changed: [os3] => (item=files/roles_mapping.yml)
+changed: [os2] => (item=files/roles_mapping.yml)
+changed: [os1] => (item=files/roles_mapping.yml)
+changed: [os3] => (item=files/internal_users.yml)
+changed: [os1] => (item=files/internal_users.yml)
+changed: [os2] => (item=files/internal_users.yml)
+
+TASK [opensearch : Security Plugin configuration | Set the Admin user password] ********************************************************************************************************
+changed: [os1]
+
+TASK [opensearch : Security Plugin configuration | Set the kibanaserver user pasword] **************************************************************************************************
+changed: [os1]
+
+TASK [opensearch : Security Plugin configuration | Set the fluentbit user pasword] *****************************************************************************************************
+changed: [os1]
+
+TASK [opensearch : Security Plugin configuration | Set the readall user pasword] *******************************************************************************************************
+changed: [os1]
+
+TASK [opensearch : Security Plugin configuration | Check that the files/internal_users.yml exists] *************************************************************************************
+ok: [os1 -> localhost]
+
+TASK [opensearch : Security Plugin configuration | Load custom internal users configuration] *******************************************************************************************
+skipping: [os1]
+
+TASK [opensearch : Security Plugin configuration | Filter service keys from the list of users] *****************************************************************************************
+skipping: [os1]
+skipping: [os2]
+skipping: [os3]
+
+TASK [opensearch : Security Plugin configuration | Set passwords for all users from custom config] *************************************************************************************
+skipping: [os1]
+
+TASK [opensearch : Security Plugin configuration | Initialize the opensearch security index in opensearch with custom configs] *********************************************************
+changed: [os1]
+
+TASK [opensearch : Security Plugin configuration | Initialize the opensearch security index in opensearch with default configs] ********************************************************
+skipping: [os1]
+
+TASK [opensearch : Security Plugin configuration | Cleanup local temporary directory] **************************************************************************************************
+changed: [os1 -> localhost]
+
+TASK [opensearch : Remove `cluster.initial_master_nodes` setting from configuration] ***************************************************************************************************
+changed: [os1]
+changed: [os2]
+changed: [os3]
+
+TASK [opensearch : Make sure opensearch is started] ************************************************************************************************************************************
+ok: [os1]
+ok: [os3]
+ok: [os2]
+
+TASK [opensearch : Get all the installed ES plugins] ***********************************************************************************************************************************
+changed: [os3]
+changed: [os1]
+changed: [os2]
+
+TASK [opensearch : Show all the installed ES plugins] **********************************************************************************************************************************
+ok: [os1] => {
+    "msg": "opensearch-alerting\nopensearch-anomaly-detection\nopensearch-asynchronous-search\nopensearch-cross-cluster-replication\nopensearch-custom-codecs\nopensearch-geospatial\nopensearch-index-management\nopensearch-job-scheduler\nopensearch-knn\nopensearch-ml\nopensearch-neural-search\nopensearch-notifications\nopensearch-notifications-core\nopensearch-observability\nopensearch-performance-analyzer\nopensearch-reports-scheduler\nopensearch-security\nopensearch-security-analytics\nopensearch-sql"
+}
+ok: [os2] => {
+    "msg": "opensearch-alerting\nopensearch-anomaly-detection\nopensearch-asynchronous-search\nopensearch-cross-cluster-replication\nopensearch-custom-codecs\nopensearch-geospatial\nopensearch-index-management\nopensearch-job-scheduler\nopensearch-knn\nopensearch-ml\nopensearch-neural-search\nopensearch-notifications\nopensearch-notifications-core\nopensearch-observability\nopensearch-performance-analyzer\nopensearch-reports-scheduler\nopensearch-security\nopensearch-security-analytics\nopensearch-sql"
+}
+ok: [os3] => {
+    "msg": "opensearch-alerting\nopensearch-anomaly-detection\nopensearch-asynchronous-search\nopensearch-cross-cluster-replication\nopensearch-custom-codecs\nopensearch-geospatial\nopensearch-index-management\nopensearch-job-scheduler\nopensearch-knn\nopensearch-ml\nopensearch-neural-search\nopensearch-notifications\nopensearch-notifications-core\nopensearch-observability\nopensearch-performance-analyzer\nopensearch-reports-scheduler\nopensearch-security\nopensearch-security-analytics\nopensearch-sql"
+}
+
+TASK [opensearch : Wait for opensearch to startup] *************************************************************************************************************************************
+ok: [os1]
+ok: [os3]
+ok: [os2]
+
+TASK [opensearch : Check the opensearch status] ****************************************************************************************************************************************
+ok: [os1]
+ok: [os3]
+ok: [os2]
+
+TASK [opensearch : Show the opensearch status] *****************************************************************************************************************************************
+ok: [os1] => {
+    "msg": {
+        "active_primary_shards": 5,
+        "active_shards": 13,
+        "active_shards_percent_as_number": 100.0,
+        "cluster_name": "development-cluster",
+        "delayed_unassigned_shards": 0,
+        "discovered_cluster_manager": true,
+        "discovered_master": true,
+        "initializing_shards": 0,
+        "number_of_data_nodes": 3,
+        "number_of_in_flight_fetch": 0,
+        "number_of_nodes": 3,
+        "number_of_pending_tasks": 2,
+        "relocating_shards": 0,
+        "status": "green",
+        "task_max_waiting_in_queue_millis": 252,
+        "timed_out": false,
+        "unassigned_shards": 0
+    }
+}
+ok: [os2] => {
+    "msg": {
+        "active_primary_shards": 5,
+        "active_shards": 13,
+        "active_shards_percent_as_number": 100.0,
+        "cluster_name": "development-cluster",
+        "delayed_unassigned_shards": 0,
+        "discovered_cluster_manager": true,
+        "discovered_master": true,
+        "initializing_shards": 0,
+        "number_of_data_nodes": 3,
+        "number_of_in_flight_fetch": 0,
+        "number_of_nodes": 3,
+        "number_of_pending_tasks": 0,
+        "relocating_shards": 0,
+        "status": "green",
+        "task_max_waiting_in_queue_millis": 0,
+        "timed_out": false,
+        "unassigned_shards": 0
+    }
+}
+ok: [os3] => {
+    "msg": {
+        "active_primary_shards": 5,
+        "active_shards": 13,
+        "active_shards_percent_as_number": 100.0,
+        "cluster_name": "development-cluster",
+        "delayed_unassigned_shards": 0,
+        "discovered_cluster_manager": true,
+        "discovered_master": true,
+        "initializing_shards": 0,
+        "number_of_data_nodes": 3,
+        "number_of_in_flight_fetch": 0,
+        "number_of_nodes": 3,
+        "number_of_pending_tasks": 2,
+        "relocating_shards": 0,
+        "status": "green",
+        "task_max_waiting_in_queue_millis": 49,
+        "timed_out": false,
+        "unassigned_shards": 0
+    }
+}
+
+TASK [opensearch : Verify the roles of opensearch cluster nodes] ***********************************************************************************************************************
+ok: [os1]
+
+TASK [opensearch : Show the roles of opensearch cluster nodes] *************************************************************************************************************************
+ok: [os1] => {
+    "msg": {
+        "changed": false,
+        "content_length": "425",
+        "content_type": "text/plain; charset=UTF-8",
+        "cookies": {},
+        "cookies_string": "",
+        "elapsed": 0,
+        "failed": false,
+        "msg": "OK (425 bytes)",
+        "redirected": false,
+        "status": 200,
+        "url": "https://os1:9200/_cat/nodes?v"
+    }
+}
+
+PLAY [Playbook of dashboards_install] **************************************************************************************************************************************************
+
+TASK [Gathering Facts] *****************************************************************************************************************************************************************
+ok: [dashboards1]
+
+TASK [dashboards : Set hostname] *******************************************************************************************************************************************************
+changed: [dashboards1]
+
+TASK [dashboards : Disable the selinux] ************************************************************************************************************************************************
+changed: [dashboards1]
+
+TASK [dashboards : Hosts | populate inventory into hosts file] *************************************************************************************************************************
+changed: [dashboards1]
+
+TASK [dashboards : Set open files limit in sysctl.conf] ********************************************************************************************************************************
+changed: [dashboards1]
+
+TASK [dashboards : Dashboards Install | Download opensearch dashbaord 2.11.1] **********************************************************************************************************
+changed: [dashboards1]
+
+TASK [dashboards : Dashboards Install | Create opensearch dashboard user] **************************************************************************************************************
+changed: [dashboards1]
+
+TASK [dashboards : Dashboards Install | Create home directory] *************************************************************************************************************************
+ok: [dashboards1]
+
+TASK [dashboards : Dashboards Install | Extract the tar file] **************************************************************************************************************************
+changed: [dashboards1]
+
+TASK [dashboards : Dashboards Install | Copy Configuration File] ***********************************************************************************************************************
+changed: [dashboards1]
+
+TASK [dashboards : Dashboards Install | Set the file ownerships] ***********************************************************************************************************************
+changed: [dashboards1]
+
+TASK [dashboards : Dashboards Install | Set the folder permission] *********************************************************************************************************************
+changed: [dashboards1]
+
+TASK [dashboards : Dashboards Install | create systemd service] ************************************************************************************************************************
+changed: [dashboards1]
+
+TASK [dashboards : Make sure opensearch dashboards is started] *************************************************************************************************************************
+changed: [dashboards1]
+
+TASK [dashboards : Get all the installed dashboards plugins] ***************************************************************************************************************************
+changed: [dashboards1]
+
+TASK [dashboards : Show all the installed dashboards plugins] **************************************************************************************************************************
+ok: [dashboards1] => {
+    "msg": "alertingDashboards@2.11.1.0\nanomalyDetectionDashboards@2.11.1.0\ncustomImportMapDashboards@2.11.1.0\nganttChartDashboards@2.11.1.0\nindexManagementDashboards@2.11.1.0\nmlCommonsDashboards@2.11.1.0\nnotificationsDashboards@2.11.1.0\nobservabilityDashboards@2.11.1.0\nqueryWorkbenchDashboards@2.11.1.0\nreportsDashboards@2.11.1.0\nsearchRelevanceDashboards@2.11.1.0\nsecurityAnalyticsDashboards@2.11.1.0\nsecurityDashboards@2.11.1.0"
+}
+
+PLAY [IPlaybook of fluent_bit_install_syslog] ******************************************************************************************************************************************
+
+TASK [Gathering Facts] *****************************************************************************************************************************************************************
+ok: [db-srv1]
+ok: [db-srv2]
+ok: [haproxy-srv2]
+ok: [iscsi-srv1]
+ok: [os3]
+ok: [dashboards1]
+ok: [haproxy-srv1]
+ok: [db-srv3]
+ok: [os1]
+ok: [os2]
+
+TASK [fluent-bit : Install fluentbit] **************************************************************************************************************************************************
+included: /home/alexey/otus/otus-hl-hw/07/roles/fluent-bit/tasks/install-RedHat.yml for iscsi-srv1, haproxy-srv1, haproxy-srv2, db-srv1, db-srv2, db-srv3, os1, os2, os3, dashboards1
+
+TASK [fluent-bit : Install Redhat | Add yum repository for Centos 9] *******************************************************************************************************************
+changed: [haproxy-srv2]
+changed: [haproxy-srv1]
+changed: [iscsi-srv1]
+changed: [db-srv1]
+changed: [db-srv2]
+changed: [os2]
+changed: [db-srv3]
+changed: [os3]
+changed: [dashboards1]
+changed: [os1]
+
+TASK [fluent-bit : Install fluentbit package] ******************************************************************************************************************************************
+changed: [haproxy-srv2]
+changed: [haproxy-srv1]
+changed: [iscsi-srv1]
+changed: [db-srv1]
+changed: [db-srv2]
+changed: [os2]
+changed: [os1]
+changed: [dashboards1]
+changed: [db-srv3]
+changed: [os3]
+
+TASK [fluent-bit : Configure | fluent-bit main conf] ***********************************************************************************************************************************
+changed: [iscsi-srv1]
+changed: [db-srv1]
+changed: [haproxy-srv2]
+changed: [haproxy-srv1]
+changed: [db-srv2]
+changed: [os3]
+changed: [db-srv3]
+changed: [os1]
+changed: [dashboards1]
+changed: [os2]
+
+TASK [fluent-bit : Configure | fluent-bit inputs] **************************************************************************************************************************************
+changed: [iscsi-srv1]
+changed: [haproxy-srv2]
+changed: [haproxy-srv1]
+changed: [db-srv1]
+changed: [db-srv2]
+changed: [os1]
+changed: [os3]
+changed: [db-srv3]
+changed: [dashboards1]
+changed: [os2]
+
+TASK [fluent-bit : Configure | fluent-bit outputs] *************************************************************************************************************************************
+changed: [iscsi-srv1]
+changed: [db-srv1]
+changed: [haproxy-srv1]
+changed: [haproxy-srv2]
+changed: [db-srv2]
+changed: [os3]
+changed: [db-srv3]
+changed: [os1]
+changed: [dashboards1]
+changed: [os2]
+
+TASK [fluent-bit : Configure | fluent-bit filters] *************************************************************************************************************************************
+changed: [haproxy-srv1]
+changed: [iscsi-srv1]
+changed: [haproxy-srv2]
+changed: [db-srv1]
+changed: [db-srv2]
+changed: [os3]
+changed: [db-srv3]
+changed: [os1]
+changed: [dashboards1]
+changed: [os2]
+
+TASK [fluent-bit : Configure | fluent-bit custom parsers] ******************************************************************************************************************************
+changed: [haproxy-srv1]
+changed: [db-srv1]
+changed: [iscsi-srv1]
+changed: [haproxy-srv2]
+changed: [db-srv2]
+changed: [db-srv3]
+changed: [dashboards1]
+changed: [os1]
+changed: [os2]
+changed: [os3]
+
+TASK [fluent-bit : Configure | fluent-bit start services] ******************************************************************************************************************************
+changed: [db-srv1]
+changed: [haproxy-srv2]
+changed: [iscsi-srv1]
+changed: [db-srv2]
+changed: [haproxy-srv1]
+changed: [os3]
+changed: [os2]
+changed: [dashboards1]
+changed: [db-srv3]
+changed: [os1]
+
+TASK [fluent-bit : Copy config] ********************************************************************************************************************************************************
+changed: [db-srv1]
+changed: [iscsi-srv1]
+changed: [haproxy-srv2]
+changed: [haproxy-srv1]
+changed: [db-srv2]
+changed: [os3]
+changed: [os2]
+changed: [os1]
+changed: [dashboards1]
+changed: [db-srv3]
+
+TASK [fluent-bit : Restart rsyslog service] ********************************************************************************************************************************************
+changed: [haproxy-srv2]
+changed: [db-srv1]
+changed: [iscsi-srv1]
+changed: [haproxy-srv1]
+changed: [db-srv2]
+changed: [db-srv3]
+changed: [dashboards1]
+changed: [os1]
+changed: [os3]
+changed: [os2]
+
+RUNNING HANDLER [fluent-bit : Restart fluentbit service] *******************************************************************************************************************************
+changed: [haproxy-srv2]
+changed: [iscsi-srv1]
+changed: [haproxy-srv1]
+changed: [db-srv1]
+changed: [db-srv3]
+changed: [db-srv2]
+changed: [dashboards1]
+changed: [os2]
+changed: [os1]
+changed: [os3]
+
+PLAY [IPlaybook of fluent_bit_install_syslog_nginx] ************************************************************************************************************************************
+
+TASK [Gathering Facts] *****************************************************************************************************************************************************************
+ok: [backend1]
+ok: [backend2]
+
+TASK [fluent-bit : Install fluentbit] **************************************************************************************************************************************************
+included: /home/alexey/otus/otus-hl-hw/07/roles/fluent-bit/tasks/install-RedHat.yml for backend1, backend2
+
+TASK [fluent-bit : Install Redhat | Add yum repository for Centos 9] *******************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [fluent-bit : Install fluentbit package] ******************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [fluent-bit : Configure | fluent-bit main conf] ***********************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [fluent-bit : Configure | fluent-bit inputs] **************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [fluent-bit : Configure | fluent-bit outputs] *************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [fluent-bit : Configure | fluent-bit filters] *************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [fluent-bit : Configure | fluent-bit custom parsers] ******************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [fluent-bit : Configure | fluent-bit start services] ******************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [fluent-bit : Copy config] ********************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [fluent-bit : Restart rsyslog service] ********************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+RUNNING HANDLER [fluent-bit : Restart fluentbit service] *******************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+PLAY RECAP *****************************************************************************************************************************************************************************
+backend1                   : ok=82   changed=71   unreachable=0    failed=0    skipped=3    rescued=0    ignored=9   
+backend2                   : ok=53   changed=44   unreachable=0    failed=0    skipped=2    rescued=0    ignored=5   
+dashboards1                : ok=33   changed=26   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+db-srv1                    : ok=45   changed=32   unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+db-srv2                    : ok=42   changed=30   unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+db-srv3                    : ok=42   changed=30   unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+haproxy-srv1               : ok=25   changed=21   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+haproxy-srv2               : ok=25   changed=21   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+iscsi-srv1                 : ok=20   changed=16   unreachable=0    failed=0    skipped=0    rescued=0    ignored=1   
+os1                        : ok=71   changed=47   unreachable=0    failed=0    skipped=6    rescued=0    ignored=0   
+os2                        : ok=54   changed=35   unreachable=0    failed=0    skipped=3    rescued=0    ignored=0   
+os3                        : ok=54   changed=35   unreachable=0    failed=0    skipped=3    rescued=0    ignored=0   

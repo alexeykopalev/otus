@@ -1,0 +1,8 @@
+---
+
+- name: Opensearch dashboards installation & configuration
+  hosts: dashboards
+  gather_facts: true
+  become: yes
+  roles:
+   - dashboards

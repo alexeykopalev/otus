@@ -1,0 +1,13 @@
+{% if fluentbit_outputs is defined %}
+{% for output in fluentbit_outputs %}
+[OUTPUT]
+{% for key in output %}
+    {{ key | regex_replace ('^[0-9]+__', '') }} {{ output[key] }}
+{% endfor %}
+{% endfor %}
+{% else %}
+[OUTPUT]
+    Name file
+    Match cpu_default
+    Path /dev/null
+{% endif %}

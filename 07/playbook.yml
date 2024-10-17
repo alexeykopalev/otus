@@ -1,0 +1,84 @@
+# code: language=ansible
+
+# - name: Playbook of create-vm
+#   hosts: pve-fortest
+#   roles: 
+#     - { role: 'create-vm' }
+
+- name: Playbook of chrony
+  hosts: 
+    - group_web_sql
+    - group_logs
+  gather_facts: false
+  become: true
+  roles: 
+    - { role: 'chrony' }
+
+- name: Playbook of targetcli
+  hosts: iscsi_srv
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: 'targetcli' }
+
+- name: Playbook of iscsi-client
+  hosts: backend_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: 'iscsi-client' }
+
+- name: Playbook of ha-cluster
+  hosts: backend_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: 'ha-cluster' }
+
+- name: Playbook of keepalived
+  hosts: haproxy_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: 'keepalived' }
+
+- name: Playbook of pgsql-cluster
+  hosts: db_hosts
+  become: yes
+  roles:
+  - { role: 'pgsql-cluster' }
+
+- name: Playbook of Joomla
+  hosts: backend_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: joomla }
+
+- name: Playbook of Opensearch_install
+  hosts: os_cluster
+  gather_facts: true
+  become: yes
+  roles:
+  - { role: opensearch }
+
+- name: Playbook of dashboards_install
+  hosts: dashboards
+  gather_facts: true
+  become: yes
+  roles:
+   - { role: dashboards }
+  
+- name: IPlaybook of fluent_bit_install_syslog
+  hosts: group_front_sql_logs
+  gather_facts: true
+  become: yes
+  roles:
+    - { role: fluent-bit }
+
+- name: IPlaybook of fluent_bit_install_syslog_nginx
+  hosts: group_back
+  gather_facts: true
+  become: yes
+  roles:
+    - { role: fluent-bit }

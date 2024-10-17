@@ -1,0 +1,52 @@
+---
+
+- name: Configure | fluent-bit main conf
+  template:
+    src: td-agent-bit.conf.j2
+    dest: /etc/fluent-bit/fluent-bit.conf
+    mode: 0644
+
+- name: Configure | fluent-bit inputs
+  template:
+    src: 'inputs.conf.j2'
+    dest: '/etc/fluent-bit/inputs.conf'
+    mode: 0644
+
+# - name: message
+#   ansible.builtin.debug: 
+#     msg: "{{ fluentbit_outputs }}"
+  #when: fluentbit_outputs is defined
+# - name: Wait a little
+#   ansible.builtin.pause:
+#     seconds: 60
+
+- name: Configure | fluent-bit outputs
+  template:
+    src: 'outputs.conf.j2'
+    dest: '/etc/fluent-bit/outputs.conf'
+    mode: 0644
+  when: fluentbit_outputs is defined
+  #notify: Restart fluentbit service
+
+- name: Configure | fluent-bit filters
+  template:
+    src: 'filters.conf.j2'
+    dest: '/etc/fluent-bit/filters.conf'
+    mode: 0644
+  when: fluentbit_filters is defined
+  #notify: Restart fluentbit service
+
+- name: Configure | fluent-bit custom parsers
+  template:
+    src: 'parsers.conf.j2'
+    dest: '/etc/fluent-bit/custom_parsers.conf'
+    mode: 0644
+  when: fluentbit_custom_parsers is defined
+  #notify: Restart fluentbit service
+
+- name: Configure | fluent-bit start services
+  systemd:
+    name: 'fluent-bit.service'
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
