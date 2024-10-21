@@ -1,0 +1,22 @@
+- name: Install and configure chrony
+  hosts: 
+    - bast-host
+    - backend_hosts
+    - db_hosts
+  become: yes
+  roles:
+  - chrony
+
+- name: install-mysql
+  hosts: db_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - db
+
+- name: install-wordpress
+  hosts: backend_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - wordpress
