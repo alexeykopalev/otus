@@ -1,0 +1,11 @@
+- name: add disk to iscsi-srv1
+  community.general.proxmox_disk:
+    api_host: "{{ api_host }}"
+    api_user: "{{ api_user }}"
+    api_token_id: "{{ api_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    name: iscsi-srv1
+    disk: scsi1
+    storage: ssd_1tb
+    size: 15
+    state: present

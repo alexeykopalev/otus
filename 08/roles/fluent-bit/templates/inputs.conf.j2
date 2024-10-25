@@ -1,0 +1,14 @@
+{% if fluentbit_inputs is defined %}
+{% for input in fluentbit_inputs %}
+[INPUT]
+{% for key in input %}
+    {{ key | regex_replace ('^[0-9]+__', '') }} {{ input[key] }}
+{% endfor %}
+{% endfor %}
+
+{% else %}
+[INPUT]
+    Name cpu
+    Tag cpu_default
+
+{% endif %}

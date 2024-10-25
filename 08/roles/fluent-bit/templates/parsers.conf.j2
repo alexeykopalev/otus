@@ -1,0 +1,8 @@
+{% if fluentbit_custom_parsers is defined %}
+{% for parser in fluentbit_custom_parsers %}
+[PARSER]
+{% for key in parser %}
+    {{ key | regex_replace ('^[0-9]+__', '') }} {{ parser[key] }}
+{% endfor %}
+{% endfor %}
+{% endif %}

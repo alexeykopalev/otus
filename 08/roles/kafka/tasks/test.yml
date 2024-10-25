@@ -1,0 +1,11 @@
+- name: message
+  ansible.builtin.debug: 
+    msg: "{{ myid }}"
+
+- name: message 2
+  ansible.builtin.debug: 
+    msg: "{{ inventory_hostname }}"
+
+- name: Wait a little
+  ansible.builtin.pause:
+    seconds: 10

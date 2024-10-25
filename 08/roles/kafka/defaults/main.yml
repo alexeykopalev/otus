@@ -1,0 +1,5 @@
+---
+zk_root_dir: "/opt/zookeeper"
+zk_data_dir: "/var/lib/zookeeper"
+#myid: "{{ groups['kafka_servers'].index(inventory_hostname) + 1 }}"
+domain_name: otushl.local

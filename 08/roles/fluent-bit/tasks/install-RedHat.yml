@@ -1,0 +1,10 @@
+---
+
+- name: Install Redhat | Add yum repository for Centos {{ ansible_distribution_major_version }}
+  yum_repository:
+    name: TD_Agent_Bit
+    baseurl: http://packages.fluentbit.io/centos/{{ ansible_distribution_major_version }}/$basearch/
+    gpgcheck: true
+    gpgkey: http://packages.fluentbit.io/fluentbit.key
+    description: Fluent bit repo
+    enabled: true

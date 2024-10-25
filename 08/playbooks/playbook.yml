@@ -1,0 +1,106 @@
+# code: language=ansible
+
+# - name: Playbook of create-vm
+#   hosts: pve-fortest
+#   roles: 
+#     - { role: 'create-vm' }
+
+- name: Playbook of chrony
+  hosts: 
+    - group_web_sql
+    - group_logs
+    - kafka_servers
+  gather_facts: false
+  become: true
+  roles: 
+    - { role: 'chrony' }
+
+- name: Playbook of targetcli
+  hosts: iscsi_srv
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: 'targetcli' }
+
+- name: Playbook of iscsi-client
+  hosts: backend_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: 'iscsi-client' }
+
+- name: Playbook of ha-cluster
+  hosts: backend_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: 'ha-cluster' }
+
+- name: Playbook of loadbalancer
+  hosts: nginx_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: 'loadbalancer' }
+
+- name: Playbook of keepalived
+  hosts: nginx_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: 'keepalived' }
+
+- name: Playbook of db
+  hosts: db_hosts
+  become: yes
+  roles:
+  - { role: 'db' }
+
+- name: Playbook of Wordpress
+  hosts: backend_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: wordpress }
+
+- name: Playbook of Opensearch_install
+  hosts: os_cluster
+  gather_facts: true
+  become: yes
+  roles:
+  - { role: opensearch }
+
+- name: Playbook of dashboards_install
+  hosts: dashboards
+  gather_facts: true
+  become: yes
+  roles:
+   - { role: dashboards }
+
+- name: Playbook of kafka
+  hosts: kafka_servers
+  gather_facts: true
+  become: yes
+  roles:
+    - { role: kafka }
+
+- name: Playbook of logstash
+  hosts: os_cluster
+  gather_facts: true
+  become: yes
+  roles:
+    - { role: logstash }
+
+- name: Playbook of fluent_bit_install_front_nginx
+  hosts: group_front
+  gather_facts: true
+  become: yes
+  roles:
+    - { role: fluent-bit }
+
+- name: Playbook of fluent_bit_install_back_nginx
+  hosts: group_back
+  gather_facts: true
+  become: yes
+  roles:
+    - { role: fluent-bit }

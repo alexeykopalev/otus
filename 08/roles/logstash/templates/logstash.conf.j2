@@ -1,0 +1,40 @@
+input {
+  kafka {
+    bootstrap_servers => "
+{%- for item in groups['kafka_servers'] %}
+{{ hostvars[item].ansible_host }}:9092{% if not loop.last %},{% endif %}
+{%- endfor %}
+" 
+    topics => ["loadbalancer-nginx-access","wordpress-access"]
+    decorate_events => true
+  }
+}
+
+filter {
+  if [@metadata][kafka][topic] == "wordpress-access" {
+      grok {
+	match => { "message" => '"@%{WORD:kafka_timestamp}":%{NUMBER:exec_time},"%{WORD:log}":"%{IPORHOST:loadbalanser_ip} - %{USERNAME:user} \[%{HTTPDATE:access_time}] \\"%{WORD:http_method} %{DATA:url} HTTP/%{NUMBER:http_version}\\" %{NUMBER:response_code} %{NUMBER:body_sent:bytes} \\"%{DATA:referrer}\\" \\"%{DATA:agent}\" \\"%{IPORHOST:client_ip}\\""%{GREEDYDATA:payload}' }
+        remove_field => [ "%{WORD:kafka_timestamp}","%{NUMBER:exec_time}","%{WORD:log}" ]
+      }
+  }
+  if [@metadata][kafka][topic] == "loadbalancer-nginx-access" {
+      grok {
+	match => { "message" => '"@timestamp":%{NUMBER:exec_time},"%{WORD:log}":"%{IPORHOST:client_ip} - %{USERNAME:user} \[%{HTTPDATE:access_time}] \\"%{WORD:http_method} %{DATA:url} HTTP/%{NUMBER:http_version}\\" %{NUMBER:response_code} %{NUMBER:body_sent:bytes} \\"%{DATA:referrer}\\" \\"%{DATA:agent}\""' }
+      }
+  }
+}
+
+output {
+  opensearch {
+    hosts    => [
+{%- for item in groups['os_cluster'] %}
+"https://{{ hostvars[item].ansible_host }}:9200"{% if not loop.last %},{% endif %}
+{%- endfor %}
+]
+    user     => "admin"
+    password => "{{ admin_password }}"
+    index    => "%{[@metadata][kafka][topic]}-%{+YYYY.MM.dd}"
+    ssl_certificate_verification => false
+  }
+  stdout { codec => rubydebug }
+}

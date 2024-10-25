@@ -1,0 +1,8 @@
+# code: language=ansible
+- name: install keepalived
+  hosts: nginx_hosts
+  become: yes
+  # vars :
+  #   ansible_ssh_private_key_file: /home/alexey/.ssh/akopalev-dip
+  roles:
+  - keepalived

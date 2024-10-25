@@ -1,0 +1,6 @@
+- name: Install and configure FluentBit (back_nginx)
+  hosts: group_back
+  gather_facts: true
+  become: yes
+  roles:
+    - fluent-bit

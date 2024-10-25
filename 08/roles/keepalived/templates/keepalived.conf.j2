@@ -1,0 +1,23 @@
+vrrp_script nginx_check {
+    script "/usr/bin/curl http://127.0.0.1"
+    interval 5
+    user nginx
+}
+
+vrrp_instance VI_1 {
+  interface eth0
+  state {% if inventory_hostname == 'nginx-srv1' %}MASTER{% elif inventory_hostname == 'nginx-srv2' %}BACKUP{% endif %}
+
+  virtual_router_id 1
+  priority 101
+  virtual_ipaddress {
+    10.6.7.50
+  }
+  track_script {
+    nginx_check
+  }
+  authentication {
+    auth_type PASS
+    auth_pass secret_password
+  }
+}

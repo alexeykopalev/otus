@@ -1,0 +1,19 @@
+ansible_user: 'akopalev'
+ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -W %h:%p -q bastion_ask"'
+
+domain_name: otushl.local
+
+# FluentBit Settings
+
+log_root: /var/log
+
+fluentbit_inputs:
+  - Name: tail
+    Tag: wordpress.access
+    path: /var/log/nginx/access.log
+
+fluentbit_outputs:
+  - Name: kafka
+    brokers: 10.6.7.15:9092,10.6.7.16:9092,10.6.7.17:9092
+    Match: wordpress.access
+    topics: "wordpress-access"

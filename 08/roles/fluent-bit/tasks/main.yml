@@ -1,0 +1,23 @@
+---
+- name: Hosts
+  include_tasks: etchosts.yml
+
+- name: Install fluentbit
+  include_tasks: 'install-{{ ansible_os_family }}.yml'
+  tags: ['install']
+
+- name: Install fluentbit package
+  package:
+    name: fluent-bit
+    state: present
+    update_cache: true
+  environment:
+    http_proxy: "{{ http_proxy | default('')}}"
+    https_proxy: "{{ https_proxy | default('')}}"
+  notify: Restart fluentbit service
+  tags: ['install']
+
+- import_tasks: configure.yml
+  tags: ['configure']
+
+# - import_tasks: rsyslog.yml

@@ -1,0 +1,27 @@
+ansible_user: 'akopalev'
+ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -W %h:%p -q bastion_ask"'
+
+## Common opensearch configuration parameters ##
+
+os_cluster_name: otus-cluster
+os_download_url: https://artifacts.opensearch.org/releases/bundle/opensearch
+os_version: "2.11.1"
+os_dashboards_version: "2.11.1"
+domain_name: otushl.local
+xms_value: 2
+xmx_value: 2
+#cluster_type: multi-node
+cluster_type: single-node
+os_user: opensearch
+os_dashboards_user: opensearch-dashboards
+cert_valid_days: 730
+auth_type: internal
+copy_custom_security_configs: true
+custom_security_plugin_configs:
+  - files/tenants.yml
+  - files/roles.yml
+  - files/roles_mapping.yml
+  - files/internal_users.yml
+
+iac_enable: true
+#iac_enable: false

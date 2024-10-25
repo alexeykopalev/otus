@@ -1,0 +1,13 @@
+---
+# - name: test
+#   include_tasks: test.yml
+
+- name: Hosts
+  include_tasks: etchosts.yml
+
+- name: Install Zookeeper
+  include_tasks: zookeeper.yml
+
+- name: Install Kafka
+  include_tasks: kafka.yml
+

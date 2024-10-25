@@ -1,0 +1,41 @@
+---
+# This is the internal user database
+# The hash value is a bcrypt hash and can be generated with plugin/tools/hash.sh
+
+_meta:
+  type: "internalusers"
+  config_version: 2
+
+# Define your internal users here
+
+admin:
+  hash: "{{ admin_password }}"
+  reserved: true
+  backend_roles:
+  - "admin"
+  description: "admin user"
+
+kibanaserver:
+  hash: "{{ kibanaserver_password }}"
+  reserved: true
+  description: "kibanaserver user"
+
+logstash:
+  hash: "{{ logstash_password }}"
+  reserved: true
+  description: "logstash user"
+
+fluentbit:
+  hash: "{{ fluentbit_password }}"
+  reserved: false
+  description: "Fluentbit user for write data"
+  backend_roles:
+    - "fluentbit"
+
+readall:
+  hash: "{{ readall_password }}"
+  reserved: false
+  description: "Read All User"
+  backend_roles:
+    - "indexes_app_search_full_access"
+    - "readall"

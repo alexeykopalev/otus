@@ -1,0 +1,20 @@
+- name: Install targetcli
+  ansible.builtin.yum:
+    name:
+      - targetcli
+    state: present
+
+- name: Gather targetcli status
+  ansible.builtin.command: "targetcli /backstores/block/disk01 info"
+  register: targetcli_status
+  ignore_errors: true
+
+- name: Run targetcli configure
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - targetcli /backstores/block create disk01 /dev/sdb
+    - targetcli /iscsi create {{ iqn_server }}
+    - targetcli /iscsi/{{ iqn_server }}/tpg1/luns create /backstores/block/disk01 lun=1
+    - targetcli /iscsi/{{ iqn_server }}/tpg1/acls create {{ iqn_backend1 }}
+    - targetcli /iscsi/{{ iqn_server }}/tpg1/acls create {{ iqn_backend2 }}
+  when: targetcli_status.rc | int != 0

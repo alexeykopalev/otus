@@ -1,0 +1,15 @@
+cluster.name: "{{ os_cluster_name }}"
+
+node.name: "{{ inventory_hostname }}"
+
+network.host: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+
+http.port: 9200
+
+discovery.type: single-node
+
+bootstrap.memory_lock: true
+
+# discovery.zen.ping.multicast.enabled: false
+# cluster.routing.allocation.disk.watermark.low: 90%
+# cluster.routing.allocation.disk.watermark.high: 95%

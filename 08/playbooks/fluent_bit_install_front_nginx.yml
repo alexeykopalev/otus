@@ -1,0 +1,6 @@
+- name: Install and configure FluentBit (front_nginx)
+  hosts: group_front
+  gather_facts: true
+  become: yes
+  roles:
+    - fluent-bit
