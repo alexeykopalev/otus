@@ -1,0 +1,25 @@
+# code: language=ansible
+
+- name: Create-vm
+  hosts: pve-fortest
+  gather_facts: false
+  become: yes
+  roles: 
+    - { role: 'create-vm' }
+
+- name: Salt-minion
+  hosts:
+    - db-srv1
+    - backend1
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: salt-minion }
+
+- name: Salt-master
+  hosts:
+    - salt-master1
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: salt-master }

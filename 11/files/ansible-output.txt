@@ -1,0 +1,91 @@
+alexey@ask-pc-fed-vb:~/otus/otus-hl-hw/11$ ansible-playbook playbooks/playbook.yml 
+
+PLAY [Create-vm] ***********************************************************************************************************************************************************
+
+TASK [create-vm : Create vms] **********************************************************************************************************************************************
+included: /home/alexey/otus/otus-hl-hw/11/roles/create-vm/tasks/create-vms.yml for pve-fortest
+
+TASK [create-vm : Copy userconfig.yaml] ************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'bast_host', 'value': {'name': 'bast-host', 'domainname': 'roter.lan', 'ipaddress': '10.6.6.11', 'mask': 24, 'gateway': '10.6.6.1', 'bridge': 'vmbr0', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'salt-master1', 'value': {'name': 'salt-master1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.5', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 105, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'db_srv1', 'value': {'name': 'db-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.6', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 106, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.50', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 107, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Clone VMs] ***********************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'bast_host', 'value': {'name': 'bast-host', 'domainname': 'roter.lan', 'ipaddress': '10.6.6.11', 'mask': 24, 'gateway': '10.6.6.1', 'bridge': 'vmbr0', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'salt-master1', 'value': {'name': 'salt-master1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.5', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 105, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'db_srv1', 'value': {'name': 'db-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.6', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 106, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.50', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 107, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Update VMs] **********************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'bast_host', 'value': {'name': 'bast-host', 'domainname': 'roter.lan', 'ipaddress': '10.6.6.11', 'mask': 24, 'gateway': '10.6.6.1', 'bridge': 'vmbr0', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'salt-master1', 'value': {'name': 'salt-master1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.5', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 105, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'db_srv1', 'value': {'name': 'db-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.6', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 106, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.50', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 107, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Start VMs] ***********************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'bast_host', 'value': {'name': 'bast-host', 'domainname': 'roter.lan', 'ipaddress': '10.6.6.11', 'mask': 24, 'gateway': '10.6.6.1', 'bridge': 'vmbr0', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'salt-master1', 'value': {'name': 'salt-master1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.5', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 105, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'db_srv1', 'value': {'name': 'db-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.6', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 106, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.50', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 107, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Wait a little] *******************************************************************************************************************************************
+Pausing for 30 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [pve-fortest]
+
+PLAY [Salt-minion] *********************************************************************************************************************************************************
+
+TASK [salt-minion : Hosts | populate inventory into hosts file] ************************************************************************************************************
+changed: [backend1]
+changed: [db-srv1]
+
+TASK [salt-minion : Installing salt.repo] **********************************************************************************************************************************
+changed: [backend1]
+changed: [db-srv1]
+
+TASK [salt-minion : install salt minion] ***********************************************************************************************************************************
+changed: [db-srv1]
+changed: [backend1]
+
+TASK [salt-minion : change master in /etc/salt/minion] *********************************************************************************************************************
+changed: [db-srv1]
+changed: [backend1]
+
+TASK [salt-minion : Start salt-minion Service] *****************************************************************************************************************************
+changed: [db-srv1]
+changed: [backend1]
+
+PLAY [Salt-master] *********************************************************************************************************************************************************
+
+TASK [salt-master : Hosts | populate inventory into hosts file] ************************************************************************************************************
+changed: [salt-master1]
+
+TASK [salt-master : make sure SSL private key is installed] ****************************************************************************************************************
+changed: [salt-master1]
+
+TASK [salt-master : Copy srv folder] ***************************************************************************************************************************************
+changed: [salt-master1]
+
+TASK [salt-master : Installing salt.repo] **********************************************************************************************************************************
+changed: [salt-master1]
+
+TASK [salt-master : install salt master] ***********************************************************************************************************************************
+changed: [salt-master1]
+
+TASK [salt-master : Start salt-master service] *****************************************************************************************************************************
+changed: [salt-master1]
+
+TASK [salt-master : Wait a little] *****************************************************************************************************************************************
+Pausing for 10 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [salt-master1]
+
+TASK [salt-master : add key all minion] ************************************************************************************************************************************
+changed: [salt-master1]
+
+PLAY RECAP *****************************************************************************************************************************************************************
+backend1                   : ok=5    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+db-srv1                    : ok=5    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+pve-fortest                : ok=6    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+salt-master1               : ok=8    changed=7    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

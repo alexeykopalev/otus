@@ -1,0 +1,10 @@
+db-srv1:
+  host: 10.6.7.6
+  user: akopalev
+  priv: /home/akopalev/.ssh/akopalev-dip
+  sudo: True
+backend1:
+  host: 10.6.7.50
+  user: akopalev
+  priv: /home/akopalev/.ssh/akopalev-dip
+  sudo: True

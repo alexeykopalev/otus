@@ -16,6 +16,7 @@ write_files:
     permissions: 0644
     owner: root
     content: |
-      net.ipv6.conf.eth0.disable_ipv6 = 1
+      net.ipv6.conf.all.disable_ipv6 = 1
+      net.ipv6.conf.default.disable_ipv6 = 1
 bootcmd:
   - echo {{ item.value.ipaddress }} {{ item.value.name }}.{{ item.value.domainname }} {{ item.value.name }} >> /etc/hosts

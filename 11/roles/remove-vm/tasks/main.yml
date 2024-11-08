@@ -1,0 +1,26 @@
+- name: Stopped VMs
+  proxmox_kvm:
+    api_host:     "{{ api_host }}"
+    api_user:     "{{ api_user }}"
+    api_token_id: "{{ api_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    vmid:         "{{ item.value.vmid }}"
+    node:         "{{ node }}"
+    state:        stopped
+    force:        true
+  loop: "{{ lookup('dict', vms) }}"
+  
+- name: Remove VMs
+  proxmox_kvm:
+    api_host:     "{{ api_host }}"
+    api_user:     "{{ api_user }}"
+    api_token_id: "{{ api_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    vmid:         "{{ item.value.vmid }}"
+    node:         "{{ node }}"
+    state:        absent
+  loop: "{{ lookup('dict', vms) }}"
+
+  #rm -rf /mnt/pve/ssd_1tb/snippets/userconfig_*
+- name: remove userconfig files
+  ansible.builtin.shell: 'rm -rf /mnt/pve/ssd_1tb/snippets/userconfig_*'

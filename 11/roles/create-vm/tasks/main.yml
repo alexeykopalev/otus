@@ -1,0 +1,4 @@
+---
+- name: "Create vms"
+  ansible.builtin.include_tasks: create-vms.yml
+

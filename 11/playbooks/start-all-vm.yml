@@ -1,0 +1,7 @@
+# code: language=ansible
+- name: Start vms
+  hosts: pve-fortest
+  gather_facts: false
+  become: yes
+  roles:
+  - start-all-vm

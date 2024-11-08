@@ -1,0 +1,60 @@
+---
+
+- name: Hosts | populate inventory into hosts file
+  ansible.builtin.blockinfile:
+    dest: /etc/hosts
+    block: |-
+      10.6.7.5 salt-master1.otushl.local salt-master1
+      10.6.7.6 db-srv1.otushl.local db-srv1
+      10.6.7.50 backend1.otushl.local backend1
+    state: present
+    create: true
+    backup: true
+
+#ssl_private_key
+- name: make sure SSL private key is installed
+  ansible.builtin.copy:
+    content: '{{ ssl_private_key }}'
+    dest: /home/akopalev/.ssh/dip-akopalev
+    owner: akopalev
+    group: akopalev
+    mode: 0600
+  no_log: true
+
+- name: Copy srv folder
+  ansible.builtin.copy:
+    src: files/srv/
+    dest: /srv
+
+- name: Installing salt.repo
+  ansible.builtin.yum_repository:
+    name: salt-repo-latest
+    description: Salt Repo for Salt LATEST release
+    file: salt
+    baseurl: https://packages.broadcom.com/artifactory/saltproject-rpm/
+    gpgkey: https://packages.broadcom.com/artifactory/api/security/keypair/SaltProjectKey/public
+    gpgcheck: yes
+    enabled: yes
+    skip_if_unavailable: True
+    priority: 10
+
+- name: install salt master
+  ansible.builtin.dnf:
+    name: 
+      - salt-master
+    state: latest
+
+- name: Start salt-master service
+  ansible.builtin.systemd:
+    name: salt-master
+    state: restarted
+    enabled: yes
+
+- name: Wait a little
+  ansible.builtin.pause:
+    seconds: 10
+
+- name: add key all minion
+  ansible.builtin.shell: 'salt-key -A -y'
+    #- "salt-key -a 'db-srv*' -y"
+    #- "salt-key -a 'backend*' -y"

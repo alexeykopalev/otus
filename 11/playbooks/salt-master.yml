@@ -1,0 +1,8 @@
+---
+
+- name: salt master
+  hosts: salt-master1
+  gather_facts: false
+  become: yes
+  roles:
+  - salt-master

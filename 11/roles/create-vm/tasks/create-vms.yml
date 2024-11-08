@@ -1,0 +1,61 @@
+
+
+- name: Copy userconfig.yaml
+  ansible.builtin.template:
+      src: userconfig.yaml.j2
+      dest: /mnt/pve/ssd_1tb/snippets/userconfig_{{ item.value.name }}.yaml
+  loop: "{{ lookup('dict', vms) }}"
+
+- name: Clone VMs
+  community.general.proxmox_kvm:
+    api_host: "{{ api_host }}"
+    api_token_id: "{{ api_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    api_user: "{{ api_user }}"
+    clone: "{{ clone_vm }}"
+    full: yes
+    node: "{{ node }}"
+    name: "{{ item.value.name }}"
+    newid: "{{ item.value.vmid }}"
+  loop: "{{ lookup('dict', vms) }}"
+  register: create_result
+
+- name: Update VMs
+  community.general.proxmox_kvm:
+    api_host:     "{{ api_host }}"
+    api_token_id: "{{ api_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    api_user:     "{{ api_user }}"
+    cpu:          "host"
+    cores:        "{{ item.value.cores }}"
+    sockets:      "{{ item.value.sockets }}"
+    memory:       "{{ item.value.memory }}"
+    net:
+      net0: virtio,bridge={{ item.value.bridge }}
+    ipconfig:
+      ipconfig0: "ip={{ item.value.ipaddress }}/{{ item.value.mask }},gw={{ item.value.gateway }}"
+    update: true
+    update_unsafe: true
+    vmid:         "{{ item.value.vmid }}"
+    node:         "{{ node }}"
+    citype:       "nocloud"
+    cicustom: "user=ssd_1tb:snippets/userconfig_{{ item.value.name }}.yaml"
+  loop: "{{ lookup('dict', vms) }}"
+  when: create_result is changed
+
+- name: Start VMs
+  community.general.proxmox_kvm:
+    api_host:     "{{ api_host }}"
+    api_token_id: "{{ api_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    api_user:     "{{ api_user }}"
+    vmid:         "{{ item.value.vmid }}"
+    node:         "{{ node }}"
+    state:        started
+  loop: "{{ lookup('dict', vms) }}"
+
+
+- name: Wait a little
+  ansible.builtin.pause:
+    seconds: "{{ pause_timer }}"
+  when: create_result is changed

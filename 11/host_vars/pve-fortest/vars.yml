@@ -1,0 +1,62 @@
+api_host: pve-fortest
+api_user: otus@pve-fortest
+api_token_id: ansible
+api_token_secret: "{{ api_token_secret }}"
+node: pve-fortest
+clone_vm: AlmaLinux-9-GenericCloud-amd64-my
+key_name: akopalev-dip.pub
+pause_timer: 30
+
+vms:
+  bast_host:
+    name: bast-host #.roter.lan
+    domainname: roter.lan
+    ipaddress: 10.6.6.11
+    mask: 24
+    gateway: 10.6.6.1
+    bridge: vmbr0
+    vmid: 101
+    cores: 2
+    sockets: 1
+    memory: 2048
+    disk: 10
+    storage: "ssd_1tb"
+  salt-master1:
+    name: salt-master1
+    domainname: otushl.local
+    ipaddress: 10.6.7.5
+    mask: 24
+    gateway: 10.6.7.1
+    bridge: vmbr1
+    vmid: 105
+    cores: 2
+    sockets: 1
+    memory: 2048
+    disk: 10
+    storage: "ssd_1tb"
+  db_srv1:
+    name: db-srv1
+    domainname: otushl.local
+    ipaddress: 10.6.7.6
+    mask: 24
+    gateway: 10.6.7.1
+    bridge: vmbr1
+    vmid: 106
+    cores: 2
+    sockets: 1
+    memory: 2048
+    disk: 10
+    storage: "ssd_1tb"
+  backend1:
+    name: backend1
+    domainname: otushl.local
+    ipaddress: 10.6.7.50
+    mask: 24
+    gateway: 10.6.7.1
+    bridge: vmbr1
+    vmid: 107
+    cores: 2
+    sockets: 1
+    memory: 2048
+    disk: 10
+    storage: "ssd_1tb"

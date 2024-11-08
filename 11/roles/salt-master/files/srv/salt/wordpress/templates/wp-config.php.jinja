@@ -1,0 +1,17 @@
+<?php
+define( 'DB_NAME', '{{ pillar['wordpress']['db_name'] }}' );
+define( 'DB_USER', '{{ pillar['wordpress']['db_user'] }}' );
+define( 'DB_PASSWORD', '{{ pillar['wordpress']['db_pass'] }}' );
+define( 'DB_HOST', '{{ pillar['wordpress']['db_host'] }}' );
+define( 'DB_CHARSET', 'utf8mb4' );
+define( 'DB_COLLATE', '' );
+
+$table_prefix = 'wp_';
+
+define( 'WP_DEBUG', false );
+
+if ( ! defined( 'ABSPATH' ) ) {
+    define( 'ABSPATH', __DIR__ . '/' );
+}
+
+require_once ABSPATH . 'wp-settings.php';

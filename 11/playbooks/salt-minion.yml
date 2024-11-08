@@ -1,0 +1,10 @@
+---
+
+- name: salt-minion
+  hosts:
+    - db-srv1
+    - backend1
+  gather_facts: false
+  become: yes
+  roles:
+  - salt-minion

@@ -1,0 +1,8 @@
+# code: language=ansible
+
+- name: Create vms
+  hosts: pve-fortest
+  gather_facts: false
+  become: yes
+  roles:
+  - create-vm

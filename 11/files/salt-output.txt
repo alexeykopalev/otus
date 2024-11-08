@@ -1,0 +1,50 @@
+[root@salt-master1 ~]# salt --state-output=terse '*' state.apply
+backend1.otushl.local:
+  Name: chrony - Function: pkg.installed - Result: Clean - Started: 13:30:32.950631 - Duration: 212.543 ms
+  Name: chronyd - Function: service.running - Result: Clean - Started: 13:30:33.169783 - Duration: 37.493 ms
+  Name: Europe/Moscow - Function: timezone.system - Result: Changed - Started: 13:30:33.208057 - Duration: 73.853 ms
+  Name: nginx - Function: pkg.installed - Result: Changed - Started: 13:30:33.282032 - Duration: 5946.392 ms
+  Name: php_packages - Function: pkg.installed - Result: Changed - Started: 13:30:39.248519 - Duration: 13144.389 ms
+  Name: /etc/php-fpm.d/www.conf - Function: file.replace - Result: Changed - Started: 13:30:52.395965 - Duration: 14.039 ms
+  Name: /etc/php-fpm.d/www.conf - Function: file.replace - Result: Changed - Started: 13:30:52.410092 - Duration: 7.407 ms
+  Name: php-fpm - Function: service.running - Result: Changed - Started: 13:30:52.426960 - Duration: 565.949 ms
+  Name: /var/www/wordpress - Function: file.directory - Result: Changed - Started: 13:30:52.993091 - Duration: 2.923 ms
+  Name: wget -O /var/www/wordpress/wordpress.tar.gz https://wordpress.org/latest.tar.gz - Function: cmd.run - Result: Changed - Started: 13:30:52.997347 - Duration: 9119.965 ms
+  Name: tar -xzf /var/www/wordpress/wordpress.tar.gz -C /var/www/wordpress --strip-components=1 - Function: cmd.run - Result: Changed - Started: 13:31:02.117919 - Duration: 665.981 ms
+  Name: /var/www/wordpress - Function: file.directory - Result: Changed - Started: 13:31:02.784100 - Duration: 3960.273 ms
+  Name: /var/www/wordpress/wp-config.php - Function: file.managed - Result: Changed - Started: 13:31:06.744537 - Duration: 22.854 ms
+  Name: /etc/nginx/conf.d/wordpress.conf - Function: file.managed - Result: Changed - Started: 13:31:06.767763 - Duration: 17.182 ms
+  Name: nginx - Function: service.running - Result: Changed - Started: 13:31:06.785227 - Duration: 466.872 ms
+  Name: nftables - Function: pkg.installed - Result: Changed - Started: 13:31:07.252265 - Duration: 3308.321 ms
+  Name: /etc/sysconfig/nftables.conf - Function: file.managed - Result: Changed - Started: 13:31:10.572152 - Duration: 24.14 ms
+  Name: nftables - Function: service.running - Result: Changed - Started: 13:31:10.596445 - Duration: 446.736 ms
+
+Summary for backend1.otushl.local
+-------------
+Succeeded: 18 (changed=16)
+Failed:     0
+-------------
+Total states run:     18
+Total run time:   38.037 s
+db-srv1.otushl.local:
+  Name: chrony - Function: pkg.installed - Result: Clean - Started: 13:30:32.802347 - Duration: 192.956 ms
+  Name: chronyd - Function: service.running - Result: Clean - Started: 13:30:32.996305 - Duration: 29.482 ms
+  Name: Europe/Moscow - Function: timezone.system - Result: Changed - Started: 13:30:33.026226 - Duration: 70.186 ms
+  Name: mysql_server - Function: pkg.installed - Result: Changed - Started: 13:30:33.096512 - Duration: 31189.482 ms
+  Name: /root/.my.cnf - Function: file.managed - Result: Changed - Started: 13:31:04.287767 - Duration: 1119.322 ms
+  Name: mysqld - Function: service.running - Result: Changed - Started: 13:31:05.407396 - Duration: 7879.221 ms
+  Name: mysqladmin -u root -p password MyStrongPassword160! - Function: cmd.run - Result: Changed - Started: 13:31:13.287314 - Duration: 18.728 ms
+  Name: /root/.my.cnf - Function: file.managed - Result: Changed - Started: 13:31:13.306164 - Duration: 21.105 ms
+  Name: mysql -u root -p'MyStrongPassword160!' -e 'CREATE DATABASE IF NOT EXISTS wp_db;' - Function: cmd.run - Result: Changed - Started: 13:31:13.327555 - Duration: 18.698 ms
+  Name: mysql -u root -p'MyStrongPassword160!' -e "CREATE USER IF NOT EXISTS 'wp_user'@'backend1.otushl.local' IDENTIFIED BY 'PassFor_Wordpress!'; GRANT ALL PRIVILEGES ON wp_db.* TO 'wp_user'@'backend1.otushl.local'; FLUSH PRIVILEGES;" - Function: cmd.run - Result: Changed - Started: 13:31:13.346587 - Duration: 25.684 ms
+  Name: nftables - Function: pkg.installed - Result: Changed - Started: 13:31:13.372387 - Duration: 2709.621 ms
+  Name: /etc/sysconfig/nftables.conf - Function: file.managed - Result: Changed - Started: 13:31:16.092324 - Duration: 22.694 ms
+  Name: nftables - Function: service.running - Result: Changed - Started: 13:31:16.115152 - Duration: 422.128 ms
+
+Summary for db-srv1.otushl.local
+-------------
+Succeeded: 13 (changed=11)
+Failed:     0
+-------------
+Total states run:     13
+Total run time:   43.719 s

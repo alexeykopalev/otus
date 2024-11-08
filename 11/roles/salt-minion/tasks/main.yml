@@ -1,0 +1,43 @@
+---
+
+- name: Hosts | populate inventory into hosts file
+  ansible.builtin.blockinfile:
+    dest: /etc/hosts
+    block: |-
+      10.6.7.5 salt-master1.otushl.local salt-master1
+      10.6.7.6 db-srv1.otushl.local db-srv1
+      10.6.7.50 backend1.otushl.local backend1
+    state: present
+    create: true
+    backup: true
+
+- name: Installing salt.repo
+  ansible.builtin.yum_repository:
+    name: salt-repo-latest
+    description: Salt Repo for Salt LATEST release
+    file: salt
+    baseurl: https://packages.broadcom.com/artifactory/saltproject-rpm/
+    gpgkey: https://packages.broadcom.com/artifactory/api/security/keypair/SaltProjectKey/public
+    gpgcheck: yes
+    enabled: yes
+    skip_if_unavailable: True
+    priority: 10
+
+- name: install salt minion
+  ansible.builtin.dnf:
+    name: 
+      - salt-minion
+    state: latest
+
+- name: change master in /etc/salt/minion
+  ansible.builtin.lineinfile: 
+    dest: /etc/salt/minion
+    regexp: '#master: salt'
+    insertbefore: BOF
+    line: 'master: salt-master1'
+
+- name: Start salt-minion Service
+  ansible.builtin.systemd:
+    name: salt-minion
+    state: restarted
+    enabled: yes

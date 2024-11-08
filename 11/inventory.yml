@@ -1,0 +1,18 @@
+all:
+  hosts:
+    pve-fortest:
+      ansible_host: 10.6.6.10
+    bast-host:
+      ansible_host: 10.6.6.11
+    salt-master1:
+      ansible_host: 10.6.7.5
+    db-srv1:
+      ansible_host: 10.6.7.6
+    backend1:
+      ansible_host: 10.6.7.50
+group_web_sql:
+  hosts:
+    db-srv1:
+    backend1:
+    salt-master1:
+
