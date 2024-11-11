@@ -1,0 +1,93 @@
+- name: Hosts | populate inventory into hosts file
+  ansible.builtin.blockinfile:
+    dest: /etc/hosts
+    block: |-
+      {% for item in groups['consul_hosts'] %}
+      {{ hostvars[item].ansible_host }} {{ item }}.{{ domain_name }} {{ item }}
+      {% endfor %}
+    state: present
+    create: true
+    backup: true
+    marker: "# Ansible consul_hosts {mark}"
+
+- name: Install prerequestion
+  dnf:
+    name: unzip
+    state: present 
+
+- name: Download consul-template
+  get_url:
+    url: "https://hashicorp-releases.yandexcloud.net/consul-template/0.39.1/consul-template_0.39.1_linux_amd64.zip"
+    dest: "/tmp/consul-template.zip"
+  register: download
+
+- name: Unzip consul
+  unarchive:
+    src: /tmp/consul-template.zip
+    dest: "/usr/bin"
+    remote_src: true
+  when: download.changed
+
+- name: make dir for template
+  file:
+    name: /usr/local/consul/templates/
+    state: directory
+
+- name: copy template
+  copy:
+    src: "{{ item }}"
+    dest: /usr/local/consul/templates/{{ item }}
+  with_items:
+    - "upstreams.conf.ctmpl"
+    - "consul.hcl"
+
+- name: Set systemd service
+  template: 
+    src: consul-template.service
+    dest: "{{ systemctl_path }}/consul-template.service"
+  register: set_service
+
+- name: Daemon reload
+  service:
+    daemon-reload: true
+  when: set_service.changed
+
+- name: Start consul-template service
+  service:
+    name: consul-template
+    state: started
+    enabled: True
+
+- name: Installing Nginx Repository
+  ansible.builtin.yum_repository:
+    name: nginx-stable
+    description: nginx stable repo
+    file: nginx
+    baseurl: http://nginx.org/packages/centos/$releasever/$basearch/
+    gpgkey: https://nginx.org/keys/nginx_signing.key
+    gpgcheck: yes
+    enabled: yes
+    module_hotfixes: true
+
+- name: install Nginx
+  ansible.builtin.dnf:
+    name: 
+      - nginx
+    state: latest
+
+- name: Check exist proxy_params 
+  ansible.builtin.stat:
+    path: /etc/nginx/proxy_params
+  register: result_proxy_params
+
+- name: Copy proxy_params
+  ansible.builtin.copy:
+    src: files/proxy_params
+    dest: /etc/nginx/proxy_params
+  when: not result_proxy_params.stat.exists
+
+- name: Start Nginx Service
+  ansible.builtin.systemd:
+    name: nginx
+    state: restarted
+    enabled: yes

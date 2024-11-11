@@ -1,0 +1,7 @@
+# code: language=ansible
+- name: Stop vms
+  hosts: pve-fortest
+  gather_facts: false
+  become: yes
+  roles:
+  - stop-all-vm

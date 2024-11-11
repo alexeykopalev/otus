@@ -1,0 +1,6 @@
+# code: language=ansible
+- name: install targetcli, create lun
+  hosts: iscsi_srv
+  become: yes
+  roles:
+  - targetcli

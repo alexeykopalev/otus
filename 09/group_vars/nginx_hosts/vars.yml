@@ -1,0 +1,4 @@
+ansible_user: 'akopalev'
+ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -W %h:%p -q bastion_ask"'
+domain_name: otushl.local
+

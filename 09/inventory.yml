@@ -1,0 +1,43 @@
+all:
+  hosts:
+    pve-fortest:
+      ansible_host: 10.6.6.10
+    bast-host:
+      ansible_host: 10.6.6.11
+iscsi_srv:
+  hosts:
+    iscsi-srv1:
+      ansible_host: 10.6.7.3
+nginx_hosts: 
+  hosts:
+    nginx-srv1:
+      ansible_host: 10.6.7.4
+    nginx-srv2:
+      ansible_host: 10.6.7.5
+db_hosts:
+  hosts:
+    db-srv1:
+      ansible_host: 10.6.7.6
+backend_hosts:
+  hosts:
+    backend1:
+      ansible_host: 10.6.7.9
+    backend2:
+      ansible_host: 10.6.7.10
+consul_hosts:
+  hosts:
+    consul-01:
+      ansible_host: 10.6.7.18
+    consul-02:
+      ansible_host: 10.6.7.19
+    consul-03:
+      ansible_host: 10.6.7.20
+group_web_sql:
+  children:
+    iscsi_srv:
+    nginx_hosts:
+    db_hosts:
+    backend_hosts:
+    consul_hosts:
+
+

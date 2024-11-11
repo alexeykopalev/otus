@@ -1,0 +1,71 @@
+# code: language=ansible
+
+- name: Playbook of create-vm
+  hosts: pve-fortest
+  roles: 
+    - { role: 'create-vm' }
+
+- name: Playbook of chrony
+  hosts: 
+    - group_web_sql
+  gather_facts: false
+  become: true
+  roles: 
+    - { role: 'chrony' }
+
+- name: Playbook of targetcli
+  hosts: iscsi_srv
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: 'targetcli' }
+
+- name: Playbook of iscsi-client
+  hosts: backend_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: 'iscsi-client' }
+
+- name: Playbook of ha-cluster
+  hosts: backend_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: 'ha-cluster' }
+
+- name: Playbook of db
+  hosts: db_hosts
+  become: yes
+  roles:
+  - { role: 'db' }
+
+- name: Playbook of Wordpress
+  hosts: backend_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: wordpress }
+
+- name: Playbook of consul
+  hosts:
+    - backend_hosts
+    - consul_hosts
+    - nginx_hosts
+  become: yes
+  roles:
+  - { role: 'consul' }
+
+- name: Playbook of loadbalancer
+  hosts: nginx_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: 'lb-nginx-consul' }
+
+- name: Playbook of keepalived
+  hosts: nginx_hosts
+  gather_facts: false
+  become: yes
+  roles:
+  - { role: 'keepalived' }

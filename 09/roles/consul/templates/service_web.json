@@ -1,0 +1,11 @@
+{
+    "service": {
+      "name": "backend",
+      "port": 80,
+      "check": {
+        "args": ["curl", "localhost:80"],
+        "interval": "10s"
+      },
+      "tags": [ "backend" ]
+    }
+}

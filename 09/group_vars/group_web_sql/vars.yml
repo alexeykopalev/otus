@@ -1,0 +1,15 @@
+ansible_user: 'akopalev'
+ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -W %h:%p -q bastion_ask"'
+
+domain_name: otushl.local
+
+mysql_root_user: "root"
+db_user: "wp_user"
+db_name: "wp_db"
+db_host: "10.6.7.6"
+
+consul_group: consul
+consul_user: consul
+
+cl_version: 1.19.2
+systemctl_path: /usr/lib/systemd/system

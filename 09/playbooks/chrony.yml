@@ -1,0 +1,7 @@
+- name: Install Chrony
+  hosts: 
+    - group_web_sql
+  gather_facts: false
+  become: true
+  roles:
+    - chrony

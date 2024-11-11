@@ -1,0 +1,10 @@
+- name: Restart VMs
+  community.general.proxmox_kvm:
+    api_host:     "{{ api_host }}"
+    api_token_id: "{{ api_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    api_user:     "{{ api_user }}"
+    vmid:         "{{ item.value.vmid }}"
+    node:         "{{ node }}"
+    state:        restarted
+  loop: "{{ lookup('dict', vms) }}"

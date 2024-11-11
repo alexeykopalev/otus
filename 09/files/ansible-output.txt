@@ -1,0 +1,669 @@
+alexey@ask-pc-fed-vb:~/otus/otus-hl-hw/09$ ansible-playbook playbooks/playbook.yml 
+
+PLAY [Playbook of create-vm] ***********************************************************************************************************************************************************
+
+TASK [Gathering Facts] *****************************************************************************************************************************************************************
+ok: [pve-fortest]
+
+TASK [create-vm : Create vms] **********************************************************************************************************************************************************
+included: /home/alexey/otus/otus-hl-hw/09/roles/create-vm/tasks/create-vms.yml for pve-fortest
+
+TASK [create-vm : Copy userconfig.yaml] ************************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'bast_host', 'value': {'name': 'bast-host', 'domainname': 'roter.lan', 'ipaddress': '10.6.6.11', 'mask': 24, 'gateway': '10.6.6.1', 'bridge': 'vmbr0', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'iscsi-srv1', 'value': {'name': 'iscsi-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.3', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'nginx-srv1', 'value': {'name': 'nginx-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.4', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 104, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'nginx-srv2', 'value': {'name': 'nginx-srv2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.5', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 105, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'db_srv1', 'value': {'name': 'db-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.6', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 106, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.9', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 109, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend2', 'value': {'name': 'backend2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.10', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 110, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'consul-01', 'value': {'name': 'consul-01', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.18', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 118, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'consul-02', 'value': {'name': 'consul-02', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.19', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 119, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'consul-03', 'value': {'name': 'consul-03', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.20', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 120, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Clone VMs] ***********************************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'bast_host', 'value': {'name': 'bast-host', 'domainname': 'roter.lan', 'ipaddress': '10.6.6.11', 'mask': 24, 'gateway': '10.6.6.1', 'bridge': 'vmbr0', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'iscsi-srv1', 'value': {'name': 'iscsi-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.3', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'nginx-srv1', 'value': {'name': 'nginx-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.4', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 104, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'nginx-srv2', 'value': {'name': 'nginx-srv2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.5', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 105, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'db_srv1', 'value': {'name': 'db-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.6', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 106, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.9', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 109, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend2', 'value': {'name': 'backend2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.10', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 110, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'consul-01', 'value': {'name': 'consul-01', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.18', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 118, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'consul-02', 'value': {'name': 'consul-02', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.19', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 119, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'consul-03', 'value': {'name': 'consul-03', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.20', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 120, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Update VMs] **********************************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'bast_host', 'value': {'name': 'bast-host', 'domainname': 'roter.lan', 'ipaddress': '10.6.6.11', 'mask': 24, 'gateway': '10.6.6.1', 'bridge': 'vmbr0', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'iscsi-srv1', 'value': {'name': 'iscsi-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.3', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'nginx-srv1', 'value': {'name': 'nginx-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.4', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 104, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'nginx-srv2', 'value': {'name': 'nginx-srv2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.5', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 105, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'db_srv1', 'value': {'name': 'db-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.6', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 106, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.9', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 109, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend2', 'value': {'name': 'backend2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.10', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 110, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'consul-01', 'value': {'name': 'consul-01', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.18', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 118, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'consul-02', 'value': {'name': 'consul-02', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.19', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 119, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'consul-03', 'value': {'name': 'consul-03', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.20', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 120, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Start VMs] ***********************************************************************************************************************************************************
+changed: [pve-fortest] => (item={'key': 'bast_host', 'value': {'name': 'bast-host', 'domainname': 'roter.lan', 'ipaddress': '10.6.6.11', 'mask': 24, 'gateway': '10.6.6.1', 'bridge': 'vmbr0', 'vmid': 101, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'iscsi-srv1', 'value': {'name': 'iscsi-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.3', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 103, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'nginx-srv1', 'value': {'name': 'nginx-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.4', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 104, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'nginx-srv2', 'value': {'name': 'nginx-srv2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.5', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 105, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'db_srv1', 'value': {'name': 'db-srv1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.6', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 106, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend1', 'value': {'name': 'backend1', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.9', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 109, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'backend2', 'value': {'name': 'backend2', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.10', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 110, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'consul-01', 'value': {'name': 'consul-01', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.18', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 118, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'consul-02', 'value': {'name': 'consul-02', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.19', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 119, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+changed: [pve-fortest] => (item={'key': 'consul-03', 'value': {'name': 'consul-03', 'domainname': 'otushl.local', 'ipaddress': '10.6.7.20', 'mask': 24, 'gateway': '10.6.7.1', 'bridge': 'vmbr1', 'vmid': 120, 'cores': 2, 'sockets': 1, 'memory': 2048, 'disk': 10, 'storage': 'ssd_1tb'}})
+
+TASK [create-vm : Wait a little] *******************************************************************************************************************************************************
+Pausing for 60 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [pve-fortest]
+
+TASK [create-vm : add second disk to vm iscsi-srv] *************************************************************************************************************************************
+included: /home/alexey/otus/otus-hl-hw/09/roles/create-vm/tasks/add-disk.yml for pve-fortest
+
+TASK [create-vm : add disk to iscsi-srv1] **********************************************************************************************************************************************
+changed: [pve-fortest]
+
+PLAY [Playbook of chrony] **************************************************************************************************************************************************************
+
+TASK [chrony : Installing Chrony] ******************************************************************************************************************************************************
+ok: [nginx-srv2]
+ok: [backend1]
+ok: [iscsi-srv1]
+ok: [db-srv1]
+ok: [consul-01]
+ok: [nginx-srv1]
+ok: [backend2]
+ok: [consul-02]
+ok: [consul-03]
+
+TASK [chrony : Start Chronyd Service] **************************************************************************************************************************************************
+ok: [iscsi-srv1]
+ok: [nginx-srv1]
+ok: [db-srv1]
+ok: [nginx-srv2]
+ok: [backend1]
+ok: [backend2]
+ok: [consul-01]
+ok: [consul-02]
+ok: [consul-03]
+
+TASK [chrony : Set timezone to Europe/Moscow] ******************************************************************************************************************************************
+changed: [iscsi-srv1]
+changed: [backend1]
+changed: [nginx-srv2]
+changed: [db-srv1]
+changed: [nginx-srv1]
+changed: [consul-02]
+changed: [backend2]
+changed: [consul-01]
+changed: [consul-03]
+
+RUNNING HANDLER [chrony : Restart Chronyd] *********************************************************************************************************************************************
+changed: [iscsi-srv1]
+changed: [nginx-srv1]
+changed: [db-srv1]
+changed: [backend1]
+changed: [nginx-srv2]
+changed: [backend2]
+changed: [consul-01]
+changed: [consul-02]
+changed: [consul-03]
+
+PLAY [Playbook of targetcli] ***********************************************************************************************************************************************************
+
+TASK [targetcli : Install targetcli] ***************************************************************************************************************************************************
+changed: [iscsi-srv1]
+
+TASK [targetcli : Gather targetcli status] *********************************************************************************************************************************************
+fatal: [iscsi-srv1]: FAILED! => {"changed": true, "cmd": ["targetcli", "/backstores/block/disk01", "info"], "delta": "0:00:00.316869", "end": "2024-11-11 14:42:13.302794", "msg": "non-zero return code", "rc": 1, "start": "2024-11-11 14:42:12.985925", "stderr": "No such path /backstores/block/disk01", "stderr_lines": ["No such path /backstores/block/disk01"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [targetcli : Run targetcli configure] *********************************************************************************************************************************************
+changed: [iscsi-srv1] => (item=targetcli /backstores/block create disk01 /dev/sdb)
+changed: [iscsi-srv1] => (item=targetcli /iscsi create iqn.2023-11.ru.otus:storage.target00)
+changed: [iscsi-srv1] => (item=targetcli /iscsi/iqn.2023-11.ru.otus:storage.target00/tpg1/luns create /backstores/block/disk01 lun=1)
+changed: [iscsi-srv1] => (item=targetcli /iscsi/iqn.2023-11.ru.otus:storage.target00/tpg1/acls create iqn.1994-05.com.redhat:cf70d4c706e)
+changed: [iscsi-srv1] => (item=targetcli /iscsi/iqn.2023-11.ru.otus:storage.target00/tpg1/acls create iqn.1994-05.com.redhat:f5cfb68ca8f)
+
+PLAY [Playbook of iscsi-client] ********************************************************************************************************************************************************
+
+TASK [iscsi-client : Install open-iscsi] ***********************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [iscsi-client : change InitiatorName backend1] ************************************************************************************************************************************
+skipping: [backend2]
+changed: [backend1]
+
+TASK [iscsi-client : change InitiatorName backend2] ************************************************************************************************************************************
+skipping: [backend1]
+changed: [backend2]
+
+TASK [iscsi-client : iscsi_login] ******************************************************************************************************************************************************
+changed: [backend1] => (item=iscsiadm -m discovery -t st -p 10.6.7.3)
+changed: [backend2] => (item=iscsiadm -m discovery -t st -p 10.6.7.3)
+changed: [backend2] => (item=iscsiadm -m node -l -T iqn.2023-11.ru.otus:storage.target00)
+changed: [backend1] => (item=iscsiadm -m node -l -T iqn.2023-11.ru.otus:storage.target00)
+
+RUNNING HANDLER [iscsi-client : start_iscsi] *******************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+RUNNING HANDLER [iscsi-client : restart_iscsid] ****************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+PLAY [Playbook of ha-cluster] **********************************************************************************************************************************************************
+
+TASK [ha-cluster : Install the Packages] ***********************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Add backend2 to /etc/hosts backend1] ********************************************************************************************************************************
+skipping: [backend2]
+changed: [backend1]
+
+TASK [ha-cluster : Add backend1 to /etc/hosts backend2] ********************************************************************************************************************************
+skipping: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Start the pcs service] **********************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [ha-cluster : Set the password for the use hacluster] *****************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Authenticate the host] **********************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Gather cluster status] **********************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "cluster", "status"], "delta": "0:00:00.561448", "end": "2024-11-11 14:43:18.011101", "msg": "non-zero return code", "rc": 1, "start": "2024-11-11 14:43:17.449653", "stderr": "Error: cluster is not currently running on this node", "stderr_lines": ["Error: cluster is not currently running on this node"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "cluster", "status"], "delta": "0:00:00.577393", "end": "2024-11-11 14:43:18.034117", "msg": "non-zero return code", "rc": 1, "start": "2024-11-11 14:43:17.456724", "stderr": "Error: cluster is not currently running on this node", "stderr_lines": ["Error: cluster is not currently running on this node"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Setup the HA-Cluster] ***********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Start the HA-Cluster] ***********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Enable the HA-Cluster] **********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Download fence-egent-common] ****************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Download fence-egent-pve] *******************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Install fence-egent-pve from a local file] **************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [ha-cluster : Gather stonith status] **********************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "stonith", "status", "cccc"], "delta": "0:00:00.571702", "end": "2024-11-11 14:43:34.117154", "msg": "non-zero return code", "rc": 1, "start": "2024-11-11 14:43:33.545452", "stderr": "Error: resource or tag id 'cccc' not found", "stderr_lines": ["Error: resource or tag id 'cccc' not found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : pcs cluster cib fencing.xml] ****************************************************************************************************************************************
+changed: [backend1] => (item=None)
+changed: [backend1] => (item=None)
+changed: [backend1] => (item=None)
+changed: [backend1] => (item=None)
+changed: [backend1] => (item=None)
+changed: [backend1] => (item=None)
+changed: [backend1]
+
+TASK [ha-cluster : Setting stonith-enabled=false] **************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Setting 'No Quorum' Policy] *****************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather dlm resource status] *****************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "dlm-clone"], "delta": "0:00:00.562493", "end": "2024-11-11 14:43:44.244151", "msg": "non-zero return code", "rc": 1, "start": "2024-11-11 14:43:43.681658", "stderr": "Warning: Unable to find resource 'dlm-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'dlm-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "dlm-clone"], "delta": "0:00:00.577142", "end": "2024-11-11 14:43:44.280961", "msg": "non-zero return code", "rc": 1, "start": "2024-11-11 14:43:43.703819", "stderr": "Warning: Unable to find resource 'dlm-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'dlm-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating 'dlm' Resource] ********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather lvmlockd resource status] ************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "lvmlockd-clone"], "delta": "0:00:00.567624", "end": "2024-11-11 14:43:46.510303", "msg": "non-zero return code", "rc": 1, "start": "2024-11-11 14:43:45.942679", "stderr": "Warning: Unable to find resource 'lvmlockd-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'lvmlockd-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "lvmlockd-clone"], "delta": "0:00:00.569704", "end": "2024-11-11 14:43:46.532031", "msg": "non-zero return code", "rc": 1, "start": "2024-11-11 14:43:45.962327", "stderr": "Warning: Unable to find resource 'lvmlockd-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'lvmlockd-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating lvmlockd Resource] *****************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Creating First Constraint] ******************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Pause] **************************************************************************************************************************************************************
+Pausing for 10 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [backend1]
+
+TASK [ha-cluster : Gather pvs /dev/sdb] ************************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": "pvs | grep /dev/sdb", "delta": "0:00:01.049213", "end": "2024-11-11 14:44:00.771005", "msg": "non-zero return code", "rc": 1, "start": "2024-11-11 14:43:59.721792", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Physical Volume] *******************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather vgs /dev/sdb] ************************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": "vgs | grep cluster_vg", "delta": "0:00:00.031510", "end": "2024-11-11 14:44:02.120359", "msg": "non-zero return code", "rc": 1, "start": "2024-11-11 14:44:02.088849", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Volume Group] **********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : start lock manager for shared] **************************************************************************************************************************************
+skipping: [backend1]
+changed: [backend2]
+
+TASK [ha-cluster : Pause] **************************************************************************************************************************************************************
+Pausing for 10 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [backend1]
+
+TASK [ha-cluster : Gather lvs | grep cluster_lv] ***************************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": "lvs | grep cluster_lv", "delta": "0:00:00.034450", "end": "2024-11-11 14:44:18.985410", "msg": "non-zero return code", "rc": 1, "start": "2024-11-11 14:44:18.950960", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Logical Volume] ********************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Formatting Logical Volume With GFS2] ********************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather cluster_vg-clone resource status] ****************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "cluster_vg-clone"], "delta": "0:00:00.567450", "end": "2024-11-11 14:44:21.978642", "msg": "non-zero return code", "rc": 1, "start": "2024-11-11 14:44:21.411192", "stderr": "Warning: Unable to find resource 'cluster_vg-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'cluster_vg-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "cluster_vg-clone"], "delta": "0:00:00.568114", "end": "2024-11-11 14:44:21.992059", "msg": "non-zero return code", "rc": 1, "start": "2024-11-11 14:44:21.423945", "stderr": "Warning: Unable to find resource 'cluster_vg-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'cluster_vg-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : create LVM-activate resource] ***************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : set start order as [locking] → [shared_vg]] *************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : set that [shared_vg] and [locking] start on a same node] ************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Gather clusterfs-clone resource status] *****************************************************************************************************************************
+fatal: [backend1]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "clusterfs-clone"], "delta": "0:00:00.566874", "end": "2024-11-11 14:44:26.775536", "msg": "non-zero return code", "rc": 1, "start": "2024-11-11 14:44:26.208662", "stderr": "Warning: Unable to find resource 'clusterfs-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'clusterfs-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [backend2]: FAILED! => {"changed": true, "cmd": ["pcs", "resource", "config", "clusterfs-clone"], "delta": "0:00:00.570883", "end": "2024-11-11 14:44:26.795464", "msg": "non-zero return code", "rc": 1, "start": "2024-11-11 14:44:26.224581", "stderr": "Warning: Unable to find resource 'clusterfs-clone'\nError: No resource found", "stderr_lines": ["Warning: Unable to find resource 'clusterfs-clone'", "Error: No resource found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [ha-cluster : Creating Cluster File System] ***************************************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : set start order as [shared_vg] → [shared_fs]] ***********************************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : set that [shared_fs] and [shared_vg] start on a same node] **********************************************************************************************************
+changed: [backend1]
+
+TASK [ha-cluster : Setting stonith-enabled=true] ***************************************************************************************************************************************
+changed: [backend1]
+
+PLAY [Playbook of db] ******************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *****************************************************************************************************************************************************************
+ok: [db-srv1]
+
+TASK [db : Install mysql-server package] ***********************************************************************************************************************************************
+changed: [db-srv1]
+
+TASK [db : Save root password in .my.cnf] **********************************************************************************************************************************************
+changed: [db-srv1]
+
+TASK [db : start and enable mysql service] *********************************************************************************************************************************************
+changed: [db-srv1]
+
+TASK [db : Sets the root password] *****************************************************************************************************************************************************
+[WARNING]: Option column_case_sensitive is not provided. The default is now false, so the column's name will be uppercased. The default will be changed to true in community.mysql
+4.0.0.
+changed: [db-srv1]
+
+TASK [db : Save root password in .my.cnf] **********************************************************************************************************************************************
+changed: [db-srv1]
+
+TASK [db : creating wp_db] *************************************************************************************************************************************************************
+changed: [db-srv1]
+
+TASK [db : creating mysql user (medium_post)] ******************************************************************************************************************************************
+changed: [db-srv1]
+
+TASK [db : Restart mysql] **************************************************************************************************************************************************************
+changed: [db-srv1]
+
+PLAY [Playbook of Wordpress] ***********************************************************************************************************************************************************
+
+TASK [wordpress : Installing Nginx Repository] *****************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [wordpress : install Nginx] *******************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [wordpress : Import Remi KEY] *****************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [wordpress : Installing Remi Repository] ******************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [wordpress : Enable PHP Remi Repository] ******************************************************************************************************************************************
+changed: [backend1] => (item=dnf module reset php -y)
+changed: [backend2] => (item=dnf module reset php -y)
+changed: [backend1] => (item=dnf module enable php:remi-8.3 -y)
+changed: [backend2] => (item=dnf module enable php:remi-8.3 -y)
+
+TASK [wordpress : Install php-fpm and PHP extensions] **********************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [wordpress : change user in /etc/php-fpm.d/www.conf] ******************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [wordpress : change group in /etc/php-fpm.d/www.conf] *****************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+TASK [wordpress : Check exist dip-akopalev.ru.conf] ************************************************************************************************************************************
+ok: [backend1]
+ok: [backend2]
+
+TASK [wordpress : Copy wordpress conf] *************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [wordpress : Check exist /root/latest.tar.gz] *************************************************************************************************************************************
+ok: [backend1]
+ok: [backend2]
+
+TASK [wordpress : Download wordpress] **************************************************************************************************************************************************
+changed: [backend1]
+
+TASK [wordpress : Check exist /var/www/wordpress] **************************************************************************************************************************************
+ok: [backend1]
+ok: [backend2]
+
+TASK [wordpress : Extract wordpress] ***************************************************************************************************************************************************
+changed: [backend1] => (item=tar -xzf /root/latest.tar.gz)
+changed: [backend1] => (item=mv /home/akopalev/wordpress /var/www/)
+changed: [backend1] => (item=chown -R nginx:nginx /var/www/wordpress)
+
+TASK [wordpress : Template a file to /var/www/wordpress/wp-config.php] *****************************************************************************************************************
+changed: [backend1]
+
+TASK [wordpress : Start Nginx Service] *************************************************************************************************************************************************
+changed: [backend1]
+changed: [backend2]
+
+TASK [wordpress : Start php-fpm Service] ***********************************************************************************************************************************************
+changed: [backend2]
+changed: [backend1]
+
+PLAY [Playbook of consul] **************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *****************************************************************************************************************************************************************
+ok: [backend2]
+ok: [backend1]
+ok: [consul-02]
+ok: [consul-01]
+ok: [consul-03]
+ok: [nginx-srv1]
+ok: [nginx-srv2]
+
+TASK [consul : Hosts | populate inventory into hosts file] *****************************************************************************************************************************
+changed: [consul-02]
+changed: [consul-03]
+changed: [consul-01]
+changed: [backend2]
+changed: [backend1]
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [consul : Install prerequestion] **************************************************************************************************************************************************
+changed: [consul-02]
+changed: [consul-03]
+changed: [consul-01]
+changed: [backend2]
+changed: [backend1]
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [consul : Add consul group] *******************************************************************************************************************************************************
+changed: [consul-02]
+changed: [consul-01]
+changed: [consul-03]
+changed: [backend2]
+changed: [backend1]
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [consul : Add consul user] ********************************************************************************************************************************************************
+changed: [consul-02]
+changed: [consul-01]
+changed: [backend2]
+changed: [backend1]
+changed: [consul-03]
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [consul : Download consul 1.19.2] *************************************************************************************************************************************************
+changed: [backend2]
+changed: [consul-03]
+changed: [consul-01]
+changed: [backend1]
+changed: [consul-02]
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [consul : Create config directory] ************************************************************************************************************************************************
+changed: [consul-02]
+changed: [consul-03]
+changed: [consul-01]
+changed: [backend1]
+changed: [backend2]
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [consul : Create data directory] **************************************************************************************************************************************************
+changed: [consul-02]
+changed: [consul-01]
+changed: [backend1]
+changed: [consul-03]
+changed: [backend2]
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [consul : Unzip consul] ***********************************************************************************************************************************************************
+changed: [consul-02]
+changed: [consul-03]
+changed: [consul-01]
+changed: [backend1]
+changed: [backend2]
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [consul : Set systemd service] ****************************************************************************************************************************************************
+changed: [consul-03]
+changed: [consul-02]
+changed: [consul-01]
+changed: [backend2]
+changed: [backend1]
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [consul : Daemon reload] **********************************************************************************************************************************************************
+ok: [backend1]
+ok: [consul-01]
+ok: [consul-03]
+ok: [backend2]
+ok: [consul-02]
+ok: [nginx-srv1]
+ok: [nginx-srv2]
+
+TASK [consul : consul keygen] **********************************************************************************************************************************************************
+changed: [backend1]
+
+TASK [consul : set consul config on servers] *******************************************************************************************************************************************
+skipping: [backend1]
+skipping: [backend2]
+skipping: [nginx-srv1]
+skipping: [nginx-srv2]
+changed: [consul-02]
+changed: [consul-01]
+changed: [consul-03]
+
+TASK [consul : set consul config agent backend] ****************************************************************************************************************************************
+skipping: [consul-01]
+skipping: [consul-02]
+skipping: [consul-03]
+changed: [nginx-srv2]
+changed: [backend2]
+changed: [nginx-srv1]
+changed: [backend1]
+
+TASK [consul : set service web] ********************************************************************************************************************************************************
+skipping: [consul-01]
+skipping: [consul-02]
+skipping: [consul-03]
+skipping: [nginx-srv1]
+skipping: [nginx-srv2]
+changed: [backend2]
+changed: [backend1]
+
+TASK [consul : delete keyring] *********************************************************************************************************************************************************
+changed: [consul-02]
+changed: [backend2]
+changed: [consul-01]
+changed: [consul-03]
+changed: [backend1]
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [consul : start consul] ***********************************************************************************************************************************************************
+changed: [consul-02]
+changed: [consul-01]
+changed: [consul-03]
+changed: [backend1]
+changed: [nginx-srv2]
+changed: [nginx-srv1]
+changed: [backend2]
+
+PLAY [Playbook of loadbalancer] ********************************************************************************************************************************************************
+
+TASK [lb-nginx-consul : Hosts | populate inventory into hosts file] ********************************************************************************************************************
+ok: [nginx-srv2]
+ok: [nginx-srv1]
+
+TASK [lb-nginx-consul : Install prerequestion] *****************************************************************************************************************************************
+ok: [nginx-srv2]
+ok: [nginx-srv1]
+
+TASK [lb-nginx-consul : Download consul-template] **************************************************************************************************************************************
+changed: [nginx-srv2]
+changed: [nginx-srv1]
+
+TASK [lb-nginx-consul : Unzip consul] **************************************************************************************************************************************************
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [lb-nginx-consul : make dir for template] *****************************************************************************************************************************************
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [lb-nginx-consul : copy template] *************************************************************************************************************************************************
+changed: [nginx-srv1] => (item=upstreams.conf.ctmpl)
+changed: [nginx-srv2] => (item=upstreams.conf.ctmpl)
+changed: [nginx-srv1] => (item=consul.hcl)
+changed: [nginx-srv2] => (item=consul.hcl)
+
+TASK [lb-nginx-consul : Set systemd service] *******************************************************************************************************************************************
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [lb-nginx-consul : Daemon reload] *************************************************************************************************************************************************
+ok: [nginx-srv1]
+ok: [nginx-srv2]
+
+TASK [lb-nginx-consul : Start consul-template service] *********************************************************************************************************************************
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [lb-nginx-consul : Installing Nginx Repository] ***********************************************************************************************************************************
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [lb-nginx-consul : install Nginx] *************************************************************************************************************************************************
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [lb-nginx-consul : Check exist proxy_params] **************************************************************************************************************************************
+ok: [nginx-srv1]
+ok: [nginx-srv2]
+
+TASK [lb-nginx-consul : Copy proxy_params] *********************************************************************************************************************************************
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [lb-nginx-consul : Start Nginx Service] *******************************************************************************************************************************************
+changed: [nginx-srv2]
+changed: [nginx-srv1]
+
+PLAY [Playbook of keepalived] **********************************************************************************************************************************************************
+
+TASK [keepalived : Install packages] ***************************************************************************************************************************************************
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [keepalived : Change sysctl config] ***********************************************************************************************************************************************
+changed: [nginx-srv1] => (item={'name': 'net.ipv4.ip_forward', 'value': '1'})
+changed: [nginx-srv2] => (item={'name': 'net.ipv4.ip_forward', 'value': '1'})
+changed: [nginx-srv1] => (item={'name': 'net.ipv4.ip_nonlocal_bind', 'value': '1'})
+changed: [nginx-srv2] => (item={'name': 'net.ipv4.ip_nonlocal_bind', 'value': '1'})
+
+TASK [keepalived : Backup default keepalived config file] ******************************************************************************************************************************
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [keepalived : Template custom keepalived config file] *****************************************************************************************************************************
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+TASK [keepalived : Start and enable keepalived service] ********************************************************************************************************************************
+changed: [nginx-srv1]
+changed: [nginx-srv2]
+
+PLAY RECAP *****************************************************************************************************************************************************************************
+backend1                   : ok=81   changed=72   unreachable=0    failed=0    skipped=4    rescued=0    ignored=9   
+backend2                   : ok=52   changed=45   unreachable=0    failed=0    skipped=3    rescued=0    ignored=5   
+consul-01                  : ok=18   changed=14   unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+consul-02                  : ok=18   changed=14   unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+consul-03                  : ok=18   changed=14   unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+db-srv1                    : ok=13   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+iscsi-srv1                 : ok=7    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1   
+nginx-srv1                 : ok=37   changed=29   unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+nginx-srv2                 : ok=37   changed=29   unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+pve-fortest                : ok=9    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

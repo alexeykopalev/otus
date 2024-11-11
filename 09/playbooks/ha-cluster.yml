@@ -1,0 +1,6 @@
+# code: language=ansible
+- name: install ha-cluster
+  hosts: backend_hosts
+  become: yes
+  roles:
+  - ha-cluster

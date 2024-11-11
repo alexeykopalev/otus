@@ -1,0 +1,6 @@
+# code: language=ansible
+- name: install iscsi-client
+  hosts: backend_hosts
+  become: yes
+  roles:
+  - iscsi-client

@@ -1,0 +1,8 @@
+- name: install-consul
+  hosts: 
+    - backend_hosts
+    - consul_hosts
+    - nginx_hosts
+  become: yes
+  roles:
+  - consul

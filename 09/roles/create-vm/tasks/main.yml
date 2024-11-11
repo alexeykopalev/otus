@@ -1,0 +1,6 @@
+---
+- name: "Create vms"
+  ansible.builtin.include_tasks: create-vms.yml
+
+- name: "add second disk to vm iscsi-srv"
+  ansible.builtin.include_tasks: add-disk.yml
